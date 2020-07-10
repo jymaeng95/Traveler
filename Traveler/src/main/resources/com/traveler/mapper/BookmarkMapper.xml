@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.traveler.mapper.BookmarkMapper">
+	<!-- id-column : DB컬럼명 property : 객체멤버변수 명  -->
+	<!-- result : 기본키 이외 멤버변수 지정 -->
+<resultMap id="bookmarkVO" type="com.traveler.domain.BookmarkVO">
+	<id column="contentId" property="contentId"/>
+	<result column="userId" property="userId"/>
+	<result column="contentTypeId" property="contentTypeId"/>
+	<result column="title" property="title"/>
+	<result column="addr" property="addr"/>
+	<result column="img_src" property="img_src"/>
+	<result column="overview" property="overview"/>
+	<collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
+		<id column="userId" property="userId"/>
+		<result column="userPw" property="userPw"/>
+		<result column="email" property="email"/>
+		<result column="nickname" property="nickname"/>
+		<result column="is_kakao" property="is_kakao"/>
+	</collection>
+</resultMap>
+	
+	<!--북마크 추가 -->
+	<insert id="bookmarkInsert">
+		insert into bookmark (userId, contentId, contentTypeId, title, addr, img_src, overview)
+		values (#{userId}, #{contentId}, #{contentTypeId}, #{title}, #{addr}, #{img_src}, #{overview} )
+	</insert>
+	
+	<!-- 일반 로그인 -->
+	<select id="bookmarkRead" resultMap="bookmarkVO">
+		select member.userId, contentId, contentTypeId, title, img_src
+		from bookmark, member
+		where bookmark.userId = member.userId and member.userId = #{userId}
+	</select>
+	
+	<!-- 회원정보 수정  -->
+<!-- 	<update id="update">
+		update bookmark
+		set userPw = #{userPw},
+		email = #{email},
+		nickname = #{nickname}
+		where userId = #{userId}
+	</update> -->
+	
+	<delete id="bookmarkDelete">
+		delete 
+		from bookmark
+		where userId = #{userId} and contentId = #{contentId}
+	</delete>
+	
+	<select id="checkBookmark" resultType="int">
+		select count(contentId) 
+		from bookmark, member
+		where bookmark.userId = member.userId and member.userId = #{userId} and contentId = #{contentId}
+	</select>
+</mapper>
+
+	
