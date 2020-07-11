@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 정보 불러오기 -->	
 	<select id="loadInfo" resultType="com.traveler.domain.MemberVO">
-		select email,nickname
+		select *
 		from member
 		where userId = #{userId}
 	</select>

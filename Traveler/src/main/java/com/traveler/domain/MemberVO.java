@@ -9,4 +9,5 @@ public class MemberVO {
 	private String email;
 	private String nickname;
 	private String is_kakao;
+	private String user_img;
 }

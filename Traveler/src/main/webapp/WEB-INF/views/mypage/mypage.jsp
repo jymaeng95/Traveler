@@ -8,12 +8,15 @@
 
 <!-- Custom CSS for the '3 Col Portfolio' Template -->
 <link href="/resources/mypage/css/mypage.css" rel="stylesheet">
+<script src="/resources/mypage/js/mypage.js"></script>
 <title>Insert title here</title>
 <style>
 #sidebar * {
 	font-size: 1.32rem;
 }
-
+#myModal * {
+font-size: 1.32rem;
+}
 #show-sidebar {
 	position: fixed;
 	left: 0;
@@ -37,24 +40,25 @@
 
 						<div class="profile-image">
 
-							<img
-								src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces"
-								alt="">
+							<img id="user-img"
+								src="${userImg }"
+								alt="" style="width:50%;">
 
 						</div>
 
 						<div class="profile-user-settings">
-
-							<h1 class="profile-user-name" value="${userId }"></h1>
-
-							<button class="btn-mypage profile-edit-btn">Edit Profile</button>
-							<button class="btn-mypage profile-edit-btn">Change Photo</button>
-							<button class="btn profile-settings-btn"
+							<input type="hidden" id="session-id" value=${userId }>
+							<h1 class="profile-user-name" id="user-id"><c:out value="${userId }"></c:out></h1>
+						
+							<button class="btn-mypage profile-edit-btn" id="btn-modify">Edit Profile</button>
+							<button class="btn-mypage profile-edit-btn" id="btn-photo">Change Photo</button>
+							
+							<button class="btn-mypage profile-settings-btn" id="delete-user" data-toggle="modal"
 								aria-label="profile settings">
 								<i class="fas fa-cog" aria-hidden="true"></i>
 							</button>
 						</div>
-
+						<input type="file" style="visibility: hidden;" />
 						<div class="profile-stats">
 
 							<ul>
@@ -71,56 +75,70 @@
 								<span class="profile-real-name">Jane Doe</span> Lorem ipsum
 								dolor sit, amet consectetur adipisicing elit 📷✈️🏕️
 							</p>
-
 						</div>
 
 					</div>
 					<!-- End of profile section -->
-
 				</div>
 				<!-- End of container -->
-
 			</header>
 
 			<main>
-
 				<div class="container">
-
 					<div class="gallery">
-						<c:forEach var="i" begin="0" end="8">
+						<c:forEach items="${b_list }" var="list">
 							<div class="gallery-item" tabindex="0">
-
-								<img
-									src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop"
+								<img id="bookmark_img"
+									src="${list.img_src }"
 									class="gallery-image" alt="">
-
 								<div class="gallery-item-info">
-
 									<ul>
-										<li class="gallery-item-likes"><span
+									  <!--   <li class="gallery-item-likes"><span
 											class="visually-hidden">Likes:</span><i class="fas fa-heart"
-											aria-hidden="true"></i> 56</li>
-										<li class="gallery-item-comments"><span
+											aria-hidden="true"></i> 56</li> -->
+										<!-- <li class="gallery-item-comments"><span
 											class="visually-hidden">Comments:</span><i
-											class="fas fa-comment" aria-hidden="true"></i> 2</li>
+											class="fas fa-comment" aria-hidden="true"></i> 2</li> -->
+										<li class="gallery-item-likes" id="bmk-title"><span class="visually-hidden">
+										</span><c:out value="${list.title }"></c:out>
+										</li>
 									</ul>
-
 								</div>
-
 							</div>
 						</c:forEach>
-
 					</div>
 					<!-- End of gallery -->
-
 					<div class="loader"></div>
-
 				</div>
 				<!-- End of container -->
-
 			</main>
 		</div>
+		
 	</main>
+	</div>
+		<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="mySmallModalLabel" id="myModal" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" id="myModalLabel">회원 탈퇴</h4>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+
+
+				</div>
+				<div class="modal-body">
+					<input type="password" id="upw" name="userPw" style="width: 100%"
+						placeholder="패스워드 입력">
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" type="button" id="confirm">예</button>
+					<button class="btn btn-primary" type="button" data-dismiss="modal">아니요</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
