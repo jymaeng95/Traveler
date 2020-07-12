@@ -53,7 +53,12 @@ public class MyPageController {
 		return "/mypage/message";
 	}
 	@RequestMapping(value="/mypage/modify", method=RequestMethod.GET)
-	public String modify(Model model,HttpSession session) {
+	public String modify(MemberVO member,Model model,HttpSession session) throws Exception {
+		member.setUserId((String)session.getAttribute("userId"));
+		MemberVO userInfo = service.loadInfo(member);
+		
+		model.addAttribute("nickname",userInfo.getNickname());
+		model.addAttribute("email",userInfo.getEmail());
 		model.addAttribute("userId",session.getAttribute("userId"));
 		log.info("modify");
 		return "/mypage/modify";

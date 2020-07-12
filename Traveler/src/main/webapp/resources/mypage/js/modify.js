@@ -8,22 +8,6 @@ document.addEventListener("change", function(event) {
 	}
 });
 $(document).ready(function() {
-	$.ajax({
-		url : "/mypage/info",
-		type : "post",
-		dataType : "json",
-		data : {
-			"userId" : $("#uid").val()
-		},
-		success : function(data) {
-			$("#email").val(data.email);
-			$("#nickname").val(data.nickname);
-			$("#cur-nickname").val(data.nickname);
-		},
-		error : function(error) {
-			alert("정보 불러오기 오류");
-		}
-	});
 	$("#btn-submit").click(function(){
 		var frmCheck = formCheck();
 		if(frmCheck) {
