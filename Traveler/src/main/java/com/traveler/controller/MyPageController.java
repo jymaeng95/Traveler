@@ -52,6 +52,19 @@ public class MyPageController {
 		log.info("message");
 		return "/mypage/message";
 	}
+	
+	@RequestMapping(value="/mypage/bookmark", method=RequestMethod.GET)
+	public String userBookmarkPage(Model model,HttpSession session, BookmarkVO bookmark) throws Exception {
+		log.info("bookmark");
+		bookmark.setUserId((String)session.getAttribute("userId"));
+		log.info(bookmark);
+		
+		ArrayList<BookmarkVO> bmk_list = b_service.getUserBookmark(bookmark);
+		model.addAttribute("b_list", bmk_list);
+		model.addAttribute("userId",session.getAttribute("userId"));
+		return "/mypage/bookmark";
+	}
+	
 	@RequestMapping(value="/mypage/modify", method=RequestMethod.GET)
 	public String modify(MemberVO member,Model model,HttpSession session) throws Exception {
 		member.setUserId((String)session.getAttribute("userId"));

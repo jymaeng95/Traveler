@@ -107,8 +107,13 @@ font-size: 1.32rem;
 							</div>
 						</c:forEach>
 					</div>
+					<div class="gallery">
+					<button type="button" class="btn-mypage profile-edit-btn" id="more-bookmark" 
+						style="width: 90%; margin: auto;">
+						More Bookmark</button>
+					</div>
 					<!-- End of gallery -->
-					<div class="loader"></div>
+				
 				</div>
 				<!-- End of container -->
 			</main>

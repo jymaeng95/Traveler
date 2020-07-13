@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$("#more-bookmark").click(function(){
-		location.href="/mypage/modify";
+		location.href="/mypage/bookmark";
 	});
 	$("#delete-user").click(function(){
 		alert("탈퇴하시겠습니까?");

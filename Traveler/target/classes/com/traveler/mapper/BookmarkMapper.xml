@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 일반 로그인 -->
 	<select id="bookmarkRead" resultMap="bookmarkVO">
-		select member.userId, contentId, contentTypeId, title, img_src
+		select *
 		from bookmark, member
 		where bookmark.userId = member.userId and member.userId = #{userId}
 	</select>

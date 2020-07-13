@@ -81,9 +81,9 @@
 							<div class="sidebar-submenu" style="display: block;">
 								<ul>
 									<li><a href="/mypage/mypage">mypage</a></li>
-									<li><a href="#">북마크</a></li>
-									<li><a href="#">쪽지</a></li>
-									<li><a href="#">Histogram</a></li>
+									<li><a href="/mypage/modify">Modify</a></li>
+									<li><a href="/mypage/bookmark">Bookmark�</a></li>
+									<li><a href="/mypage/message">Message</a></li>
 								</ul>
 							</div></li>
 					</c:if>
