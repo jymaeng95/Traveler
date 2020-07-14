@@ -33,7 +33,7 @@ public class SpotController {
 	private SpotAPI spot;
 
 	private BookmarkService service;
-	@RequestMapping(value="/spot/spot_index", method=RequestMethod.GET)
+	@RequestMapping(value="/spot/spot", method=RequestMethod.GET)
 	public String spotIndex(@RequestParam(value="pageNum", defaultValue="1") String pageNo,
 			@RequestParam(value="sigunguCode", defaultValue="") String sigunguCode, @RequestParam(value="contentTypeId",defaultValue="") String contentTypeId,Model model) throws Exception {
 
@@ -42,7 +42,7 @@ public class SpotController {
 		model.addAttribute("sigunguCode",sigunguCode);
 		model.addAttribute("contentTypeId",contentTypeId);
 		log.info("spot index");
-		return "/spot/spot_index";
+		return "/spot/spot";
 	}
 
 	@RequestMapping(value="/spot/spot_detail",method=RequestMethod.GET)
