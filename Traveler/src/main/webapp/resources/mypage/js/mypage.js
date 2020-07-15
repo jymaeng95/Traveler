@@ -23,7 +23,7 @@ $(document).ready(function(){
 				type : "post",
 				dataType : "json",
 				data : {
-					"userId" : $("#uid").val(),
+					"userId" : $("#session-id").val(),
 					"userPw" : $("#upw").val()
 				},
 				success : function(data){
