@@ -45,14 +45,14 @@ public class SpotController {
 		return "/spot/spot";
 	}
 
-	@RequestMapping(value="/spot/spot_detail",method=RequestMethod.GET)
+	@RequestMapping(value="/spot/detail",method=RequestMethod.GET)
 	public String spotDetail(@RequestParam(value="contentId") String contentId,@RequestParam(value="contentTypeId") String contentTypeId, Model model) throws Exception {
 		log.info("spot detail");
 		model.addAttribute("contentId",contentId);
 		model.addAttribute("contentTypeId",contentTypeId);
 		log.info(contentId);
 		log.info(contentTypeId);
-		return "/spot/spot_detail";
+		return "/spot/detail";
 	}
 
 

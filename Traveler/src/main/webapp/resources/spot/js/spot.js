@@ -78,6 +78,6 @@ function searchClick() {
 function imgClick(contentId,contentTypeId){
 	$("#imgForm").append("<input type='hidden' name='contentId' value="+contentId+">");
 	$("#imgForm").append("<input type='hidden' name='contentTypeId' value="+contentTypeId+">");
-	$("#imgForm").attr("action","/spot/spot_detail");
+	$("#imgForm").attr("action","/spot/detail");
 	$("#imgForm").submit();
 }

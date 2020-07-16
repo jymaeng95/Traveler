@@ -33,6 +33,7 @@
 						</li>
 					</ul>
 				</div>
+				<!--Read More 부분 contentId contentTypeID 받아서 spot쪽으로 이동하기 -->
 				<div class="description">
 					<h1><c:out value="${list.title }"></c:out></h1>
 					<h2><c:out value="${list.addr }"></c:out></h2>

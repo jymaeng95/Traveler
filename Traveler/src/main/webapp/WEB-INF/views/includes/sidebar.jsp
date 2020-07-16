@@ -39,7 +39,7 @@
 					</li>
 					</c:if>
 					<li class="header-menu"><span>General</span></li>
-					<li class="sidebar-dropdown"><a href="#"> <i
+					<li class="sidebar-dropdown"><a href="/plan/plan_index"> <i
 							class="fa fa-tachometer-alt"></i> <span>Plan</span>
 					</a>
 						<div class="sidebar-submenu" style="display: none;">
@@ -51,17 +51,10 @@
 								<li><a href="#">Dashboard 3</a></li>
 							</ul>
 						</div></li>
-					<li class="sidebar-dropdown"><a href="#"> <i
-							class="fa fa-shopping-cart"></i> <span>Spot</span> <span
-							class="badge badge-pill badge-danger">3</span>
+					<li class="sidebar"><a href="/spot/spot"> <i
+							class="fa fa-shopping-cart"></i> <span>Spot</span> 
 					</a>
-						<div class="sidebar-submenu" style="display: none;">
-							<ul>
-								<li><a href="#">Products </a></li>
-								<li><a href="#">Orders</a></li>
-								<li><a href="#">Credit cart</a></li>
-							</ul>
-						</div></li>
+						</li>
 					<li class="sidebar-dropdown"><a href="#"> <i
 							class="far fa-gem"></i> <span>Account</span>
 					</a>
