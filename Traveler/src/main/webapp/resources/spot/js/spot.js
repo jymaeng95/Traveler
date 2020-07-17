@@ -12,12 +12,12 @@ $(document).ready(function(){
 		success : function(data) {
 			$.each(data, function(key, val){
 				//alert(val[key]);
-				$("#photo"+key).attr("style","background-image : url("+val[0]+")");
-				$("#title"+key).text(val[1]);
-				$("#addr"+key).text(val[2]);
-				$("#overview"+key).html(val[3]);
-				$("#btn-detail"+key).attr("onclick","imgClick("+val[4]+","+val[5]+");");
-				$(".totalCount").text(val[6]);
+				$("#photo"+key).attr("style","background-image : url("+data[key].firstImage2+")");
+				$("#title"+key).text(data[key].title);
+				$("#addr"+key).text(data[key].addr1);
+				$("#overview"+key).html(data[key].overview);
+				$("#btn-detail"+key).attr("onclick","imgClick("+data[key].contentId+","+data[key].contentTypeId+");");
+				$(".totalCount").text(data[key].totalCount);
 			});
 			if(sigungu=="" && contentType==""){
 				$("input:checkbox[name='sigungu']:checkbox[value='']").prop('checked', true);

@@ -48,7 +48,7 @@ public class LoginController {
 			session.setAttribute("userId", id);
 			session.setAttribute("access_Token", access_Token);
 		}
-		return "/login/index";
+		return "/index/index";
 	}
 
 	@RequestMapping(value="/logout")

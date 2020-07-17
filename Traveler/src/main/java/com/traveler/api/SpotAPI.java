@@ -12,6 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.traveler.domain.SpotVO;
+
 @Service
 public class SpotAPI {
 		final String serviceKey ="SHUTUe8Ya9tRYNvxndPl0GuDMGD%2F8T4d2LFqklaI9yoGzpnlZPEmo3uUsQ6BGhsVr%2F8vQZFAhkPg%2Fc4kGh1%2Big%3D%3D";
@@ -248,4 +250,35 @@ public class SpotAPI {
 
 		return contentIdList.get(0);
 	}
+	
+	//spot 불러오기!
+		public List<SpotVO> getInformation (SpotVO spotVO, int totalCount) throws Exception {
+			ArrayList<String> contentIdList= getContetnIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId());
+			ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
+			List<SpotVO> information = new ArrayList<SpotVO>();
+			
+			for(int i=0; i<spotInfo.size();i++) {
+				SpotVO oneSpot = new SpotVO();
+				for(int j=0;j<spotInfo.get(i).getLength();j++) {
+					Node node = spotInfo.get(i).item(j);
+					if(node.getNodeType()==Node.ELEMENT_NODE) {
+						Element element = (Element) node;
+						oneSpot.setFirstImage2(getTagValue("firstimage2",element));
+						if(oneSpot.getFirstImage2()==null) {
+							oneSpot.setFirstImage2("/resources/assets/img/spot_images/no_img.png");
+						}
+						oneSpot.setTitle(getTagValue("title",element));
+						if(!spotVO.getContentTypeId().equals("25")){
+							oneSpot.setAddr1(getTagValue("addr1",element));
+						}
+						oneSpot.setOverview(getTagValue("overview",element));
+						oneSpot.setContentId(getTagValue("contentid",element));
+						oneSpot.setContentTypeId(getTagValue("contenttypeid",element));
+						oneSpot.setTotalCount(Integer.toString(totalCount));
+					}
+				}
+				information.add(oneSpot);
+			}
+			return information;
+		}
 }

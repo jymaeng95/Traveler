@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 import com.traveler.api.SpotAPI;
 import com.traveler.domain.BookmarkVO;
 import com.traveler.domain.PageVO;
+import com.traveler.domain.SpotVO;
 import com.traveler.service.BookmarkService;
 
 import lombok.AllArgsConstructor;
@@ -56,44 +57,14 @@ public class SpotController {
 	}
 
 
-	//spot_index���� ���� ��ȯ
+	//spot 불러오기 
 	@ResponseBody
 	@RequestMapping(value="/spot/information",method = RequestMethod.GET)
-	public List<String[]> getSpotInfo(@RequestParam(value="pageNo", defaultValue="1") String pageNo, @RequestParam(value="sigunguCode", defaultValue="") String sigunguCode, @RequestParam(value="contentTypeId",defaultValue="") String contentTypeId, Model model) throws Exception{
-		log.info("������ ������ ������");
-		ArrayList<String> contentIdList= spot.getContetnIdList(pageNo,sigunguCode,contentTypeId);
-		ArrayList<NodeList> spotInfo = spot.getSpotInfo(contentIdList);
-		List<String[]> info = new ArrayList<String[]>();
-
-		//		List<SpotVO> info = new ArrayList<SpotVO>();
-		log.info(spotInfo.get(0).item(1));
-		for(int i=0; i<spotInfo.size();i++) {
-			String[] info_arr = new String[7];
-			for(int j=0;j<spotInfo.get(i).getLength();j++) {
-				Node node = spotInfo.get(i).item(j);
-				if(node.getNodeType()==Node.ELEMENT_NODE) {
-					Element element = (Element) node;
-					info_arr[0] = SpotAPI.getTagValue("firstimage2", element);
-					if(info_arr[0]==null) {
-						info_arr[0] = "/resources/assets/img/spot_images/no_img.png";
-					}
-					info_arr[1] = SpotAPI.getTagValue("title", element);
-					if(contentTypeId.equals("25")){
-						info_arr[2]="";
-					}else  {                  
-						info_arr[2] = SpotAPI.getTagValue("addr1", element);
-					}
-					info_arr[3] = SpotAPI.getTagValue("overview", element);
-					info_arr[3] = info_arr[3].replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-					info_arr[4] = SpotAPI.getTagValue("contentid", element);
-					info_arr[5] = SpotAPI.getTagValue("contenttypeid", element);
-					info_arr[6] = Integer.toString(totalCount);
-				}
-			}
-			info.add(info_arr);
-		}
-		return info;
+	public List<SpotVO> getSpotInfo2(SpotVO spotVO, Model model) throws Exception{
+		log.info("information 2");
+		return spot.getInformation(spotVO, totalCount);
 	}
+	
 
 	//���̵����� 
 	@ResponseBody
