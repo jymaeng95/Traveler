@@ -14,9 +14,11 @@
 #sidebar * {
 	font-size: 1.32rem;
 }
+
 #myModal * {
-font-size: 1.32rem;
+	font-size: 1.32rem;
 }
+
 #show-sidebar {
 	position: fixed;
 	left: 0;
@@ -40,27 +42,30 @@ font-size: 1.32rem;
 
 						<div class="profile-image">
 
-							<img id="user-img"
-								src="${userImg }"
-								alt="" style="width:50%;">
+							<img id="user-img" src="${userImg }" alt="" style="width: 50%;">
 
 						</div>
 
 						<div class="profile-user-settings">
 							<input type="hidden" id="session-id" value=${userId }>
-							<h1 class="profile-user-name" id="user-id"><c:out value="${userId }"></c:out></h1>
-						
-							<button class="btn-mypage profile-edit-btn" id="btn-modify">Edit Profile</button>
-							<button class="btn-mypage profile-edit-btn" id="btn-photo">Change Photo</button>
-							
-							<button class="btn-mypage profile-settings-btn" id="delete-user" data-toggle="modal"
-								aria-label="profile settings">
+							<h1 class="profile-user-name" id="user-id">
+								<c:out value="${userId }"></c:out>
+							</h1>
+
+							<button class="btn-mypage profile-edit-btn" id="btn-modify">Edit
+								Profile</button>
+							<button class="btn-mypage profile-edit-btn" id="btn-photo">Change
+								Photo</button>
+
+							<button class="btn-mypage profile-settings-btn" id="delete-user"
+								data-toggle="modal" aria-label="profile settings">
 								<i class="fas fa-cog" aria-hidden="true"></i>
 							</button>
 						</div>
 						<input type="file" style="visibility: hidden;" />
 						<div class="profile-stats">
 
+							<!--북마크 개수 / 여행 갯수 / 등 수치 정보 넣으면 좋을듯  -->
 							<ul>
 								<li><span class="profile-stat-count">164</span> posts</li>
 								<li><span class="profile-stat-count">188</span> followers</li>
@@ -88,51 +93,51 @@ font-size: 1.32rem;
 					<div class="gallery">
 						<c:forEach items="${b_list }" var="list">
 							<div class="gallery-item" tabindex="0">
-								<img id="bookmark_img"
-									src="${list.img_src }"
+								<img id="bookmark_img" src="${list.img_src }"
 									class="gallery-image" alt="">
-								<div class="gallery-item-info">
+								<div class="gallery-item-info"
+									onclick="imgClick('${list.contentId}','${list.contentTypeId }');">
 									<ul>
-									  <!--   <li class="gallery-item-likes"><span
+										<!--   <li class="gallery-item-likes"><span
 											class="visually-hidden">Likes:</span><i class="fas fa-heart"
 											aria-hidden="true"></i> 56</li> -->
 										<!-- <li class="gallery-item-comments"><span
 											class="visually-hidden">Comments:</span><i
 											class="fas fa-comment" aria-hidden="true"></i> 2</li> -->
-										<li class="gallery-item-likes" id="bmk-title"><span class="visually-hidden">
-										</span><c:out value="${list.title }"></c:out>
-										</li>
+										<li class="gallery-item-likes" id="bmk-title"><span
+											class="visually-hidden"> </span>
+										<c:out value="${list.title }"></c:out></li>
 									</ul>
 								</div>
 							</div>
 						</c:forEach>
 					</div>
 					<div class="gallery">
-					<button type="button" class="btn-mypage profile-edit-btn" id="more-bookmark" 
-						style="width: 90%; margin: auto;">
-						More Bookmark</button>
+						<button type="button" class="btn-mypage profile-edit-btn"
+							id="more-bookmark" style="width: 90%; margin: auto;">
+							More Bookmark</button>
 					</div>
 					<!-- End of gallery -->
-				
+
 				</div>
 				<!-- End of container -->
 			</main>
 		</div>
-		
+
 	</main>
 	</div>
-		<div class="modal fade" tabindex="-1" role="dialog"
+	<div class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" id="myModal" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="modal-title" id="myModalLabel">회원 탈퇴</h4>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-
-
+					<h2 class="modal-title" id="myModalLabel">
+						회원 탈퇴
+						</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
 				</div>
 				<div class="modal-body">
 					<input type="password" id="upw" name="userPw" style="width: 100%"

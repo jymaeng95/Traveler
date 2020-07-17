@@ -8,6 +8,7 @@
 <%@ include file="../includes/sidebar_setting.jsp"%>
 <link href="/resources/mypage/css/bookmark.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700" rel="stylesheet">
+<script src="/resources/mypage/js/bookmark.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -33,14 +34,14 @@
 						</li>
 					</ul>
 				</div>
-				<!--Read More 부분 contentId contentTypeID 받아서 spot쪽으로 이동하기 -->
 				<div class="description">
 					<h1><c:out value="${list.title }"></c:out></h1>
 					<h2><c:out value="${list.addr }"></c:out></h2>
 					<p><c:out value="${list.overview }"></c:out></p>
-					<p class="read-more">
-						<a href="#">Read More</a>
-					</p>
+					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="deleteBookmark('${userId}','${list.contentId }');"
+								style="color: #5ad67d; margin-top:20px; float:right;">삭제</button>
+					<button type="button" class="btn btn-link" id="btn-detail" onclick="readMoreClick('${list.contentId}','${list.contentTypeId }');"
+								style="color: #5ad67d; margin-top:20px; float:right;">Read More</button>
 				</div>
 			</div>
 			</c:if>
@@ -65,9 +66,10 @@
 					<h1><c:out value="${list.title }"></c:out></h1>
 					<h2><c:out value="${list.addr }"></c:out></h2>
 					<p><c:out value="${list.overview }"></c:out></p>
-					<p class="read-more">
-						<a href="#">Read More</a>
-					</p>
+					<button type="button" class="btn btn-link" id="btn-detail" onclick="readMoreClick('${list.contentId}','${list.contentTypeId }');"
+								style="color: #5ad67d; margin-top:20px;">Read More</button>
+					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="deleteBookmark('${userId}','${list.contentId }');"
+								style="color: #5ad67d; margin-top:20px;">삭제</button>
 				</div>
 			</div>
 			</c:if>

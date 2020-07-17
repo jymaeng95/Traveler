@@ -43,4 +43,23 @@ $(document).ready(function(){
 		}
 	});
 });
+function imgClick(contentId,contentTypeId){
+	var form = document.createElement("form");
+	form.setAttribute("charset", "UTF-8");
+	form.setAttribute("method", "GET");  //Post 방식
+	form.setAttribute("action", "/spot/detail"); //요청 보낼 주소
+
+	var hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", "contentId");
+	hiddenField.setAttribute("value", contentId);
+	form.appendChild(hiddenField);
+	hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", "contentTypeId");
+	hiddenField.setAttribute("value", contentTypeId);
+	form.appendChild(hiddenField);
+	document.body.appendChild(form);
+	form.submit();
+}
 

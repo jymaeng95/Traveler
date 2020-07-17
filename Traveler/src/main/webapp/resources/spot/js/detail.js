@@ -136,7 +136,7 @@ function addBookmark(userId,contentId,contentTypeId,info_data){
 	var result = "";
 	$.ajax({
 		url : "/spot/add/bookmark",
-		type : "get",
+		type : "post",
 		async :  false,
 		dataType : "json",
 		data : {
@@ -161,7 +161,7 @@ function deleteBookmark(userId,contentId) {
 	var result = "";
 	$.ajax({
 		url : "/spot/delete/bookmark",
-		type : "get",
+		type : "post",
 		async : false,
 		dataType : "json",
 		data : {

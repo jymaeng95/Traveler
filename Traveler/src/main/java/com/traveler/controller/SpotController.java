@@ -225,19 +225,18 @@ public class SpotController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/spot/add/bookmark", method=RequestMethod.GET)
+	@RequestMapping(value="/spot/add/bookmark", method=RequestMethod.POST)
 	public boolean addBookmark(BookmarkVO bookmark) throws Exception {
 		log.info(bookmark);
 		return service.addBookmark(bookmark);
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/spot/delete/bookmark", method=RequestMethod.GET)
+	@RequestMapping(value="/spot/delete/bookmark", method=RequestMethod.POST)
 	public boolean deleteBookmark(BookmarkVO bookmark) throws Exception {
 		log.info(bookmark);
 		return service.deleteBookmark(bookmark);
 	}
-
 
 	//SpotVO ����� Ȥ�� @RequestParam ���� �ޱ� 
 	@ResponseBody
