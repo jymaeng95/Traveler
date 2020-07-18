@@ -14,13 +14,18 @@ import org.w3c.dom.NodeList;
 
 import com.traveler.domain.SpotVO;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Service
 public class SpotAPI {
-		final String serviceKey ="SHUTUe8Ya9tRYNvxndPl0GuDMGD%2F8T4d2LFqklaI9yoGzpnlZPEmo3uUsQ6BGhsVr%2F8vQZFAhkPg%2Fc4kGh1%2Big%3D%3D";
-//		final String serviceKey ="WPuoTd67PSQd4jXck%2FRkGCLmjVLTCkJWVcBKcZk36xiTy6meeE%2FuWi4OKVduoXWijK8jCUvaYXhYHnqSEkWlPw%3D%3D";
+	//	final String serviceKey ="SHUTUe8Ya9tRYNvxndPl0GuDMGD%2F8T4d2LFqklaI9yoGzpnlZPEmo3uUsQ6BGhsVr%2F8vQZFAhkPg%2Fc4kGh1%2Big%3D%3D";
+		final String serviceKey ="WPuoTd67PSQd4jXck%2FRkGCLmjVLTCkJWVcBKcZk36xiTy6meeE%2FuWi4OKVduoXWijK8jCUvaYXhYHnqSEkWlPw%3D%3D";
 	//	final String serviceKey ="gr8r1Nu%2FamiYcpoKwNRrDhgCWT8T3dJPxG1%2F2MuEzrCiSq0m4%2B8%2BUqf5LqJpVfIBWrgndZHrRpZy27PUCT21rQ%3D%3D";
 	//	final String serviceKey ="iv8Bz7xZDYyuYRnhmBekQj5GV732OijidErVpJets0Bw9rMM6FEWPF3t4Ow%2FIJ091nOnUnXFq%2FFjas8TzW13pA%3D%3D";
-	// tag���� ������ �������� �޼ҵ�
+	
+		
+		// tag���� ������ �������� �޼ҵ�
 	public static String getTagValue(String tag, Element eElement) {
 		try {
 			NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
@@ -77,7 +82,7 @@ public class SpotAPI {
 	 * ���ֵ� - 39 (total:321) �������� - 3 (total:144) ���ֽ� - 4 (total:176)
 	 */
 	//������� contentid�������� 
-	public ArrayList<String> getContetnIdList(String pageNo, String sigunguCode,String contentTypeId) throws Exception {
+	public ArrayList<String> getContentIdList(String pageNo, String sigunguCode,String contentTypeId) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
 				+ "serviceKey="+serviceKey
 				+ "&pageNo="+pageNo
@@ -119,8 +124,8 @@ public class SpotAPI {
 		return contentIdList;
 	}
 
-	//���� ���� ���� 
-	public NodeList getCommonInfo(String contentId,String contentTypeId) throws Exception {
+	//공통 정보 가져오기 
+	public List<String> getCommonInfo(String contentId,String contentTypeId, List<String> information) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?"
 				+ "serviceKey="+serviceKey
 				+ "&numOfRows=1"
@@ -148,10 +153,23 @@ public class SpotAPI {
 
 		// �Ľ��� tag
 		NodeList nList = doc.getElementsByTagName("item");
-		return nList;
+		for(int i=0;i<nList.getLength();i++) {
+			Node node = nList.item(i);
+			if(node.getNodeType()==Node.ELEMENT_NODE) {
+				Element element = (Element) node;
+				if(getTagValue("firstimage", element) == null)
+					information.add("/resources/assets/img/spot_images/no_img.png");
+				else information.add(getTagValue("firstimage", element));
+				information.add(getTagValue("title", element));
+				information.add(getTagValue("overview", element));
+				information.add(getTagValue("addr1", element));
+			}
+		}
+		
+		return information;
 	}
-	//�� ���� ���� 
-	public NodeList getIntroduceInfo(String contentId,String contentTypeId) throws Exception {
+	//소개 기반 정보 (상세정보가져오기)
+	public List<String> getIntroduceInfo(String contentId,String contentTypeId,List<String> information) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?"
 				+ "serviceKey="+serviceKey
 				+ "&numOfRows=10"
@@ -171,11 +189,106 @@ public class SpotAPI {
 
 		// �Ľ��� tag
 		NodeList nList = doc.getElementsByTagName("item");
-
-		return nList;
+		
+		switch(contentTypeId) {
+		case "12" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("infocenter", element));
+					information.add(getTagValue("restdate", element));
+					information.add(getTagValue("usetime", element));
+				}
+			}
+			break;
+		case "14" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("infocenterculture", element));
+					information.add(getTagValue("usefee", element));
+					information.add(getTagValue("usetimeculture", element));
+				}
+			}
+			break;
+		case "15" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("eventhompage", element));
+					information.add(getTagValue("sponsor1tel", element));
+					information.add(getTagValue("playtime", element));
+					information.add(getTagValue("usetimefestival", element));
+				}
+			}
+			break;
+		case "25" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("infocentertourcourse", element));
+					information.add(getTagValue("taketime", element));
+					information.add(getTagValue("theme", element));
+				}
+			}
+			break;
+		case "28" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("infocenterleports", element));
+					information.add(getTagValue("restdateleports", element));
+					information.add(getTagValue("usefeeleports", element));
+					information.add(getTagValue("usetimeleports", element));
+				}
+			}
+			break;
+		case "32" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("checkintime", element));
+					information.add(getTagValue("checkouttime", element));
+					information.add(getTagValue("infocenterlodging", element));
+					information.add(getTagValue("reservationurl", element));
+					information.add(getTagValue("reservationlodging", element));
+				}
+			}
+			break;
+		case "38" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("infocentershopping", element));
+					information.add(getTagValue("opentime", element));
+					information.add(getTagValue("restdateshopping", element));
+				}
+			}
+			break;
+		case "39" :
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					information.add(getTagValue("firstmenu", element));
+					information.add(getTagValue("infocenterfood", element));
+					information.add(getTagValue("opentimefood", element));
+					information.add(getTagValue("restdatefood", element));
+				}
+			}
+			break;
+		}
+		return information;
 	}
 	
-	//�������� �̹��� �������� 
+	//서브 이미지 가져오기 
 	public List<String> getDiffImages(String contentId, String contentTypeId) throws Exception{
 		String imageYN;
 		if(contentTypeId.equals("39")) imageYN = "N";
@@ -213,7 +326,7 @@ public class SpotAPI {
 		return img_src;
 	}
 	
-	//  �ñ��� ���� ����
+	// 토탈 카운트
 	public int getTotalCount(String contentTypeId, String sigunguCode) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
 				+ "serviceKey="+serviceKey
@@ -251,34 +364,45 @@ public class SpotAPI {
 		return contentIdList.get(0);
 	}
 	
+	
 	//spot 불러오기!
-		public List<SpotVO> getInformation (SpotVO spotVO, int totalCount) throws Exception {
-			ArrayList<String> contentIdList= getContetnIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId());
-			ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
-			List<SpotVO> information = new ArrayList<SpotVO>();
-			
-			for(int i=0; i<spotInfo.size();i++) {
-				SpotVO oneSpot = new SpotVO();
-				for(int j=0;j<spotInfo.get(i).getLength();j++) {
-					Node node = spotInfo.get(i).item(j);
-					if(node.getNodeType()==Node.ELEMENT_NODE) {
-						Element element = (Element) node;
-						oneSpot.setFirstImage2(getTagValue("firstimage2",element));
-						if(oneSpot.getFirstImage2()==null) {
-							oneSpot.setFirstImage2("/resources/assets/img/spot_images/no_img.png");
-						}
-						oneSpot.setTitle(getTagValue("title",element));
-						if(!spotVO.getContentTypeId().equals("25")){
-							oneSpot.setAddr1(getTagValue("addr1",element));
-						}
-						oneSpot.setOverview(getTagValue("overview",element));
-						oneSpot.setContentId(getTagValue("contentid",element));
-						oneSpot.setContentTypeId(getTagValue("contenttypeid",element));
-						oneSpot.setTotalCount(Integer.toString(totalCount));
+	public List<SpotVO> getInformation (SpotVO spotVO, int totalCount) throws Exception {
+		ArrayList<String> contentIdList= getContentIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId());
+		ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
+		List<SpotVO> information = new ArrayList<SpotVO>();
+		
+		for(int i=0; i<spotInfo.size();i++) {
+			SpotVO oneSpot = new SpotVO();
+			for(int j=0;j<spotInfo.get(i).getLength();j++) {
+				Node node = spotInfo.get(i).item(j);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					oneSpot.setFirstImage2(getTagValue("firstimage2",element));
+					if(oneSpot.getFirstImage2()==null) {
+						oneSpot.setFirstImage2("/resources/assets/img/spot_images/no_img.png");
 					}
+					oneSpot.setTitle(getTagValue("title",element));
+					if(!spotVO.getContentTypeId().equals("25")){
+						oneSpot.setAddr1(getTagValue("addr1",element));
+					}
+					oneSpot.setOverview(getTagValue("overview",element));
+					oneSpot.setContentId(getTagValue("contentid",element));
+					oneSpot.setContentTypeId(getTagValue("contenttypeid",element));
+					oneSpot.setTotalCount(Integer.toString(totalCount));
 				}
-				information.add(oneSpot);
 			}
-			return information;
+			information.add(oneSpot);
 		}
+		return information;
+	}
+	
+	public List<String> getEachInformation(SpotVO spotVO) throws Exception {
+		List<String> information = new ArrayList<String>();
+		information = getCommonInfo(spotVO.getContentId(), spotVO.getContentTypeId(), information);
+		information = getIntroduceInfo(spotVO.getContentId(), spotVO.getContentTypeId(), information);
+		
+		log.info(information);
+		
+		return information;
+	}
 }
