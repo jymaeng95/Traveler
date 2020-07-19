@@ -14,7 +14,7 @@
 		value=${contentId }>
 	<input type="hidden" name="contentTypeId" id="contentTypeId"
 		value=${contentTypeId }>
-	<input type="hidden" name="userId" id="userId" value=${userId }>
+	<input type="hidden" name="userId" id="userId" value=${userInfo.userId }>
 
 	<%@include file="../includes/sidebar.jsp"%>
 	<main class="page-content">

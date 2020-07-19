@@ -9,13 +9,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values (#{userId}, #{userPw}, #{email}, #{nickname}, 'N')
 	</insert>
 	
+	<insert id="kakaoSignUp">
+		insert into member (userId, nickname, is_kakao, user_img)
+		values (#{userId}, #{nickname}, 'Y', #{user_img})
+	</insert>
 	<!-- 일반 로그인 -->
 	<select id="read" resultType="com.traveler.domain.MemberVO">
-		select userId, userPw
+		select *
 		from member
 		where userId = #{userId} and userPw = #{userPw}
 	</select>
 	
+	<select id="kakaoRead" resultType="com.traveler.domain.MemberVO">
+		select *
+		from member
+		where userId = #{userId}
+	</select>
 	<!-- 회원정보 수정  -->
 	<update id="update">
 		update member

@@ -32,21 +32,31 @@ public class LoginController {
 	//īī�� �α���
 	@PostMapping("/index/index")
 	@RequestMapping(value="/oauth")
-	public String login(Model model, @RequestParam("code") String code, HttpSession session) {
+	public String login(Model model, @RequestParam("code") String code, HttpSession session) throws Exception {
 		String access_Token = kakao.getAccessToken(code);
 		JsonNode userInfo = kakao.getKakaoUserInfo(access_Token);
 		log.info("login Controller : " + userInfo);
 
-		String id = userInfo.get("id").toString();
-		String nickname = userInfo.get("properties").get("nickname").toString();
-		log.info(id);
-		model.addAttribute("k_userInfo", userInfo);
-		model.addAttribute("id", id);
-		model.addAttribute("nickname", nickname);
+		MemberVO k_userInfo = new MemberVO();
+		k_userInfo.setUserId(userInfo.get("id").toString());
+		k_userInfo.setNickname(userInfo.get("properties").get("nickname").toString().replaceAll("\"", ""));
+		k_userInfo.setUser_img(userInfo.get("properties").get("thumbnail_image").toString().replaceAll("\"", ""));
+		
+		MemberVO member = service.kakaoLogin(k_userInfo);
+		log.info(member);
+		//카카오로 한번이라도 로그인 했으면 안하게 함
+		//처음 카카오 로그인이라면 회원가입 들어가게해야함
+		if(member == null) {
+			service.kakaoRegister(k_userInfo);
+			member = service.kakaoLogin(k_userInfo);
+		}
+		
+		model.addAttribute("k_userInfo", member);
+		model.addAttribute("id", member.getUserId());
 
-		if (id != null) {
-			session.setAttribute("userId", id);
+		if (k_userInfo.getUserId() != null) {
 			session.setAttribute("access_Token", access_Token);
+			session.setAttribute("userInfo", member);
 		}
 		return "/index/index";
 	}
@@ -55,7 +65,8 @@ public class LoginController {
 	public String logout(HttpSession session) {
 		kakao.kakaoLogout((String)session.getAttribute("access_Token"));
 		session.removeAttribute("access_Token");
-		session.removeAttribute("userId");
+		session.removeAttribute("userInfo");
+		session.invalidate();
 		log.info("logout");
 		return "/index/index";
 	}
@@ -98,8 +109,7 @@ public class LoginController {
 		MemberVO userInfo = service.memberLogin(member);
 		
 		if(userInfo != null) {
-			session.setAttribute("userId",userInfo.getUserId());
-			session.setAttribute("userPw",userInfo.getUserPw());
+			session.setAttribute("userInfo", userInfo);
 			return true;
 		}else {
 			session.setAttribute("userId",null);

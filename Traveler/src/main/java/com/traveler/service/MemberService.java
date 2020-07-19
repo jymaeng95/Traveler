@@ -7,6 +7,10 @@ public interface MemberService {
 	//ȸ������
 	public void memberRegister(MemberVO member) throws Exception;
 	
+	public void kakaoRegister(MemberVO member) throws Exception;
+	
+	public MemberVO kakaoLogin(MemberVO member) throws Exception;
+	
 	//�α���(�Ϲ�����)
 	public MemberVO memberLogin(MemberVO member) throws Exception;
 	

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <div class="page-wrapper chiller-theme toggled">
 	<a id="show-sidebar" class="btn btn-sm btn-dark" href="#"> <i
 		class="fas fa-bars"></i>
@@ -13,16 +15,16 @@
 			<div class="sidebar-header">
 				<div class="user-pic">
 					<img class="img-responsive img-rounded"
-						src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+						src="${userInfo.user_img }"
 						alt="User picture">
 				</div>
 				<div class="user-info">
 
-					<c:if test="${userId == null }">
+					<c:if test="${userInfo.userId == null }">
 						<span class="user-name">After Login</span>
 					</c:if>
-					<c:if test="${userId != null }">
-						<span clss="user-name">${userId }</span>
+					<c:if test="${userInfo.userId != null }">
+						<span clss="user-name" id="user-name">${userInfo.nickname }</span>
 						<span class="user-role">Administrator</span>
 					</c:if>
 				</div>
@@ -32,14 +34,14 @@
 			<!-- sidebar-search  -->
 			<div class="sidebar-menu">
 				<ul>
-					<c:if test="${userId == null }">
+					<c:if test="${userInfo.userId == null }">
 					<li class="sidebar"><a href="/login/index"> <i
 							class="fa fa-globe"></i> <span>Login</span>
 					</a>
 					</li>
 					</c:if>
 					<li class="header-menu"><span>General</span></li>
-					<li class="sidebar-dropdown"><a href="/plan/plan_index"> <i
+					<li class="sidebar-dropdown"><a href="#"> <i
 							class="fa fa-tachometer-alt"></i> <span>Plan</span>
 					</a>
 						<div class="sidebar-submenu" style="display: none;">
@@ -51,10 +53,17 @@
 								<li><a href="#">Dashboard 3</a></li>
 							</ul>
 						</div></li>
-					<li class="sidebar"><a href="/spot/spot"> <i
-							class="fa fa-shopping-cart"></i> <span>Spot</span> 
+					<li class="sidebar-dropdown"><a href="#"> <i
+							class="fa fa-shopping-cart"></i> <span>Spot</span> <span
+							class="badge badge-pill badge-danger">3</span>
 					</a>
-						</li>
+						<div class="sidebar-submenu" style="display: none;">
+							<ul>
+								<li><a href="#">Products </a></li>
+								<li><a href="#">Orders</a></li>
+								<li><a href="#">Credit cart</a></li>
+							</ul>
+						</div></li>
 					<li class="sidebar-dropdown"><a href="#"> <i
 							class="far fa-gem"></i> <span>Account</span>
 					</a>
@@ -67,16 +76,16 @@
 								<li><a href="#">Forms</a></li>
 							</ul>
 						</div></li>
-					<c:if test="${userId != null }">
+					<c:if test="${userInfo.userId != null }">
 						<li class="sidebar-dropdown active"><a href="#"> <i
 								class="fa fa-chart-line"></i> <span>Mypage</span>
 						</a>
 							<div class="sidebar-submenu" style="display: block;">
 								<ul>
-									<li><a href="/mypage/mypage">mypage</a></li>
-									<li><a href="/mypage/modify">Modify</a></li>
-									<li><a href="/mypage/bookmark">Bookmark€</a></li>
+									<li><a href="/mypage/mypage">My Information</a></li>
+									<li><a href="/mypage/bookmark">bookmark</a></li>
 									<li><a href="/mypage/message">Message</a></li>
+									<li><a href="#">Histogram</a></li>
 								</ul>
 							</div></li>
 					</c:if>
@@ -87,17 +96,17 @@
 		</div>
 		<!-- sidebar-content  -->
 		<div class="sidebar-footer">
-			<c:if test="${userId != null }">
+			<c:if test="${userInfo.userId != null }">
 				<a href="/mypage/message"> <i class="fa fa-envelope"></i> <span
 					class="badge badge-pill badge-success notification">7</span>
 			</a> 
 			</c:if>
-			<a href="/mypage/modify"> <i class="fa fa-cog"></i> <span class="badge-sonar"></span>
+			<a href="#"> <i class="fa fa-cog"></i> <span class="badge-sonar"></span>
 			</a> 
-			<c:if test="${userId != null }">
+			<c:if test="${userInfo.userId != null }">
 				<a href="/logout"> 
 			</c:if>
-			<c:if test="${userId == null }">
+			<c:if test="${userInfo.userId == null }">
 				<a href="#"> 
 			</c:if>
 			<i class="fa fa-power-off"></i>

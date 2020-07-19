@@ -23,6 +23,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public void kakaoRegister(MemberVO member) {
+		log.info("kakao Login : "+member);
+		mapper.kakaoSignUp(member);
+	}
+	
+	@Override
 	public MemberVO memberLogin(MemberVO member) {
 		// TODO Auto-generated method stub
 		log.info("Member login : " + member);
@@ -72,5 +78,11 @@ public class MemberServiceImpl implements MemberService {
 		log.info("Member load : " + member);
 		
 		return mapper.loadInfo(member);
+	}
+
+	@Override
+	public MemberVO kakaoLogin(MemberVO member) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.kakaoRead(member);
 	}
 } 

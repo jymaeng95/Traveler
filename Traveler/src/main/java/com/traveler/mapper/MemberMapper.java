@@ -25,4 +25,8 @@ public interface MemberMapper {
 	public int pwCheck(MemberVO member);
 
 	public MemberVO loadInfo(MemberVO member);
+	
+	public void kakaoSignUp(MemberVO member);
+	
+	public MemberVO kakaoRead(MemberVO member);
 }

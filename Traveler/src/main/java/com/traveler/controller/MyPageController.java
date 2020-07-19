@@ -29,54 +29,51 @@ public class MyPageController {
 	private BookmarkService b_service;
 	@Autowired
 	private KakaoAPI kakao;
-	
+
 	@RequestMapping(value="/mypage/mypage", method=RequestMethod.GET)
 	public String myPage(Model model,HttpSession session, BookmarkVO bookmark,MemberVO member) throws Exception {	
-		
-		bookmark.setUserId((String)session.getAttribute("userId"));
-		member.setUserId((String)session.getAttribute("userId"));
-		log.info(bookmark);
-		
+		member = (MemberVO) session.getAttribute("userInfo");
+		bookmark.setUserId(member.getUserId());
+		log.info(member);
+
 		ArrayList<BookmarkVO> bmk_list = b_service.getUserBookmark(bookmark);
-		MemberVO userInfo = service.loadInfo(member);
-		
+
 		model.addAttribute("b_list",bmk_list);
-		model.addAttribute("userId",session.getAttribute("userId"));
-		model.addAttribute("userImg",userInfo.getUser_img());
 		log.info("mypage");
 		return "/mypage/mypage";
 	}
-	
+
 	@RequestMapping(value="/mypage/message", method=RequestMethod.GET)
 	public String userMessagePage(Model model) {
 		log.info("message");
 		return "/mypage/message";
 	}
-	
+
 	@RequestMapping(value="/mypage/bookmark", method=RequestMethod.GET)
-	public String userBookmarkPage(Model model,HttpSession session, BookmarkVO bookmark) throws Exception {
+	public String userBookmarkPage(Model model,HttpSession session, BookmarkVO bookmark,MemberVO member) throws Exception {
 		log.info("bookmark");
-		bookmark.setUserId((String)session.getAttribute("userId"));
+		member = (MemberVO)session.getAttribute("userInfo");
+		bookmark.setUserId(member.getUserId());
 		log.info(bookmark);
-		
+
 		ArrayList<BookmarkVO> bmk_list = b_service.getUserBookmark(bookmark);
 		model.addAttribute("b_list", bmk_list);
 		model.addAttribute("userId",session.getAttribute("userId"));
 		return "/mypage/bookmark";
 	}
-	
+
 	@RequestMapping(value="/mypage/modify", method=RequestMethod.GET)
-	public String modify(MemberVO member,Model model,HttpSession session) throws Exception {
-		member.setUserId((String)session.getAttribute("userId"));
+	public String modify(Model model,HttpSession session,MemberVO member) throws Exception {
+		member = (MemberVO)session.getAttribute("userInfo");
 		MemberVO userInfo = service.loadInfo(member);
-		
+
 		model.addAttribute("nickname",userInfo.getNickname());
 		model.addAttribute("email",userInfo.getEmail());
 		model.addAttribute("userId",session.getAttribute("userId"));
 		log.info("modify");
 		return "/mypage/modify";
 	}
-	
+
 	@RequestMapping(value="/mypage/modify", method=RequestMethod.POST)
 	public String modifyInfo(MemberVO member, HttpSession session) throws Exception {
 		log.info("after Modify");
@@ -84,37 +81,38 @@ public class MyPageController {
 		service.modifyMember(member);
 		kakao.kakaoLogout((String)session.getAttribute("access_Token"));
 		session.removeAttribute("access_Token");
-		session.removeAttribute("userId");
+		session.removeAttribute("userInfo");
+		session.invalidate();
 		log.info("logout");
-		
+
 		return "/index/index";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/mypage/delete", method=RequestMethod.POST)
 	public boolean deleteInfo(MemberVO member, HttpSession session) throws Exception {
-		
+
 		log.info("after Delete");
 		log.info(member);
 		boolean pwCheck = service.pwCheck(member);
 		boolean result=false;
-		
+
 		if(pwCheck) result = service.deleteMember(member);
 		else return pwCheck;
-		
+
 		if(result) session.invalidate();
-		
+
 		return result;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/mypage/pwdcheck", method=RequestMethod.POST)
 	public boolean checkPw(MemberVO member, RedirectAttributes rttr) throws Exception {
 		boolean pwCheck = service.pwCheck(member);
 		log.info("패스워드 체크 :"+ pwCheck);
 		return pwCheck;
-	}
-	
+	}         
+
 	@ResponseBody
 	@RequestMapping(value="/mypage/info", method = RequestMethod.POST)
 	public MemberVO loadInfo(MemberVO member) throws Exception {

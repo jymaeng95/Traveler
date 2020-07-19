@@ -38,7 +38,7 @@
 					<h1><c:out value="${list.title }"></c:out></h1>
 					<h2><c:out value="${list.addr }"></c:out></h2>
 					<p><c:out value="${list.overview }"></c:out></p>
-					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="deleteBookmark('${userId}','${list.contentId }');"
+					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="deleteBookmark('${userInfo.userId}','${list.contentId }');"
 								style="color: #5ad67d; margin-top:20px; float:right;">삭제</button>
 					<button type="button" class="btn btn-link" id="btn-detail" onclick="readMoreClick('${list.contentId}','${list.contentTypeId }');"
 								style="color: #5ad67d; margin-top:20px; float:right;">Read More</button>
@@ -68,7 +68,7 @@
 					<p><c:out value="${list.overview }"></c:out></p>
 					<button type="button" class="btn btn-link" id="btn-detail" onclick="readMoreClick('${list.contentId}','${list.contentTypeId }');"
 								style="color: #5ad67d; margin-top:20px;">Read More</button>
-					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="deleteBookmark('${userId}','${list.contentId }');"
+					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="deleteBookmark('${userInfo.userId}','${list.contentId }');"
 								style="color: #5ad67d; margin-top:20px;">삭제</button>
 				</div>
 			</div>
