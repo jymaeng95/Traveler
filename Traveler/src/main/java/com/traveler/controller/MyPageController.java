@@ -63,13 +63,8 @@ public class MyPageController {
 	}
 
 	@RequestMapping(value="/mypage/modify", method=RequestMethod.GET)
-	public String modify(Model model,HttpSession session,MemberVO member) throws Exception {
-		member = (MemberVO)session.getAttribute("userInfo");
-		MemberVO userInfo = service.loadInfo(member);
+	public String modify(Model model) throws Exception {
 
-		model.addAttribute("nickname",userInfo.getNickname());
-		model.addAttribute("email",userInfo.getEmail());
-		model.addAttribute("userId",session.getAttribute("userId"));
 		log.info("modify");
 		return "/mypage/modify";
 	}

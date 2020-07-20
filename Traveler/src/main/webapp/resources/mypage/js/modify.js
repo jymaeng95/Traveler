@@ -8,30 +8,48 @@ document.addEventListener("change", function(event) {
 	}
 });
 $(document).ready(function() {
+	if($("#iskakao").val() == "Y"){
+		$("#upw").prop("readonly",true);
+		$("#currentpw").prop("readonly",true);
+	}
+	$("#btn-cancel").click(function(){
+		window.history.back();
+	});
 	$("#btn-submit").click(function(){
-		var frmCheck = formCheck();
-		if(frmCheck) {
-			var p_check = pwCheck();
-			var n_check = false;
-			
-			var cur_nick = $("#cur-nickname").val();
-			var change_nick = $("#nickname").val();
-			var cur_pw = $("#currentpw").val();
-			var change_pw = $("#upw").val();
-			
-			if(cur_nick != change_nick) n_check = nickCheck(); 
-			
-			if(p_check&&!n_check) {
-				if(cur_pw == change_pw) alert("동일한 패스워드입니다.");
-				else {
+		var frmCheck;
+		var n_check = false;
+		var cur_nick = $("#cur-nickname").val();
+		var change_nick = $("#nickname").val();
+		if($("#iskakao").val() == "Y"){
+			frmCheck = kakaoFormCheck();
+			if(frmCheck) {
+				if(cur_nick != change_nick) n_check = nickCheck(); 
+				if(!n_check){
 					$("#infoForm").attr("action","/mypage/modify");
 					$("#infoForm").submit();
+				}
+			}
+		} else {
+			frmCheck = formCheck();
+			if(frmCheck) {
+				var p_check = pwCheck();
+				var cur_pw = $("#currentpw").val();
+				var change_pw = $("#upw").val();
+
+				if(cur_nick != change_nick) n_check = nickCheck(); 
+				if(p_check&&!n_check) {
+
+
+					$("#infoForm").attr("action","/mypage/modify");
+					$("#infoForm").submit();
+
 				}
 			}
 		}
 	});
 });
-//폼의 유효성 검사 
+
+//폼(일반)의 유효성 검사 
 function formCheck() {
 	form = document.infoForm;
 	if (form.upw.value == "" || form.email.value == ""
@@ -45,6 +63,24 @@ function formCheck() {
 			form.upw.focus();
 			return false;
 		} else if (form.email.value == "") {
+			alert("이메일을 입력하세요.");
+			form.email.focus();
+			return false;
+		} else {
+			alert("닉네임을 입력하세요.");
+			form.nickname.focus();
+			return false;
+		}
+	} else {
+		return true;
+	} 
+}
+
+//폼(카카오) 유효성 검사 
+function kakaoFormCheck() {
+	form = document.infoForm;
+	if (form.email.value == "" || form.nickname.value == "") {
+		if (form.email.value == "") {
 			alert("이메일을 입력하세요.");
 			form.email.focus();
 			return false;
@@ -102,7 +138,7 @@ function nickCheck() {
 				alert("사용 가능한 닉네임 입니다.");
 			}
 		}
-		
+
 	});
 	return result;
 }
