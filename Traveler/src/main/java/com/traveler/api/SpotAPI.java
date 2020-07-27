@@ -82,11 +82,11 @@ public class SpotAPI {
 	 * ���ֵ� - 39 (total:321) �������� - 3 (total:144) ���ֽ� - 4 (total:176)
 	 */
 	//������� contentid�������� 
-	public ArrayList<String> getContentIdList(String pageNo, String sigunguCode,String contentTypeId) throws Exception {
+	public ArrayList<String> getContentIdList(String pageNo, String sigunguCode,String contentTypeId,String numOfRow) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
 				+ "serviceKey="+serviceKey
 				+ "&pageNo="+pageNo
-				+ "&numOfRows=10"
+				+ "&numOfRows="+numOfRow
 				+ "&MobileApp=AppTest"
 				+ "&MobileOS=ETC"
 				+ "&arrange=P"
@@ -172,7 +172,7 @@ public class SpotAPI {
 	public List<String> getIntroduceInfo(String contentId,String contentTypeId,List<String> information) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?"
 				+ "serviceKey="+serviceKey
-				+ "&numOfRows=10"
+				+ "&numOfRows=1"
 				+ "&pageNo=1"
 				+ "&MobileOS=ETC"
 				+ "&MobileApp=AppTest"
@@ -289,14 +289,14 @@ public class SpotAPI {
 	}
 	
 	//서브 이미지 가져오기 
-	public List<String> getDiffImages(String contentId, String contentTypeId) throws Exception{
+	public List<String> getDiffImages(String contentId, String contentTypeId, String numOfRow) throws Exception{
 		String imageYN;
 		if(contentTypeId.equals("39")) imageYN = "N";
 		else imageYN = "Y";
 		
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage?"
 				+ "serviceKey="+serviceKey
-				+ "&numOfRows=10"
+				+ "&numOfRows="+numOfRow
 				+ "&pageNo=1"
 				+ "&MobileOS=ETC"
 				+ "&MobileApp=AppTest"
@@ -367,7 +367,7 @@ public class SpotAPI {
 	
 	//spot 불러오기!
 	public List<SpotVO> getInformation (SpotVO spotVO, int totalCount) throws Exception {
-		ArrayList<String> contentIdList= getContentIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId());
+		ArrayList<String> contentIdList= getContentIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId(),spotVO.getNumOfRow());
 		ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
 		List<SpotVO> information = new ArrayList<SpotVO>();
 		
@@ -388,6 +388,8 @@ public class SpotAPI {
 					oneSpot.setOverview(getTagValue("overview",element));
 					oneSpot.setContentId(getTagValue("contentid",element));
 					oneSpot.setContentTypeId(getTagValue("contenttypeid",element));
+					oneSpot.setMapX(getTagValue("mapy",element));
+					oneSpot.setMapY(getTagValue("mapx",element));
 					oneSpot.setTotalCount(Integer.toString(totalCount));
 				}
 			}

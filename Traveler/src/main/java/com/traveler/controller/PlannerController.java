@@ -35,10 +35,10 @@ public class PlannerController {
 		
 	}
 	
-	@RequestMapping(value="/plan/make_plan", method=RequestMethod.GET)
+	@RequestMapping(value="/plan/create", method=RequestMethod.GET)
 	public String makePlan(Model model) {
-		log.info("make_plan");
-		return "/plan/make_plan";
+		log.info("create");
+		return "/plan/create";
 	}
 	
 }

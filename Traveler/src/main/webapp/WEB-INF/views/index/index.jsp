@@ -92,7 +92,7 @@
 						</div>
 						<div class="col-md-5 ml-auto ">
 						<button type="button" class="btn Spot" style="font-size:30px; background-color:white;"
-								onclick="location.href='/spot/spot_index'">
+								onclick="location.href='/plan/create'">
 								<i class="fas fa-10x fa-globe-americas text-primary mb-4"></i>
 								<h3 class="h4 mb-2">Spot</h3>
 								

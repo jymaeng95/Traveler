@@ -16,4 +16,5 @@ public class SpotVO {
 	private String title;
 	private String overview;
 	private String totalCount;
+	private String numOfRow;
 }

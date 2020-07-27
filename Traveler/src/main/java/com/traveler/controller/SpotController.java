@@ -61,8 +61,13 @@ public class SpotController {
 	@RequestMapping(value="/spot/information",method = RequestMethod.GET)
 	public List<SpotVO> getSpotInfo2(SpotVO spotVO, Model model) throws Exception{
 		log.info("information 2");
+		if(spotVO.getPageNo()==null) spotVO.setPageNo("1");
+		if(spotVO.getSigunguCode()==null) spotVO.setSigunguCode("");
+		if(spotVO.getContentTypeId()==null) spotVO.setContentTypeId("");
+		log.info(spotVO);
 		return spot.getInformation(spotVO, totalCount);
 	}
+
 	
 	@ResponseBody
 	@RequestMapping(value="/spot/details", method=RequestMethod.GET)
@@ -99,6 +104,6 @@ public class SpotController {
 	@RequestMapping(value="/spot/subimages", method=RequestMethod.GET)
 	public List<String> getSubImages(SpotVO spotVO) throws Exception {
 		log.info("get Subimages");
-		return spot.getDiffImages(spotVO.getContentId(), spotVO.getContentTypeId());
+		return spot.getDiffImages(spotVO.getContentId(), spotVO.getContentTypeId(),spotVO.getNumOfRow());
 	}
 }
