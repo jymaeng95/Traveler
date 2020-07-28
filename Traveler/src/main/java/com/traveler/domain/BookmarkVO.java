@@ -11,5 +11,7 @@ public class BookmarkVO {
 	private String addr;
 	private String img_src;
 	private String overview;
+	private String mapX;
+	private String mapY;
 	private MemberVO memberVO;
 }

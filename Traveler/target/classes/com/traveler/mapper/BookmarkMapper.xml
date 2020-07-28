@@ -13,6 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result column="addr" property="addr"/>
 	<result column="img_src" property="img_src"/>
 	<result column="overview" property="overview"/>
+	<result column="mapX" property="mapX"/>
+	<result column="mapY" property="mapY"/>
 	<collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
 		<id column="userId" property="userId"/>
 		<result column="userPw" property="userPw"/>
@@ -24,9 +26,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!--북마크 추가 -->
 	<insert id="bookmarkInsert">
-		insert into bookmark (userId, contentId, contentTypeId, title, addr, img_src, overview)
-		values (#{userId}, #{contentId}, #{contentTypeId}, #{title}, #{addr}, #{img_src}, #{overview} )
+		insert into bookmark (userId, contentId, contentTypeId, title, addr, img_src, overview, mapx, mapy)
+		values (#{userId}, #{contentId}, #{contentTypeId}, #{title}, #{addr}, #{img_src}, #{overview}, #{mapX}, #{mapY} )
 	</insert>
+	
 	
 	<!-- 일반 로그인 -->
 	<select id="bookmarkRead" resultMap="bookmarkVO">

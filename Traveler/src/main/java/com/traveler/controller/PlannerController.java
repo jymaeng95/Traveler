@@ -1,10 +1,15 @@
 package com.traveler.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.traveler.domain.BookmarkVO;
+import com.traveler.service.BookmarkServiceImpl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -13,6 +18,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class PlannerController {
+	private BookmarkServiceImpl b_service;
 	
 	@RequestMapping(value="/plan/my_plan", method=RequestMethod.GET)
 	public String myPlan(Model model) {
@@ -36,9 +42,13 @@ public class PlannerController {
 	}
 	
 	@RequestMapping(value="/plan/create", method=RequestMethod.GET)
-	public String makePlan(Model model) {
+	public String makePlan(Model model) throws Exception {
 		log.info("create");
 		return "/plan/create";
 	}
-	
+	@ResponseBody
+	@RequestMapping(value="/plan/bookmark", method=RequestMethod.GET)
+	public ArrayList<BookmarkVO> getBookmark(BookmarkVO bookmark) throws Exception{
+		return b_service.getUserBookmark(bookmark);
+	}
 }

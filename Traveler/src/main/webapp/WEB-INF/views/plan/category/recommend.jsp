@@ -10,12 +10,12 @@
             <hr>
             <div class="row spot_info">
 
-                  <img class="img-responsive" id="photo${i}" onclick=""
+                  <img class="img-responsive" id="r_photo${i}" onclick=""
                      style="cursor: pointer;" src="" alt="" width="150" height="100">
 
-                  <h5 id="title${i}"></h5>
-                  <h3 id="mapX${i }"></h3>
-                  <h3 id="mapY${i }"></h3>
+                  <h5 id="r_title${i}"></h5>
+                  <h3 id="r_mapX${i }"></h3>
+                  <h3 id="r_mapY${i }"></h3>
 
             </div>
             </li>

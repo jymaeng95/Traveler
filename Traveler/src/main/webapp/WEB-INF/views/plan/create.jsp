@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-
+	<input type="hidden" name="userId" id="userId" value="${userInfo.userId }">
 	<!-- 테스트 부트스트랩 -->
 	<div class="page-wrapper chiller-theme toggled">
 		<a id="show-sidebar" class="btn btn-sm btn-dark" href="#"> <i
@@ -41,7 +41,19 @@
 		<nav id="sidebar" class="sidebar-wrapper">
 			<div class="sidebar-content">
 				<div class="sidebar-brand">
-					<a href="#">관광지 추천</a> <a href="#">북마크</a>
+					<button type="button" id="recommend" class="btn btn-link">관광지
+						추천</button>
+					<c:choose>
+						<c:when test="${userInfo.userId != null }">
+							<button type="button" id="bookmark" class="btn btn-link">북마크</button>
+							<button type="button" id="myplan" class="btn btn-link">내
+								여행</button>
+						</c:when>
+						<c:otherwise>
+							<a href="/login/index"> <i class="fa fa-globe"></i> <span>Login</span>
+							</a>
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<!-- sidebar-header  -->
 				<div class="sidebar-search">
@@ -59,10 +71,11 @@
 				</div>
 				<!-- sidebar-search  -->
 				<div class="sidebar-menu">
-					<ul>
-
+					<ul id="ul-recommend">
 						<%@include file="../plan/category/recommend.jsp"%>
-
+					</ul>
+					<ul id="ul-bookmark" style="display: none;">
+						<%@include file="../plan/category/bookmark.jsp"%>
 					</ul>
 				</div>
 				<!-- sidebar-menu  -->
