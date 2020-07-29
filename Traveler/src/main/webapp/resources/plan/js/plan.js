@@ -6,7 +6,7 @@ $(document).ready(function() {
 	var reco_positions=[];
 	var bmk_positions=[];
 	var map = initTmap();
-	var marker = new Tmapv2.Marker();
+	var ex_markers=[];
 	$.ajax({
 		url : "/spot/information",
 		type : "get",
@@ -43,7 +43,7 @@ $(document).ready(function() {
 		success : function(data) {
 			$.each(data, function(key, val){
 				//alert(val[key]);
-				$("#b_photo"+key).attr("src",data[key].firstImage2);
+				$("#b_photo"+key).attr("src",data[key].img_src);
 				$("#b_title"+key).text(data[key].title);
 				$("#b_mapX"+key).text(data[key].mapX);
 				$("#b_mapY"+key).text(data[key].mapY);
@@ -61,36 +61,42 @@ $(document).ready(function() {
 	});
 	
 	$("#bookmark").click(function(){
-		marker.setMap(null);
+		if(ex_markers != false) deleteMarkers(ex_markers);
+		
 		$("#ul-recommend").hide();
 		$("#ul-bookmark").show();
-		markers(map,bmk_positions,marker);
+		ex_markers = addMarkers(map,bmk_positions);
 	});
 	$("#recommend").click(function(){
-		marker.setMap(null);
+		if(ex_markers != false) deleteMarkers(ex_markers);
+		
 		$("#ul-recommend").show();
 		$("#ul-bookmark").hide();
-		markers(map,reco_positions,marker);
+		ex_markers = addMarkers(map,reco_positions);
 	});
 	$("#myplan").click(function(){
-		marker.setMap(null);
-		marker.setMap(null,null);
-		marker.setMap(map,null);
-		marker.setMap(null,map);
+		if(ex_markers != false) deleteMarkers(ex_markers);
 	});
 });
-function markers(map,positions,marker){
-	
+function addMarkers(map,positions){
+	var markers = [];
 	for (var i = 0; i< positions.length; i++){//for문을 통하여 배열 안에 있는 값을 마커 생성
 		var lonlat = positions[i].lonlat;
 		var title = positions[i].title;
 		alert(positions[i].title);
 		//Marker 객체 생성.
-		marker = new Tmapv2.Marker({
+		var marker = new Tmapv2.Marker({
 			position : lonlat, //Marker의 중심좌표 설정.
 			map : map, //Marker가 표시될 Map 설정.
 			title : title //Marker 타이틀.
 		});
+		markers.push(marker);
+	}
+	return markers;
+}
+function deleteMarkers(markers){
+	for (var i=0;i<markers.length; i++) {
+		markers[i].setMap(null);
 	}
 }
 function initTmap() {

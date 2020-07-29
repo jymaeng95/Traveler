@@ -32,45 +32,46 @@
 </style>
 </head>
 <body>
-	<input type="hidden" name="userId" id="userId" value="${userInfo.userId }">
+	<input type="hidden" name="userId" id="userId"
+		value="${userInfo.userId }">
 	<!-- 테스트 부트스트랩 -->
 	<div class="page-wrapper chiller-theme toggled">
 		<a id="show-sidebar" class="btn btn-sm btn-dark" href="#"> <i
 			class="fas fa-bars"></i>
 		</a>
-		<nav id="sidebar" class="sidebar-wrapper">
+		<nav id="sidebar" class="sidebar-wrapper"style="box-shadow: 5px 5px 5px;">
 			<div class="sidebar-content">
-				<div class="sidebar-brand">
-					<button type="button" id="recommend" class="btn btn-link">관광지
+				<div class="sidebar-brand" style="background: #258fff;">
+					<button type="button" id="recommend" class="btn btn-link" style="color:#f9f9f9;">관광지
 						추천</button>
 					<c:choose>
 						<c:when test="${userInfo.userId != null }">
-							<button type="button" id="bookmark" class="btn btn-link">북마크</button>
-							<button type="button" id="myplan" class="btn btn-link">내
+							<button type="button" id="bookmark" class="btn btn-link" style="color:#f9f9f9;">북마크</button>
+							<button type="button" id="myplan" class="btn btn-link" style="color:#f9f9f9;">내
 								여행</button>
 						</c:when>
 						<c:otherwise>
-							<a href="/login/index"> <i class="fa fa-globe"></i> <span>Login</span>
+							<a href="/login/index"> <i class="fa fa-globe" style="color:#f9f9f9;"></i> <span style="color:#f9f9f9;">Login</span>
 							</a>
 						</c:otherwise>
 					</c:choose>
 				</div>
 				<!-- sidebar-header  -->
-				<div class="sidebar-search">
+				<div class="sidebar-search" style="background: #258fff;">
 					<div>
-						<div class="input-group">
+						<div class="input-group" style="background: #258fff;">
 							<input type="text" class="form-control search-menu"
-								placeholder="검색...">
+								placeholder="검색..." style="background :#f9f9f9;">
 							<div class="input-group-append">
-								<span class="input-group-text"> <i class="fa fa-search"
-									aria-hidden="true"></i>
+								<span class="input-group-text" style="background:#e9e9e9;"> <i class="fa fa-search"
+									aria-hidden="true" ></i>
 								</span>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- sidebar-search  -->
-				<div class="sidebar-menu">
+				<div class="sidebar-menu" style="background: #f5f5f5;">
 					<ul id="ul-recommend">
 						<%@include file="../plan/category/recommend.jsp"%>
 					</ul>
@@ -81,9 +82,10 @@
 				<!-- sidebar-menu  -->
 			</div>
 			<!-- sidebar-content  -->
-			<div class="sidebar-footer">
+			<div class="sidebar-footer"
+				style="background: #e9e9e9; border-top: 1px solid #ddd;">
 				<form action="/plan/my_plan2" method="GET">
-					<button type="submit" class="btn-test" type="reset">버튼</button>
+					<button type="submit" class="btn btn-primary" type="reset">버튼</button>
 				</form>
 			</div>
 		</nav>
