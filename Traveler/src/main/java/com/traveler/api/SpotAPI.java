@@ -165,6 +165,7 @@ public class SpotAPI {
 				information.add(getTagValue("addr1", element));
 				information.add(getTagValue("mapy", element));
 				information.add(getTagValue("mapx",element));
+				
 			}
 		}
 		
