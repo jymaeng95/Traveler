@@ -33,7 +33,7 @@ $(document).ready(function() {
 		}
 	});
 //	initTmap(positions);
-	
+
 	$.ajax({
 		url : "/plan/bookmark",
 		type : "get",
@@ -43,33 +43,34 @@ $(document).ready(function() {
 		success : function(data) {
 			$.each(data, function(key, val){
 				//alert(val[key]);
+				$("#ul-bookmark").append('<li><hr><div class="row spot_info"><img class="img-responsive" id="b_photo'+key+'" onclick=""style="cursor: pointer;" src="" alt="" width="150" height="100"><h5 id="b_title'+key+'"></h5></div></li>');
 				$("#b_photo"+key).attr("src",data[key].img_src);
 				$("#b_title"+key).text(data[key].title);
-				$("#b_mapX"+key).text(data[key].mapX);
-				$("#b_mapY"+key).text(data[key].mapY);
+
 
 				bmk_positions.push({title : data[key].title, lonlat : new Tmapv2.LatLng(data[key].mapX, data[key].mapY)});
 //				$("#addr"+key).text(data[key].addr1);
 //				$("#overview"+key).html(data[key].overview);
 //				$("#btn-detail"+key).attr("onclick","imgClick("+data[key].contentId+","+data[key].contentTypeId+");");
 				$(".totalCount").text(data[key].totalCount);
-			});					
+			});				
+			alert(data.length);
 		},
 		error : function(error) {
 			alert("첫페이지 에러");
 		}
 	});
-	
+
 	$("#bookmark").click(function(){
 		if(ex_markers != false) deleteMarkers(ex_markers);
-		
+
 		$("#ul-recommend").hide();
 		$("#ul-bookmark").show();
 		ex_markers = addMarkers(map,bmk_positions);
 	});
 	$("#recommend").click(function(){
 		if(ex_markers != false) deleteMarkers(ex_markers);
-		
+
 		$("#ul-recommend").show();
 		$("#ul-bookmark").hide();
 		ex_markers = addMarkers(map,reco_positions);

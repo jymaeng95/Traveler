@@ -7,13 +7,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<link rel="stylesheet" type="text/css" href="/resources/plan/css/sidebar.css">
+<link rel="stylesheet" type="text/css"
+	href="/resources/plan/css/sidebar.css">
 
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css"
 	rel="stylesheet">
 <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
 	rel="stylesheet">
+	<link href="/resources/test/font.css" rel="stylesheet">
 <!-- JavaScript -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -39,19 +41,27 @@
 		<a id="show-sidebar" class="btn btn-sm btn-dark" href="#"> <i
 			class="fas fa-bars"></i>
 		</a>
-		<nav id="sidebar" class="sidebar-wrapper"style="box-shadow: 5px 5px 5px;">
+		<nav id="sidebar" class="sidebar-wrapper"
+			style="box-shadow: 5px 5px 5px;">
 			<div class="sidebar-content">
 				<div class="sidebar-brand" style="background: #258fff;">
-					<button type="button" id="recommend" class="btn btn-link" style="color:#f9f9f9;">관광지
-						추천</button>
+					<button type="button" class="btn btn-link"
+						style="color: #f9f9f9;" onclick="location.href='/';">Traveler</button>
+
+				</div>
+				<div class="sidebar-brand" style="background: #258fff;">
+					<button type="button" id="recommend" class="btn btn-link"
+						style="color: #f9f9f9;">관광지 추천</button>
 					<c:choose>
 						<c:when test="${userInfo.userId != null }">
-							<button type="button" id="bookmark" class="btn btn-link" style="color:#f9f9f9;">북마크</button>
-							<button type="button" id="myplan" class="btn btn-link" style="color:#f9f9f9;">내
-								여행</button>
+							<button type="button" id="bookmark" class="btn btn-link"
+								style="color: #f9f9f9;">북마크</button>
+							<button type="button" id="myplan" class="btn btn-link"
+								style="color: #f9f9f9;">내 여행</button>
 						</c:when>
 						<c:otherwise>
-							<a href="/login/index"> <i class="fa fa-globe" style="color:#f9f9f9;"></i> <span style="color:#f9f9f9;">Login</span>
+							<a href="/login/index"> <i class="fa fa-globe"
+								style="color: #f9f9f9;"></i> <span style="color: #f9f9f9;">Login</span>
 							</a>
 						</c:otherwise>
 					</c:choose>
@@ -61,10 +71,10 @@
 					<div>
 						<div class="input-group" style="background: #258fff;">
 							<input type="text" class="form-control search-menu"
-								placeholder="검색..." style="background :#f9f9f9;">
+								placeholder="검색..." style="background: #f9f9f9;">
 							<div class="input-group-append">
-								<span class="input-group-text" style="background:#e9e9e9;"> <i class="fa fa-search"
-									aria-hidden="true" ></i>
+								<span class="input-group-text" style="background: #e9e9e9;">
+									<i class="fa fa-search" aria-hidden="true"></i>
 								</span>
 							</div>
 						</div>
@@ -84,6 +94,26 @@
 			<!-- sidebar-content  -->
 			<div class="sidebar-footer"
 				style="background: #e9e9e9; border-top: 1px solid #ddd;">
+				<form action="/plan/my_plan2" method="GET">
+					<button type="submit" class="btn btn-primary" type="reset">버튼</button>
+				</form>
+			</div>
+			<div class="sidebar-footer"
+				style="background: #e9e9e9; border-top: 1px solid #ddd;">
+				<c:if test="${userInfo.userId != null }">
+					<a href="/mypage/message"> <i class="fa fa-envelope"></i> <span
+						class="badge badge-pill badge-success notification">7</span>
+					</a>
+				</c:if>
+				<a href="#"> <i class="fa fa-cog"></i> <span class="badge-sonar"></span>
+				</a>
+				<c:if test="${userInfo.userId != null }">
+					<a href="/logout">
+				</c:if>
+				<c:if test="${userInfo.userId == null }">
+					<a href="#">
+				</c:if>
+				<i class="fa fa-power-off"></i> </a>
 				<form action="/plan/my_plan2" method="GET">
 					<button type="submit" class="btn btn-primary" type="reset">버튼</button>
 				</form>
