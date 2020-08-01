@@ -15,7 +15,7 @@
 	rel="stylesheet">
 <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
 	rel="stylesheet">
-	<link href="/resources/test/font.css" rel="stylesheet">
+<link href="/resources/test/font.css" rel="stylesheet">
 <!-- JavaScript -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -45,8 +45,8 @@
 			style="box-shadow: 5px 5px 5px;">
 			<div class="sidebar-content">
 				<div class="sidebar-brand" style="background: #258fff;">
-					<button type="button" class="btn btn-link"
-						style="color: #f9f9f9;" onclick="location.href='/';">Traveler</button>
+					<button type="button" id="btn-home" class="btn btn-link"
+						style="color: #f9f9f9;" onclick="location.href='/'";>Traveler</button>
 
 				</div>
 				<div class="sidebar-brand" style="background: #258fff;">

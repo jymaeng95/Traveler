@@ -14,14 +14,14 @@ public class PageVO {
    private int pageNum;
    private int total;
    
-   public PageVO(String pageNum, int total) {
+   public PageVO(String pageNum, int total, int count) {
       this.pageNum = Integer.parseInt(pageNum);
       this.total = total;
       
-      this.endPage = (int) (Math.ceil(this.pageNum / 10.0)) * 10;
-      this.startPage = this.endPage-9;
+      this.endPage = (int) (Math.ceil((this.pageNum * 1.0) / count)) * count;
+      this.startPage = this.endPage-(count - 1);
       
-      int realEnd = (int) (Math.ceil((total * 1.0) / 10));
+      int realEnd = (int) (Math.ceil((total * 1.0) / count));
       
       if(realEnd < this.endPage) {
          this.endPage = realEnd;

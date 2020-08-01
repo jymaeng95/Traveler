@@ -39,7 +39,7 @@ public class SpotController {
 			@RequestParam(value="sigunguCode", defaultValue="") String sigunguCode, @RequestParam(value="contentTypeId",defaultValue="") String contentTypeId,Model model) throws Exception {
 
 		totalCount = spot.getTotalCount(contentTypeId, sigunguCode);
-		model.addAttribute("pageMaker", new PageVO(pageNo, totalCount));
+		model.addAttribute("pageMaker", new PageVO(pageNo, totalCount,10));
 		model.addAttribute("sigunguCode",sigunguCode);
 		model.addAttribute("contentTypeId",contentTypeId);
 		log.info("spot index");
