@@ -6,21 +6,21 @@
 	<c:forEach var="i" begin="0" end="4">
 		<li>
 			<hr>
-			<div class="row spot_info">
-
-				<img class="img-responsive" id="r_photo${i}" onclick=""
-					style="cursor: pointer;" src="" alt="" width="150" height="100">
-
-				<h5 id="r_title${i}"></h5>
-				<h3 id="r_mapX${i }"></h3>
-				<h3 id="r_mapY${i }"></h3>
-
+			<div class="row spot_info"">
+				<div class="col-lg-5">
+					<img class="img-responsive" id="r_photo${i}" onclick=""
+						style="cursor: pointer;" src="" alt="" width="150" height="100">
+				</div>
+				<div class="col-lg-7">
+					<h5 id="r_title${i}"></h5>
+					<h6 id="r_addr${i }"></h6>
+				</div>
 			</div>
 		</li>
 	</c:forEach>
+	<hr>
 </form>
 <div class="row text-center">
-
 	<div class="col-lg-12">
 		<ul class="pagination">
 			<c:if test="${pageMaker.prev }">
@@ -43,3 +43,5 @@
 	<form id='actionForm' action="/plan/create" method='get'>
 		<input type='hidden' name='pageNum' value='${pageMaker.pageNum }'>
 	</form>
+	<a></a>
+</div>

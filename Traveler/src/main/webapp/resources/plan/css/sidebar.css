@@ -139,7 +139,7 @@ body {
 
 .sidebar-wrapper .sidebar-brand {
   padding: 10px 20px;
-  display: flex;
+/*   display: flex; */
   align-items: center;
 }
 
@@ -412,6 +412,7 @@ body {
 .chiller-theme .sidebar-wrapper .sidebar-search,
 .chiller-theme .sidebar-wrapper .sidebar-menu {
 /*     border-top: 1px solid #3a3f48; */
+padding-bottom: 20px;
 }
 
 .chiller-theme .sidebar-wrapper .sidebar-search input.search-menu,

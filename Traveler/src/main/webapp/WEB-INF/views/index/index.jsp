@@ -5,8 +5,9 @@
 <!DOCTYPE html>
 <html>
 <link href="/resources/index/css/index.css" rel="stylesheet">
-<script src="https://kit.fontawesome.com/27324e8e3c.js" crossorigin="anonymous"></script>
-   
+<script src="https://kit.fontawesome.com/27324e8e3c.js"
+	crossorigin="anonymous"></script>
+
 <%@ include file="../includes/sidebar_setting.jsp"%>
 
 <body>
@@ -32,11 +33,11 @@
 				<section>
 					<div class="row block">
 						<div class="col-md-5 ">
-							<button type="button" class="btn Spot" style="font-size:30px; background-color:white;"
-								onclick="location.href='/spot/spot'">
-								<i class="fas fa-10x fa-globe-americas text-primary mb-4"></i>
-								<h3 class="h4 mb-2">Spot</h3>
-								
+							<button type="button" class="btn Spot"
+								style="font-size: 30px; background-color: white;"
+								onclick="location.href='/plan/create'">
+								<i class="fas fa-plane-departure fa-8x text-primary mb-4"></i>
+								<h3 class="h4 mb-2">Plan</h3>
 							</button>
 						</div>
 						<div class="col-md-6 ml-auto">
@@ -59,7 +60,7 @@
 								in ski shops and were seen in lodges from Mammoth to Aspen.
 							</p>
 							<p class="line-break margin-top-10"></p>
-							
+
 						</div>
 					</div>
 				</section>
@@ -88,14 +89,14 @@
 								world and UGG was now perfectly aligned with this movement.
 							</p>
 							<p class="line-break margin-top-10"></p>
-							
+
 						</div>
 						<div class="col-md-5 ml-auto ">
-						<button type="button" class="btn Spot" style="font-size:30px; background-color:white;"
-								onclick="location.href='/plan/create'">
-								<i class="fas fa-10x fa-globe-americas text-primary mb-4"></i>
+							<button type="button" class="btn Spot"
+								style="font-size: 30px; background-color: white;"
+								onclick="location.href='/spot/spot'">
+								<i class="fas fa-map-marked-alt fa-8x text-primary mb-4"></i>
 								<h3 class="h4 mb-2">Spot</h3>
-								
 							</button>
 						</div>
 					</div>
@@ -110,11 +111,12 @@
 				<section>
 					<div class="row block">
 						<div class="col-md-5 ">
-							<button type="button" class="btn Spot" style="font-size:30px; background-color:white;"
-								onclick="location.href='/spot/spot_index'">
-								<i class="fas fa-10x fa-globe-americas text-primary mb-4"></i>
-								<h3 class="h4 mb-2">Spot</h3>
-								
+							<button type="button" class="btn Spot"
+								style="font-size: 30px; background-color: white;"
+								onclick="location.href='#'">
+								<i class="fas fa-won-sign fa-8x text-primary mb-4"></i>
+								<h3 class="h4 mb-2">Budget</h3>
+
 							</button>
 						</div>
 						<div class="col-md-6 ml-auto">
@@ -136,11 +138,10 @@
 								slippers, and shoes.
 							</p>
 							<p class="line-break margin-top-10"></p>
-							
+
 						</div>
 					</div>
 				</section>
-
 			</div>
 		</div>
 
