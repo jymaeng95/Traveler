@@ -144,7 +144,6 @@
 				</section>
 			</div>
 		</div>
-
 	</main>
 	<!-- page-content" -->
 	</div>
