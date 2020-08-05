@@ -125,6 +125,24 @@
 		<!-- page-content" -->
 	</div>
 	<!-- page-wrapper -->
-
+	<form id="modalForm" name="modalForm" action="/plan/guide">
+	</form> 
+	<div id="modal-Guide" style="height: 100%; display: none;"
+		class="modal fade bs-example-modal-lg in" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-dialog modal-lg" style="height: 98%">
+			<div class="modal-content" style="height: 95%; border-radius: 0px;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title" id="title-Guide"></h4>
+				</div>
+				<div class="modal-body" style="height: 94%; padding: 0px;">
+					<iframe id="if_guidebook" frameborder="0" width="100%" name="guide"
+						height="100%" src="/plan/guide"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

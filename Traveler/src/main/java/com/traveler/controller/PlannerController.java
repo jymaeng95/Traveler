@@ -2,6 +2,8 @@ package com.traveler.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.traveler.api.SpotAPI;
 import com.traveler.domain.BookmarkVO;
 import com.traveler.domain.PageVO;
+import com.traveler.domain.SpotVO;
 import com.traveler.service.BookmarkServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -44,15 +47,24 @@ public class PlannerController {
 		return "/plan/plan_index";
 		
 	}
-	
 	@RequestMapping(value="/plan/create", method=RequestMethod.GET)
-	public String makePlan(@RequestParam(value="pageNum", defaultValue="1") String pageNo, Model model) throws Exception {
+	public String makePlan(@RequestParam(value="pageNum", defaultValue="1") String pageNo, Model model,HttpSession session) throws Exception {
 		log.info("make_plan");
-
+//		BookmarkVO bookmark = 
+//		ArrayList<BookmarkVO> b_list = b_service.getUserBookmark(bookmark);
 		model.addAttribute("pageMaker", new PageVO(pageNo, spot.getTotalCount("", ""), 5));
-
+		
 		return "/plan/create";
 	}
+	
+	@RequestMapping(value="/plan/guide", method=RequestMethod.GET)
+	public String guideSpot(SpotVO spotVO, Model model) throws Exception {
+		log.info("guide");
+		model.addAttribute("contentId", spotVO.getContentId());
+		model.addAttribute("contentTypeId", spotVO.getContentTypeId());
+		return "/plan/information";
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value="/plan/bookmark", method=RequestMethod.GET)
