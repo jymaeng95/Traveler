@@ -133,9 +133,9 @@
 		<div class="modal-dialog modal-lg" style="height: 98%">
 			<div class="modal-content" style="height: 95%; border-radius: 0px;">
 				<div class="modal-header">
+					<h4 class="modal-title" id="title-Guide"></h4>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h4 class="modal-title" id="title-Guide"></h4>
 				</div>
 				<div class="modal-body" style="height: 94%; padding: 0px;">
 					<iframe id="if_guidebook" frameborder="0" width="100%" name="guide"

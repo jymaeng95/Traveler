@@ -18,6 +18,7 @@ $(document).ready(function() {
 				//alert(val[key]);
 				$("#r_photo"+key).attr("src",data[key].firstImage2);
 				$("#r_title"+key).text(data[key].title);
+				$("#title-Guide").text(data[key].title);
 				$("#r_addr"+key).text(data[key].addr1);
 //				$("#r_mapX"+key).text(data[key].mapX);
 //				$("#r_mapY"+key).text(data[key].mapY);
@@ -216,9 +217,11 @@ function loadBookmark(){
 						'<div class="col-lg-7">'+
 						'<h5 id="b_title'+key+'"></h5>'+
 						'<h6 id="b_addr'+key+'"></h6></div></div></li>');
-
+				
 				$("#b_photo"+key).attr("src",data[key].img_src);
 				$("#b_title"+key).text(data[key].title);
+				$("#title-Guide").text(data[key].title);
+
 				$("#b_addr"+key).text(data[key].addr);
 
 

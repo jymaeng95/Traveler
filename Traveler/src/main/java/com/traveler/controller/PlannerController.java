@@ -62,7 +62,7 @@ public class PlannerController {
 		log.info("guide");
 		model.addAttribute("contentId", spotVO.getContentId());
 		model.addAttribute("contentTypeId", spotVO.getContentTypeId());
-		return "/plan/information";
+		return "/plan/category/information";
 	}
 	
 	
