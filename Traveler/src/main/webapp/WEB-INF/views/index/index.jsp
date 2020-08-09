@@ -35,7 +35,7 @@
 						<div class="col-md-5 ">
 							<button type="button" class="btn Spot"
 								style="font-size: 30px; background-color: white;"
-								onclick="location.href='/plan/create'">
+								onclick="location.href='/plan/plan'">
 								<i class="fas fa-plane-departure fa-8x text-primary mb-4"></i>
 								<h3 class="h4 mb-2">Plan</h3>
 							</button>

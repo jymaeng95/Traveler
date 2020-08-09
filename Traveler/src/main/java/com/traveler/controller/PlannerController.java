@@ -41,10 +41,10 @@ public class PlannerController {
 		return "/plan/my_plan2";
 	}
 	
-	@RequestMapping(value="/plan/plan_index", method =RequestMethod.GET)
+	@RequestMapping(value="/plan/plan", method =RequestMethod.GET)
 	public String plannerIndex(Model model) {
 		log.info("planner_index");
-		return "/plan/plan_index";
+		return "/plan/plan";
 		
 	}
 	@RequestMapping(value="/plan/create", method=RequestMethod.GET)
