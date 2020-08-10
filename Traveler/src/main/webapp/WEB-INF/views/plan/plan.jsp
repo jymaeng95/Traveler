@@ -7,16 +7,17 @@
 <head>
 
 <!-- <link href="/resources/plan/css/index.css" rel="stylesheet"> -->
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <%@ include file="../includes/sidebar_setting.jsp"%>
-
+<script src="/resources/plan/js/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <!-- <script src="/resources/plan/js/index.js"></script> -->
 <title>Insert title here</title>
 </head>
 <body>
 	<%@include file="../includes/sidebar.jsp"%>
 	<main class="page-content">
-		<div class="container" style="padding:0">
+		<div class="container" style="padding: 0">
 			<section class="bg-light" style="margin-top: 15px;">
 				<div class="container"
 					style="padding-top: 0px; margin-top: 0px; margin-bottom: 10px;">
@@ -47,9 +48,11 @@
 								새로운 여행을 계획해 봅시다.</h2>
 							<div class="row">
 								<div class="col-sm-6">
-									<a href="/plan/create"
-										style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid">새
-										로운 여행</a>
+									<button type="button" id="new_plan"
+										style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid">
+										<!-- href="/plan/create" -->
+										새 로운 여행
+									</button>
 								</div>
 								<div class="col-sm-6">
 									<!-- 임시 마이플랜으로 이동  -->
@@ -64,6 +67,33 @@
 			</section>
 		</div>
 	</main>
+	</div>
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="mySmallModalLabel" id="myModal" aria-hidden="true">
+		<div class="modal-dialog"
+			style="max-width: 100%; width: auto; display: table;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">새 여행 만들기</h4>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+
+
+				</div>
+				<div class="modal-body">
+					<input type="text" id="p_title" name="plan_title"
+						placeholder="여행제목" style="width: 308px"><br> <input
+						type="text" id="p_date" placeholder="여행날짜" style="width: 100%"
+						readonly />
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" type="button" id="confirm">예</button>
+					<button class="btn btn-primary" type="button" data-dismiss="modal">아니요</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
