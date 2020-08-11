@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <!-- <link href="/resources/plan/css/index.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <%@ include file="../includes/sidebar_setting.jsp"%>
