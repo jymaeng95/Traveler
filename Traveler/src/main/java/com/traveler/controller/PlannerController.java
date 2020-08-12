@@ -48,12 +48,8 @@ public class PlannerController {
 		
 	}
 	@RequestMapping(value="/plan/create", method=RequestMethod.GET)
-	public String makePlan(@RequestParam(value="pageNum", defaultValue="1") String pageNo, Model model,HttpSession session) throws Exception {
+	public String makePlan( Model model) throws Exception {
 		log.info("make_plan");
-//		BookmarkVO bookmark = 
-//		ArrayList<BookmarkVO> b_list = b_service.getUserBookmark(bookmark);
-		model.addAttribute("pageMaker", new PageVO(pageNo, spot.getTotalCount("", ""), 5));
-		
 		return "/plan/create";
 	}
 	

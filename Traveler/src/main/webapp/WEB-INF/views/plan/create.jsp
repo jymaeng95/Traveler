@@ -47,17 +47,17 @@
 				<div class="sidebar-brand" style="background: #258fff;">
 					<button type="button" id="btn-home" class="btn btn-link"
 						style="color: #f9f9f9;" onclick="location.href='/'";>Traveler</button>
-					
+
 				</div>
 				<div class="sidebar-brand" style="background: #258fff;">
 					<button type="button" id="recommend" class="btn btn-link"
-						style="color: #f9f9f9;">관광지 추천</button>
+						style="color: #f9f9f9;"onclick="">관광지 추천</button>
 					<c:choose>
 						<c:when test="${userInfo.userId != null }">
 							<button type="button" id="bookmark" class="btn btn-link"
-								style="color: #f9f9f9;">북마크</button>
+								style="color: #f9f9f9;" onclick="">북마크</button>
 							<button type="button" id="myplan" class="btn btn-link"
-								style="color: #f9f9f9;">내 여행</button>
+								style="color: #f9f9f9;" ">내 여행</button>
 						</c:when>
 						<c:otherwise>
 							<a href="/login/index"> <i class="fa fa-globe"
@@ -82,10 +82,10 @@
 				</div>
 				<!-- sidebar-search  -->
 				<div class="sidebar-menu" style="background: #f5f5f5;">
-					<ul id="ul-recommend" style="padding:10px 20px;">
+					<ul id="ul-recommend" style="padding: 10px 20px;">
 						<%@include file="../plan/category/recommend.jsp"%>
 					</ul>
-					<ul id="ul-bookmark" style="display: none; padding:10px 20px">
+					<ul id="ul-bookmark" style="display: none; padding: 10px 20px">
 						<%@include file="../plan/category/bookmark.jsp"%>
 					</ul>
 				</div>
@@ -125,7 +125,8 @@
 		<!-- page-content" -->
 	</div>
 	<!-- page-wrapper -->
-	<form id="modalForm" name="modalForm" action="/plan/guide">
+	<!-- 해당 form jsp include에다가 넣어서 contentTypeId contentID 넣어서 보내주기  -->
+   <form id="modalForm" name="modalForm" action="/plan/guide">
 	</form> 
 	<div id="modal-Guide" style="height: 100%; display: none;"
 		class="modal fade bs-example-modal-lg in" tabindex="-1" role="dialog"

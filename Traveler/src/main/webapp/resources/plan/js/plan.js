@@ -1,100 +1,143 @@
 $(document).ready(function() {
 	var sigungu = $("#sigunguCode").val();
 	var contentType = $("#contentTypeId").val();
-	var pNum = $('input[name=pageNum]').val()
-	var contentInfo = {"pageNo" : pNum ,"sigunguCode" : sigungu, "contentTypeId" : contentType, "numOfRow" : "5" };
-	var reco_positions=[];
-	var bmk_positions=[];
-	var map = initTmap();
-	var ex_markers=[];
+	var reco_markers=[];	//관광지 추천 마크 
+	var bmk_positions=[];	//북마크 마커에 들어갈 포지션 데이터 
+	var map = initTmap();	// 맵 불러오기 
+	var ex_markers=[];		//북마크 , 관광지 추천, 내여행 클릭시 마커 지우기 위한 담아놓는 마커 배열 
+	var param = { pageNo : 1, numOfRow : 5 };
+
+	var flag = true;
+	//첫데이터 불러오기 
 	$.ajax({
 		url : "/spot/information",
 		type : "get",
 		dataType : "json",
-		async : false,
-		data : contentInfo,
-		success : function(data) {
-			$.each(data, function(key, val){
-				//alert(val[key]);
-				$("#r_photo"+key).attr("src",data[key].firstImage2);
-				$("#r_title"+key).text(data[key].title);
-				$("#title-Guide").text(data[key].title);
-				$("#r_addr"+key).text(data[key].addr1);
-//				$("#r_mapX"+key).text(data[key].mapX);
-//				$("#r_mapY"+key).text(data[key].mapY);
-				//title, overview, addr1
-				reco_positions.push({title : data[key].title, lonlat : new Tmapv2.LatLng(data[key].mapX, data[key].mapY), addr : data[key].addr1 , overview : data[key].overview, img :  data[key].firstImage2, contentId : data[key].contentId, contentTypeId : data[key].contentTypeId });
-//				$("#addr"+key).text(data[key].addr1);
-//				$("#overview"+key).html(data[key].overview);
-//				$("#btn-detail"+key).attr("onclick","imgClick("+data[key].contentId+","+data[key].contentTypeId+");");
-				$(".totalCount").text(data[key].totalCount);
-			});				
-			$("#title").val(data[0].title);
+		data : param,
+		success : function(data){
+			reco_markers=setListItems(data,reco_markers,map,param.pageNo);
+			ex_markers=reco_markers;
 		},
-		error : function(error) {
-			alert("첫페이지 에러");
+		error : function(error){
+			alert("에러")
 		}
 	});
-	ex_markers = addMarkers(map,reco_positions);
 
-	/*	$.ajax({
-		url : "/plan/bookmark",
-		type : "get",
-		dataType : "json",
-		async : false,
-		data : { "userId" : $("#userId").val() },
-		success : function(data) {
-			$.each(data, function(key, val){
-				//alert(val[key]);
-				$("#ul-bookmark").append('<li><hr><div class="row spot_info"><img class="img-responsive" id="b_photo'+key+'" onclick=""style="cursor: pointer;" src="" alt="" width="150" height="100"><h5 id="b_title'+key+'"></h5></div></li>');
-				$("#b_photo"+key).attr("src",data[key].img_src);
-				$("#b_title"+key).text(data[key].title);
-
-
-				bmk_positions.push({title : data[key].title, lonlat : new Tmapv2.LatLng(data[key].mapX, data[key].mapY)});
-//				$("#addr"+key).text(data[key].addr1);
-//				$("#overview"+key).html(data[key].overview);
-//				$("#btn-detail"+key).attr("onclick","imgClick("+data[key].contentId+","+data[key].contentTypeId+");");
-				$(".totalCount").text(data[key].totalCount);
-			});				
-			alert(data.length);
-		},
-		error : function(error) {
-			alert("첫페이지 에러");
-		}
-	});*/
-
+	//무한 스크롤 
+	$('.sidebar-content').scroll(function() {
+//		alert($('.sidebar-content').scrollTop());
+		// 맨 밑으로 스크롤이 갔을경우 if문을 탑니다.
+		console.log($('.sidebar-content').scrollTop() + $('.sidebar-content').height());
+		console.log($('.sidebar-content').prop('scrollHeight'));
+		if($('.sidebar-content').prop('scrollHeight')==Math.ceil($('.sidebar-content').scrollTop()+$('.sidebar-content').height())) { 
+			if(flag){
+				param.pageNo++; // 현재 페이지에서 +1 처리.
+				reco_markers=callAjaxRecommend(param,reco_markers,map); //ajax 호출
+				ex_markers=reco_markers;
+			}
+		} 
+	}); 
+	//북마크 버튼 클릭
 	$("#bookmark").click(function(){
+		flag = false;
 		$("#bookmark").attr("disabled",true);
 		$("#recommend").attr("disabled",false);
+		console.log(ex_markers);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		bmk_positions = loadBookmark();
 		$("#ul-recommend").hide();
 		$("#ul-bookmark").show();
-		ex_markers = addMarkers(map,bmk_positions);
+		ex_markers = addMarkers(map,bmk_positions); 
 	});
+	//관광지 추천 버튼 클릭 
 	$("#recommend").click(function(){
+		flag = true;
 		$("#bookmark").attr("disabled",false);
 		$("#recommend").attr("disabled",true);
+		console.log(ex_markers);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		$(".book-ul").remove();
 		$("#ul-recommend").show();
 		$("#ul-bookmark").hide();
-		ex_markers = addMarkers(map,reco_positions);
+		ex_markers = reco_markers;
+		for(var i=0;i<reco_markers.length;i++){
+			reco_markers[i].setMap(map);
+		}
 	});
 	$("#myplan").click(function(){
 		if(ex_markers != false) deleteMarkers(ex_markers);
 	});
 
-	var actionForm = $("#actionForm");
-
-	$(".paginate_button a").on("click", function(e) {
-		e.preventDefault();
-		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-		actionForm.submit();
-	});
-
 });
+function test(marker){
+	marker.setVisible(true);
+}
+function callAjaxRecommend(param,reco_markers,map) {
+	$.ajax({	
+		url : "/spot/information",
+		type : "get",
+		dataType : "json",
+		data : param,
+		success : function(data){
+			if(data.length == 0 ){
+				alert("더이상 표시할 항목이 없습니다.");
+			} 
+			if(data.length != 0){
+				//testLoading.show(); //로딩 on(로딩바가 있을경우만 넣습니다. 없을경우 빼셔도 상관 없습니다.)
+				reco_markers=setListItems(data,reco_markers,map,param.pageNo);  //테스트 데이터 리스트 입니다.
+				//testLoading.hide(); //로딩 off(로딩바가 있을경우만 넣습니다. 없을경우 빼셔도 상관 없습니다.)
+			}   
+		},
+		error : function(error) {
+			alert("실패");
+		}
+	});
+	return reco_markers;
+}
+//무한 스크롤 데이터 추가 및 클릭이벤트 
+function setListItems(data,markers,map,pageNo){
+	var positions=[];
+	$.each(data, function(i, result) {
+		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
+		// 부모 엘리먼트에 append 할 데이터를 셋팅한다.
+
+		var content='<li><hr><div class="row spot_info'+pageNo+'">'
+		+'<div class="col-lg-5"><img class="img-responsive" class="r_photo"'
+		+'style="cursor: pointer;" src="'+result.firstImage2+'" alt="" width="150" height="100">'
+		+'</div><div class="col-lg-7">'
+		+'<h5 class="r_title">'+result.title+'</h5>'
+		+'<h6 class="r_addr">+'+result.addr1+'</h6>'
+		+'</div></div></li>';
+
+		positions.push(position);
+		$('#imgForm').append(content);
+	});
+	// 페이지 별 영역별로 클릭이벤트 주기위함
+	$('.spot_info'+pageNo).each(function(i){
+		var lonlat = positions[i].lonlat;
+		var title = positions[i].title;	
+		if(positions[i].addr== null) positions[i].addr="주소 없음";
+		var marker = new Tmapv2.Marker({
+			position : lonlat,
+			map : map,
+			visible : false,
+			title : title
+		});			
+		markerClick(map,marker,lonlat,title,positions[i]);
+		$(this).click(function(){
+			for(var i=0;i<markers.length;i++){
+				markers[i].setVisible(false);	//이미지 클릭 시클릭한 데이터만 마커 표시 
+			}
+			map.setMap
+			marker.setVisible(true);
+		});
+		markers.push(marker);
+	});
+	
+	return markers;
+}
+
+//북마크 마커 추가 
 function addMarkers(map,positions){
 
 	var markers = [];
@@ -117,6 +160,7 @@ function addMarkers(map,positions){
 	}
 	return markers;
 }
+
 function deleteMarkers(markers){
 	for (var i=0;i<markers.length; i++) {
 		markers[i].setMap(null);
@@ -144,7 +188,7 @@ function markerClick(map,marker,latlng,title,position){
 		"<ul class='ul-info' style='list-style-type:none; padding:0px;'>"+
 		"<li class='li-addr' style='padding-left: 20px; margin-bottom: 5px; no-repeat top 3px left;'>"+
 		"<p class='new-addr'><i class='fas fa-map-marker-alt' style='padding-right:3%'></i>"+position.addr+"</p>"+
-/*		"<p class='old-addr' style='color: #707070;'>(우)04539 (지번)을지로 2가 11</p>"+*/
+		/*		"<p class='old-addr' style='color: #707070;'>(우)04539 (지번)을지로 2가 11</p>"+*/
 		"</li>"+
 		"<li class='li-overview' style='padding-left: 20px; no-repeat top 4px left;'>"+
 		"<p class='overview' style='overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 4; -webkit-box-orient: vertical;'>"+
@@ -158,7 +202,7 @@ function markerClick(map,marker,latlng,title,position){
 		"<li style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;''>"+
 		"<a href='#' title='공유하기'><i class='fas fa-1x fa-plus-circle'></i></a>"+
 		"</li>"+
-	/*	"<li style='display: table-cell; vertical-align: middle; width: 33.333%; height: 100%;'>"+
+		/*	"<li style='display: table-cell; vertical-align: middle; width: 33.333%; height: 100%;'>"+
 		"<a href='#' title='길찾기'><img src='resources/images/sample/ico-road.svg'></a>"+
 		"</li>"+*/
 		"</ul>"+
@@ -175,10 +219,10 @@ function markerClick(map,marker,latlng,title,position){
 	});
 }
 function detailModal(contentId,contentTypeId){
-    $("#modalForm").append("<input id='modal-cid' class='cid' type='hidden' name='contentId' value="+contentId+">");
+	$("#modalForm").append("<input id='modal-cid' class='cid' type='hidden' name='contentId' value="+contentId+">");
 	$("#modalForm").append("<input id='modal-ctId' class='ctid' type='hidden' name='contentTypeId' value="+contentTypeId+">");
 	document.modalForm.target = "guide";
-    document.modalForm.submit();
+	document.modalForm.submit();
 	$("#modal-Guide").modal();
 }
 
@@ -211,24 +255,19 @@ function loadBookmark(){
 		data : { "userId" : $("#userId").val() },
 		success : function(data) {
 			$.each(data, function(key, val){
-				//alert(val[key])
 				$("#ul-bookmark").append('<li class="book-ul"><hr><div class="row spot_info">'+
 						'<div class="col-lg-5"><img class="img-responsive" id="b_photo'+key+'" onclick=""style="cursor: pointer;" src="" alt="" width="150" height="100"></div>'+
 						'<div class="col-lg-7">'+
 						'<h5 id="b_title'+key+'"></h5>'+
 						'<h6 id="b_addr'+key+'"></h6></div></div></li>');
-				
+
 				$("#b_photo"+key).attr("src",data[key].img_src);
 				$("#b_title"+key).text(data[key].title);
 				$("#title-Guide").text(data[key].title);
 
 				$("#b_addr"+key).text(data[key].addr);
 
-
 				positions.push({title : data[key].title, lonlat : new Tmapv2.LatLng(data[key].mapX, data[key].mapY),addr : data[key].addr , overview : data[key].overview, img :  data[key].img_src, contentId : data[key].contentId, contentTypeId : data[key].contentTypeId });
-//				$("#addr"+key).text(data[key].addr1);
-//				$("#overview"+key).html(data[key].overview);
-//				$("#btn-detail"+key).attr("onclick","imgClick("+data[key].contentId+","+data[key].contentTypeId+");");
 				$(".totalCount").text(data[key].totalCount);
 			});				
 		},
