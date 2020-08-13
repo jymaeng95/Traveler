@@ -76,7 +76,16 @@ public class SpotController {
 		return spot.getEachInformation(spotVO);
 	}
 
-	
+	@ResponseBody
+	@RequestMapping(value="/spot/keyword",method=RequestMethod.GET)
+	public List<SpotVO> getKeywordInfo(SpotVO spotVO, String keyword, Model model) throws Exception {
+		log.info("keyword");
+		log.info(spotVO);
+		if(spotVO.getPageNo()==null) spotVO.setPageNo("1");
+		List<SpotVO> resultKeyword = spot.getKeywordInformation(spotVO, keyword);
+		log.info(resultKeyword);
+		return resultKeyword;
+	}
 
 	@ResponseBody
 	@RequestMapping(value="/spot/check/bookmark", method=RequestMethod.GET)

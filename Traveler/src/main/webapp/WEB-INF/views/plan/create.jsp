@@ -52,6 +52,8 @@
 				<div class="sidebar-brand" style="background: #258fff;">
 					<button type="button" id="recommend" class="btn btn-link"
 						style="color: #f9f9f9;"onclick="">관광지 추천</button>
+					<button type="button" id="result" class="btn btn-link"
+						style="color: #f9f9f9;"onclick="" disabled>검색 결과</button>
 					<c:choose>
 						<c:when test="${userInfo.userId != null }">
 							<button type="button" id="bookmark" class="btn btn-link"
@@ -70,9 +72,9 @@
 				<div class="sidebar-search" style="background: #258fff;">
 					<div>
 						<div class="input-group" style="background: #258fff;">
-							<input type="text" class="form-control search-menu"
+							<input type="text" class="form-control search-menu" id="search-field"
 								placeholder="검색..." style="background: #f9f9f9;">
-							<div class="input-group-append">
+							<div class="input-group-append" id="btn-search">
 								<span class="input-group-text" style="background: #e9e9e9;">
 									<i class="fa fa-search" aria-hidden="true"></i>
 								</span>
@@ -84,6 +86,9 @@
 				<div class="sidebar-menu" style="background: #f5f5f5;">
 					<ul id="ul-recommend" style="padding: 10px 20px;">
 						<%@include file="../plan/category/recommend.jsp"%>
+					</ul>
+					<ul id="ul-search" style="display : none ; padding: 10px 20px;">
+						<%@include file="../plan/category/search.jsp"%>
 					</ul>
 					<ul id="ul-bookmark" style="display: none; padding: 10px 20px">
 						<%@include file="../plan/category/bookmark.jsp"%>

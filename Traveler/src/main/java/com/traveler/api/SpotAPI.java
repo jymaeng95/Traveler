@@ -1,5 +1,6 @@
 package com.traveler.api;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -410,4 +411,82 @@ public class SpotAPI {
 		
 		return information;
 	}
+	public List<SpotVO> getKeywordInformation(SpotVO spotVO, String keyword) throws Exception{
+		String encodeKeyword = URLEncoder.encode(keyword,"utf-8");
+		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?"
+				+ "serviceKey="+serviceKey
+				+ "&MobileApp=AppTest"
+				+ "&MobileOS=ETC"
+				+ "&pageNo="+spotVO.getPageNo()
+				+ "&numOfRows="+spotVO.getNumOfRow()
+				+ "&listYN=Y"
+				+ "&arrange=P"
+				+ "&contentTypeId="
+				+ "&areaCode=39"
+				+ "&sigunguCode="
+				+ "&cat1="
+				+ "&cat2="
+				+ "&cat3="
+				+ "&keyword="+encodeKeyword;
+		
+		//keyword UTF-8 Encoding 필요
+		DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
+		Document doc = dBuilder.parse(url);
+
+		// root tag 
+		doc.getDocumentElement().normalize();
+		System.out.println("keyword :" + doc.getDocumentElement().getNodeName());
+		System.out.println(spotVO + " "+ keyword);
+		System.out.println(url);
+		// �Ľ��� tag
+		NodeList nList = doc.getElementsByTagName("item");
+		ArrayList<String> contentIdList = new ArrayList<String>();
+		for(int i=0;i<nList.getLength();i++) {
+			Node node = nList.item(i);
+			if(node.getNodeType()==Node.ELEMENT_NODE) {
+				Element element = (Element) node;
+				contentIdList.add(getTagValue("contentid", element));
+			}
+		}
+		System.out.println(contentIdList.size());
+		
+		String totalCount ="";
+		nList = doc.getElementsByTagName("totalCount");
+		Node count_node = nList.item(0);
+		if(count_node.getNodeType()==Node.ELEMENT_NODE) {
+			Element element = (Element) count_node;
+			totalCount = getTagValue("totalCount", element);
+		}
+		System.out.println(totalCount);
+		ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
+		
+		List<SpotVO> information = new ArrayList<SpotVO>();
+		for(int i=0; i<spotInfo.size();i++) {
+			SpotVO oneSpot = new SpotVO();
+			for(int j=0;j<spotInfo.get(i).getLength();j++) {
+				Node info_node = spotInfo.get(i).item(j);
+				if(info_node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) info_node;
+					oneSpot.setFirstImage2(getTagValue("firstimage2",element));
+					if(oneSpot.getFirstImage2()==null) {
+						oneSpot.setFirstImage2("/resources/assets/img/spot_images/no_img.png");
+					}
+					oneSpot.setTitle(getTagValue("title",element));
+					if(!getTagValue("addr1",element).equals("25")){
+						oneSpot.setAddr1(getTagValue("addr1",element));
+					}
+					oneSpot.setOverview(getTagValue("overview",element));
+					oneSpot.setContentId(getTagValue("contentid",element));
+					oneSpot.setContentTypeId(getTagValue("contenttypeid",element));
+					oneSpot.setMapX(getTagValue("mapy",element));
+					oneSpot.setMapY(getTagValue("mapx",element));
+					oneSpot.setTotalCount(totalCount);
+				}
+			}
+			information.add(oneSpot);
+		}
+		return information;
+	}
 }
+
