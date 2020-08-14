@@ -1,6 +1,11 @@
 package com.traveler.api;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +30,7 @@ public class SpotAPI {
 	//	final String serviceKey ="gr8r1Nu%2FamiYcpoKwNRrDhgCWT8T3dJPxG1%2F2MuEzrCiSq0m4%2B8%2BUqf5LqJpVfIBWrgndZHrRpZy27PUCT21rQ%3D%3D";
 	//	final String serviceKey ="iv8Bz7xZDYyuYRnhmBekQj5GV732OijidErVpJets0Bw9rMM6FEWPF3t4Ow%2FIJ091nOnUnXFq%2FFjas8TzW13pA%3D%3D";
 	
-		
+		final String TMAP_KEY = "l7xx15e7f0ab6ce4456f9a97564f50cf5e2f";
 		// tag���� ������ �������� �޼ҵ�
 	public static String getTagValue(String tag, Element eElement) {
 		try {
@@ -487,6 +492,37 @@ public class SpotAPI {
 			information.add(oneSpot);
 		}
 		return information;
+	}
+	public List<SpotVO> getKeywordFromPOI(SpotVO spotVO, String keyword) throws Exception{
+		String encodeKeyword = URLEncoder.encode(keyword,"utf-8");
+		String requestUrl="http://apis.openapi.sk.com/tmap/pois?"
+				+ "format=json"
+				+ "&version=1"
+				+ "&page="+spotVO.getPageNo()
+				+ "&count="+spotVO.getNumOfRow()
+				+ "&appKey="+TMAP_KEY
+				+ "&searchKeyword="+encodeKeyword
+				+ "&reqCoordType=WGS84GEO"
+				+ "&resCoordType=WGS84GEO"
+				+ "&searchtypCd=A";
+		URL url = new URL(requestUrl);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		
+		int responseCode = con.getResponseCode();
+		System.out.println("RESPONSE CODE : "+responseCode);
+
+		Charset charset = Charset.forName("UTF-8");
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(),charset));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+		while((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		
+		System.out.println("결과  : "+response.toString());
+		return null;
 	}
 }
 
