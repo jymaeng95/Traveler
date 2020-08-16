@@ -44,11 +44,18 @@ $(document).ready(function() {
 				keyword_markers=callAjaxKeyword(keywordParam,keyword_markers,map);
 				ex_markers=keyword_markers;
 			}
+			if(flag == 3){
+				keywordParam.pageNo++;
+				console.log("keyword" + keyword_markers);
+				keyword_markers=callAjaxKeywordTmap(keywordParam,keyword_markers,map);
+				ex_markers=keyword_markers;
+			}
 		} 
 	}); 
 	$("#btn-search").click(function(){
 		flag = 2;
-
+		keywordParam.pageNo = 1;
+		$(".keyword-ul").remove();
 		if(keyword_markers!=false) keyword_markers=[];
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		$("#bookmark").attr("disabled",false);
@@ -72,10 +79,26 @@ $(document).ready(function() {
 			dataType : "json",
 			data : keywordParam,
 			success :  function(data){
-				alert(data.length);
 				if(data.length == 0 ){
-					var content= "<hr><h5 style='text-align : center;'>검색결과가 없습니다.</h5>";
-					$("#keywordForm").append(content);
+					flag = 3;
+					$.ajax({	
+						url : "/plan/tmap/keyword",
+						type : "get",
+						dataType : "json",
+						data : keywordParam,
+						success :  function(data){
+							if(data.length == 0 ){
+								alert("실패");
+							} 
+							if(data.length != 0){
+								keyword_markers=TmapItems(data,keyword_markers,map,keywordParam.pageNo);
+								ex_markers = keyword_markers;
+							}
+						},
+						error : function(error) {
+							alert("실패");
+						}
+					});
 				} 
 				if(data.length != 0){
 					keyword_markers=keywordItems(data,keyword_markers,map,keywordParam.pageNo);  //테스트 데이터 리스트 입니다.
@@ -86,6 +109,7 @@ $(document).ready(function() {
 				alert("실패");
 			}
 		});
+
 	});
 	//북마크 버튼 클릭
 	$("#bookmark").click(function(){
@@ -119,7 +143,8 @@ $(document).ready(function() {
 		}
 	});
 	$("#result").click(function(){
-		flag = 2;
+		if(flag != 3) flag = 2;
+
 		$("#bookmark").attr("disabled",false);
 		$("#result").attr("disabled",true);
 		$("#recommend").attr("disabled",false);
@@ -141,6 +166,31 @@ $(document).ready(function() {
 });
 function test(marker){
 	marker.setVisible(true);
+}
+function callAjaxKeywordTmap(keywordParam,keyword_markers,map) {
+	$.ajax({	
+		url : "/plan/tmap/keyword",
+		type : "get",
+		dataType : "json",
+		data : keywordParam,
+		success :  function(data){
+			if(data.length == 0 ){
+				var content= "<div style='position: static; display: flex; flex-direction: column; font-size: 14px; box-shadow: 5px 5px 5px #00000040; border-radius: 10px; top: 410px; left : 800px; width : 250px; background: #FFFFFF 0% 0% no-repeat padding-box;'>"
+					"<h3>표시할 항목이 없습니다</h3></div>";
+				$("#keywordForm").append(content);
+			} 
+			if(data.length != 0){
+				//testLoading.show(); //로딩 on(로딩바가 있을경우만 넣습니다. 없을경우 빼셔도 상관 없습니다.)
+				keyword_markers=TmapItems(data,keyword_markers,map,keywordParam.pageNo);  //테스트 데이터 리스트 입니다.
+				console.log("in ajax"+keyword_markers);
+				//testLoading.hide(); //로딩 off(로딩바가 있을경우만 넣습니다. 없을경우 빼셔도 상관 없습니다.)
+			}   
+		},
+		error : function(error) {
+			alert("실패");
+		}
+	});
+	return keyword_markers;
 }
 function callAjaxKeyword(keywordParam,keyword_markers,map) {
 	$.ajax({	
@@ -269,6 +319,7 @@ function markerLeave(map){
 }
 
 function markerClick(map,marker,latlng,title,position){
+	if(position.overview == null) position.overview = "";
 	marker.addListener("click",function(evt){
 		var content= "<div style='position: static; display: flex; flex-direction: column; font-size: 14px; box-shadow: 5px 5px 5px #00000040; border-radius: 10px; top: 410px; left : 800px; width : 250px; background: #FFFFFF 0% 0% no-repeat padding-box;'>"+
 		"<div class='img-box' style='position: relative; width: 100%; height: 150px; border-radius: 10px 10px 0 0 ;no-repeat center;'>"+
@@ -290,7 +341,7 @@ function markerClick(map,marker,latlng,title,position){
 		"</li>"+
 		"</ul>"+
 		"<ul class='btn-group' style='display: table; width: 100%; padding:0; border-radius: 3px; height: 30px; border: 1px solid #EFEFEF; margin-top: 10px; text-align: center;'>"+
-		"<li style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;' onclick='detailModal("+position.contentId+","+position.contentTypeId+");'>"+
+		"<li class='li-detail'style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;' onclick=''>"+ 
 		"<a href='javascript:void(0)' title='더 보기'><i class='fas fa-1x fa-info-circle'></i></a>"+
 		"</li>"+
 		"<li style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;''>"+
@@ -310,6 +361,11 @@ function markerClick(map,marker,latlng,title,position){
 			type: 2, //Popup의 type 설정.
 			map: map //Popup이 표시될 맵 객체
 		});
+		if(position.contentId != null){
+			$(".li-detail").click(function(){
+				detailModal(position.contentId,position.contentTypeId);
+			});
+		}
 	});
 }
 function detailModal(contentId,contentTypeId){
@@ -373,6 +429,46 @@ function loadBookmark(){
 }
 
 function keywordItems(data,markers,map,pageNo){
+	var positions=[];
+	$.each(data, function(i, result) {
+		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
+		// 부모 엘리먼트에 append 할 데이터를 셋팅한다.
+
+		var content='<li class="keyword-ul"><hr><div class="row keyword_info'+pageNo+'">'
+		+'<div class="col-lg-5"><img class="img-responsive" class="k_photo"'
+		+'style="cursor: pointer;" src="'+result.firstImage2+'" alt="" width="150" height="100">'
+		+'</div><div class="col-lg-7">'
+		+'<h5 class="k_title">'+result.title+'</h5>'
+		+'<h6 class="k_addr">'+result.addr1+'</h6>'
+		+'</div></div></li>';
+
+		positions.push(position);
+		$('#keywordForm').append(content);
+	});
+	// 페이지 별 영역별로 클릭이벤트 주기위함
+	$('.keyword_info'+pageNo).each(function(i){
+		var lonlat = positions[i].lonlat;
+		var title = positions[i].title;	
+		if(positions[i].addr== null) positions[i].addr="주소 없음";
+		var marker = new Tmapv2.Marker({
+			position : lonlat,
+			map : map,
+			visible : false,
+			title : title
+		});			
+		markerClick(map,marker,lonlat,title,positions[i]);
+		$(this).click(function(){
+			for(var i=0;i<markers.length;i++){
+				markers[i].setVisible(false);	//이미지 클릭 시클릭한 데이터만 마커 표시 
+			}
+			marker.setVisible(true);
+		});
+		markers.push(marker);
+	});
+
+	return markers;
+}
+function TmapItems(data,markers,map,pageNo){
 	var positions=[];
 	$.each(data, function(i, result) {
 		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };

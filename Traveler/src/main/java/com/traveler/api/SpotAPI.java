@@ -12,6 +12,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -521,8 +523,33 @@ public class SpotAPI {
 		}
 		in.close();
 		
-		System.out.println("결과  : "+response.toString());
-		return null;
+		List<SpotVO> information = fromJsonToSpotInfo(response.toString());
+//		System.out.println("결과  : "+response.toString());
+		return information;
+	}
+	
+	public List<SpotVO> fromJsonToSpotInfo(String jsonData) {
+		JSONObject jObject = new JSONObject(jsonData);
+		JSONObject searchInfoObj = jObject.getJSONObject("searchPoiInfo");
+		String totalCount = searchInfoObj.getNumber("totalCount").toString();
+		System.out.println(totalCount);
+		JSONObject pois = searchInfoObj.getJSONObject("pois");
+		JSONArray poi = pois.getJSONArray("poi");
+		List<SpotVO> information = new ArrayList<SpotVO>();
+		for(int i=0;i<poi.length();i++) {
+			SpotVO oneSpot = new SpotVO();
+			JSONObject obj = poi.getJSONObject(i);
+			oneSpot.setTitle(obj.getString("name"));
+			oneSpot.setMapX(obj.getString("noorLat").toString());
+			oneSpot.setMapY(obj.getString("noorLon").toString());
+			String addr = obj.getString("upperAddrName") +" "+ obj.getString("middleAddrName")+" "+ obj.getString("lowerAddrName");
+			oneSpot.setAddr1(addr);
+			oneSpot.setFirstImage2("/resources/assets/img/spot_images/no_img.png");
+			oneSpot.setTotalCount(totalCount);
+			information.add(oneSpot);
+			System.out.println(oneSpot);
+		}
+		return information;
 	}
 }
 
