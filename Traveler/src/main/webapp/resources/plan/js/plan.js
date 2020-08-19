@@ -118,11 +118,13 @@ $(document).ready(function() {
 		$("#bookmark").attr("disabled",true);
 		$("#result").attr("diabled",false);
 		$("#recommend").attr("disabled",false);
+		$("#myplan").attr("disabled",false);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		bmk_positions = loadBookmark();
 		$("#ul-recommend").hide();
 		$("#ul-search").hide();
 		$("#ul-bookmark").show();
+		$("#ul-myPlan").hide();
 		ex_markers = addMarkers(map,bmk_positions); 
 	});
 	//관광지 추천 버튼 클릭 
@@ -132,11 +134,13 @@ $(document).ready(function() {
 		$("#bookmark").attr("disabled",false);
 		$("#result").attr("disabled",false);
 		$("#recommend").attr("disabled",true);
+		$("#myplan").attr("disabled",false);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		$(".book-ul").remove();
 		$("#ul-recommend").show();
 		$("#ul-bookmark").hide();
 		$("#ul-search").hide();
+		$("#ul-myPlan").hide();
 		ex_markers = reco_markers;
 		for(var i=0;i<reco_markers.length;i++){
 			reco_markers[i].setMap(map);
@@ -148,21 +152,59 @@ $(document).ready(function() {
 		$("#bookmark").attr("disabled",false);
 		$("#result").attr("disabled",true);
 		$("#recommend").attr("disabled",false);
+		$("#myplan").attr("disabled",false);
 		console.log(ex_markers);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		$(".book-ul").remove();
 		$("#ul-recommend").hide();
 		$("#ul-bookmark").hide();
 		$("#ul-search").show();
+		$("#ul-myPlan").hide();
 		ex_markers = keyword_markers;
 		for(var i=0;i<keyword_markers.length;i++){
 			keyword_markers[i].setMap(map);
 		}
 	});
 	$("#myplan").click(function(){
+		flag = 4;
+		$("#myplan").attr("disabled",true);
+		$("#bookmark").attr("disabled",false);
+		$("#recommend").attr("disabled",false);
 		if(ex_markers != false) deleteMarkers(ex_markers);
+		$(".book-ul").remove();
+		$("#ul-myPlan").show();
+		$("#ul-recommend").hide();
+		$("#ul-bookmark").hide();
+		$("#ul-search").hide();
 	});
 
+	//리스트박스
+	$(".sidebar-dropdown > a").click(function() {
+		$(".sidebar-submenu").slideUp(200);
+		if (
+				$(this)
+				.parent()
+				.hasClass("active")
+		) {
+//			$(".sidebar-dropdown").removeClass("active");
+			$(this)
+			.parent()
+			.removeClass("active");
+		} else {
+//			$(".sidebar-dropdown").removeClass("active");
+			$(this)
+			.next(".sidebar-submenu")
+			.slideDown(200);
+			$(this)
+			.parent()
+			.addClass("active");
+		}
+	});
+	$("#btn-save").click(function(){
+		$(".position-data").each(function(){
+			console.log($(this).val());
+		});
+	});
 });
 function test(marker){
 	marker.setVisible(true);
@@ -344,8 +386,8 @@ function markerClick(map,marker,latlng,title,position){
 		"<li class='li-detail'style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;' onclick=''>"+ 
 		"<a href='javascript:void(0)' title='더 보기'><i class='fas fa-1x fa-info-circle'></i></a>"+
 		"</li>"+
-		"<li style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;''>"+
-		"<a href='#' title='공유하기'><i class='fas fa-1x fa-plus-circle'></i></a>"+
+		"<li class='addList' style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;'>"+
+		"<a href='javascript:void(0)' title='공유하기'><i class='fas fa-1x fa-plus-circle'></i></a>"+
 		"</li>"+
 		/*	"<li style='display: table-cell; vertical-align: middle; width: 33.333%; height: 100%;'>"+
 		"<a href='#' title='길찾기'><img src='resources/images/sample/ico-road.svg'></a>"+
@@ -366,8 +408,58 @@ function markerClick(map,marker,latlng,title,position){
 				detailModal(position.contentId,position.contentTypeId);
 			});
 		}
+		$(".addList").unbind("click").bind("click",function(){
+			var diff_title = true;
+			$('.plan_title').each(function(i){
+				if($(this).text() == title) {
+					diff_title = false;
+					alert("이미 추가했습니다.")
+					return false;
+				}
+			});
+			if(diff_title == true) {
+				addModal(position,map);
+			}
+		});
 	});
 }
+function addModal(position,map) {
+	$("#addModal").modal("show");
+	$("#s_title").val(position.title);
+	$(".confirm").unbind("click").bind("click",function(){
+		alert(position.img) // day1형식
+		var content = $('<li class="list_add_content"><hr><div class="row">'
+				+'<div class="col-lg-5" style="background-color : #f5f5f5"><img class="img-responsive" class="plan_photo"'
+				+'style="cursor: pointer;" src="'+position.img+'" alt="" width="150" height="100">'
+				+'</div><div class="col-lg-7" style="background-color : #f5f5f5">'
+				+'<h5 class="plan_title">'+position.title+'</h5>'
+				+'<h6 class="plan_addr">'+position.addr+'</h6>'
+				+'</div></div></li>');
+
+//		var li = $('<li>'+ position.title +'</li>');
+		content.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
+
+		$("#addModal").modal("hide");
+
+		position.planTitle = $("#plantitle").val();
+		position.planDate = $("#plandate").val();
+		position.planDay = $("#day").val();
+		position.planTotalDate = $("#totaldate").val();
+		var marker = new Tmapv2.Marker({
+			position : position.lonlat,
+			icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_p.png",
+			map : map,
+			title : "["+position.planDay+"일차]"+ position.title
+		});      
+		markerClick(map,marker,position.lonlat,position.title,position);
+		delete position['overview'];
+		var position_data = JSON.stringify(position);
+		var input = $("<input type='hidden' class='position-data' value='"+position_data+"'>");
+		input.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
+		$("#addModal").modal("hide");
+	});
+}
+
 function detailModal(contentId,contentTypeId){
 	$("#modalForm").append("<input id='modal-cid' class='cid' type='hidden' name='contentId' value="+contentId+">");
 	$("#modalForm").append("<input id='modal-ctId' class='ctid' type='hidden' name='contentTypeId' value="+contentTypeId+">");
@@ -498,10 +590,12 @@ function TmapItems(data,markers,map,pageNo){
 		});			
 		markerClick(map,marker,lonlat,title,positions[i]);
 		$(this).click(function(){
+
 			for(var i=0;i<markers.length;i++){
 				markers[i].setVisible(false);	//이미지 클릭 시클릭한 데이터만 마커 표시 
 			}
 			marker.setVisible(true);
+
 		});
 		markers.push(marker);
 	});

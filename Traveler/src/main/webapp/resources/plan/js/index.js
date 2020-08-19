@@ -21,32 +21,39 @@ $(document).ready(function(){
 			}
 
 			alert(btDay)
+			document.getElementById("t_date").value= btDay; 
+			
+			$("#plan_info").submit();
 
-			//			$.ajax({
-			//			url : "/plan/create_info",
-			//			type : "post",
-			//			dataType : "json",
-			//			data : {
-			//			"p_title" : $("#p_title").val(),
-			//			"p_date" : $("#p_date").val()
-			//			},
-			//			success : function(data){
-			//			if(data){
-			//			$("#myModal").modal("hide");
-			//			location.href= "/plan/create";
-			//			}
-			//			},
-			//			error : function(error) {
-			//			alert("에러")
-			//			}
-			//			});
+
+//			$.ajax({
+//			url : "/plan/create_info",
+//			type : "post",
+//			dataType : "json",
+//			data : {
+//			"p_title" : $("#p_title").val(),
+//			"p_date" : $("#p_date").val()
+//			},
+//			success : function(data){
+//			if(data){
+//			$("#myModal").modal("hide");
+//			location.href= "/plan/create";
+//			}
+//			},
+//			error : function(error) {
+//			alert("에러")
+//			}
+//			});
 		}
 	});
 
 	$("#p_date").flatpickr({
 		mode: "range",
+		minDate: "today",
 		inline: true,
 		static : true
 	});
+
+
 
 });

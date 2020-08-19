@@ -43,12 +43,6 @@ public class MyPageController {
 		return "/mypage/mypage";
 	}
 
-	@RequestMapping(value="/mypage/message", method=RequestMethod.GET)
-	public String userMessagePage(Model model) {
-		log.info("message");
-		return "/mypage/message";
-	}
-
 	@RequestMapping(value="/mypage/bookmark", method=RequestMethod.GET)
 	public String userBookmarkPage(Model model,HttpSession session, BookmarkVO bookmark,MemberVO member) throws Exception {
 		log.info("bookmark");

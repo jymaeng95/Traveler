@@ -15,7 +15,7 @@
 	rel="stylesheet">
 <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
 	rel="stylesheet">
-<link href="/resources/test/font.css" rel="stylesheet">
+<link href="/resources/util/css/font.css" rel="stylesheet">
 <!-- JavaScript -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -51,15 +51,15 @@
 				</div>
 				<div class="sidebar-brand" style="background: #258fff;">
 					<button type="button" id="recommend" class="btn btn-link"
-						style="color: #f9f9f9;"onclick="">관광지 추천</button>
+						style="color: #f9f9f9;" onclick="">관광지 추천</button>
 					<button type="button" id="result" class="btn btn-link"
-						style="color: #f9f9f9;"onclick="" disabled>검색 결과</button>
+						style="color: #f9f9f9;" onclick="" disabled>검색 결과</button>
 					<c:choose>
 						<c:when test="${userInfo.userId != null }">
 							<button type="button" id="bookmark" class="btn btn-link"
 								style="color: #f9f9f9;" onclick="">북마크</button>
 							<button type="button" id="myplan" class="btn btn-link"
-								style="color: #f9f9f9;" ">내 여행</button>
+								style="color: #f9f9f9;"">내 여행</button>
 						</c:when>
 						<c:otherwise>
 							<a href="/login/index"> <i class="fa fa-globe"
@@ -72,8 +72,9 @@
 				<div class="sidebar-search" style="background: #258fff;">
 					<div>
 						<div class="input-group" style="background: #258fff;">
-							<input type="text" class="form-control search-menu" id="search-field"
-								placeholder="검색..." style="background: #f9f9f9;">
+							<input type="text" class="form-control search-menu"
+								id="search-field" placeholder="검색..."
+								style="background: #f9f9f9;">
 							<div class="input-group-append" id="btn-search">
 								<span class="input-group-text" style="background: #e9e9e9;">
 									<i class="fa fa-search" aria-hidden="true"></i>
@@ -87,11 +88,15 @@
 					<ul id="ul-recommend" style="padding: 10px 20px;">
 						<%@include file="../plan/category/recommend.jsp"%>
 					</ul>
-					<ul id="ul-search" style="display : none ; padding: 10px 20px;">
+					<ul id="ul-search" style="display: none; padding: 10px 20px;">
 						<%@include file="../plan/category/search.jsp"%>
 					</ul>
 					<ul id="ul-bookmark" style="display: none; padding: 10px 20px">
 						<%@include file="../plan/category/bookmark.jsp"%>
+					</ul>
+					<ul id="ul-myPlan" data-role="listview"
+						style="display: none; padding: 10px 20px">
+						<%@include file="../plan/category/myplan.jsp"%>
 					</ul>
 				</div>
 				<!-- sidebar-menu  -->
@@ -113,6 +118,7 @@
 					<a href="#">
 				</c:if>
 				<i class="fa fa-power-off"></i> </a>
+				<!-- 이부분 가져와야함 test 프로젝트에서  -->
 				<form action="/plan/my_plan2" method="GET">
 					<button type="submit" class="btn btn-primary" type="reset">버튼</button>
 				</form>
@@ -131,8 +137,7 @@
 	</div>
 	<!-- page-wrapper -->
 	<!-- 해당 form jsp include에다가 넣어서 contentTypeId contentID 넣어서 보내주기  -->
-   <form id="modalForm" name="modalForm" action="/plan/guide">
-	</form> 
+	<form id="modalForm" name="modalForm" action="/plan/guide"></form>
 	<div id="modal-Guide" style="height: 100%; display: none;"
 		class="modal fade bs-example-modal-lg in" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="false">
@@ -150,5 +155,39 @@
 			</div>
 		</div>
 	</div>
+
+	<input type="hidden" id="totaldate" value="${total_date }">
+	<input type="hidden" id="plantitle" value="${plan_title}">
+	<input type="hidden" id="plandate" value="${plan_date }">
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="mySmallModalLabel" id="addModal" aria-hidden="true">
+		<div class="modal-dialog"
+			style="max-width: 100%; width: auto; display: table;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="myModalLabel">${plan_title }</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+
+				</div>
+				<div class="modal-body">
+					<input type="text" id=s_title name="spot_title" readonly><br> 
+					<select id="day" name="days" required autofocus>
+					    <option value="1" selected>1일차</option>
+					<c:forEach var="i" begin="2" end="${total_date }">
+					    <option value="${i }">${i }일차</option>
+					</c:forEach>
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary confirm" type="button" id="confirm">예</button>
+					<button class="btn btn-primary" type="button" data-dismiss="modal">아니요</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>

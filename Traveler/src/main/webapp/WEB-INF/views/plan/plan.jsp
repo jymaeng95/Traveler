@@ -47,15 +47,12 @@
 								새로운 여행을 계획해 봅시다.</h2>
 							<div class="row">
 								<div class="col-sm-6">
-									<button type="button" id="new_plan"
-										style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid">
-										<!-- href="/plan/create" -->
-										새 로운 여행
-									</button>
+									<button type="button" id="new_plan" style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid"> <!-- href="/plan/create" -->
+										새 로운 여행</button>
 								</div>
 								<div class="col-sm-6">
 									<!-- 임시 마이플랜으로 이동  -->
-									<a href="/spot/spot"
+									<a href="/plan/create2"
 										style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid">스팟
 										찾기</a>
 								</div>
@@ -66,7 +63,7 @@
 			</section>
 		</div>
 	</main>
-	</div>
+
 	<div class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" id="myModal" aria-hidden="true">
 		<div class="modal-dialog"
@@ -81,12 +78,15 @@
 
 
 				</div>
+				<form id="plan_info" method="get" action="/plan/create">
 				<div class="modal-body">
 					<input type="text" id="p_title" name="plan_title"
 						placeholder="여행제목" style="width: 308px"><br> <input
-						type="text" id="p_date" placeholder="여행날짜" style="width: 100%"
+						type="text" id="p_date" name="plan_date" placeholder="여행날짜" style="width: 100%"
 						readonly />
+					<input type="hidden" name="total_date" id="t_date" />
 				</div>
+				</form>
 				<div class="modal-footer">
 					<button class="btn btn-primary" type="button" id="confirm">예</button>
 					<button class="btn btn-primary" type="button" data-dismiss="modal">아니요</button>
