@@ -3,16 +3,22 @@ package com.traveler.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.traveler.api.SpotAPI;
 import com.traveler.domain.BookmarkVO;
+import com.traveler.domain.MemberVO;
 import com.traveler.domain.SpotVO;
+import com.traveler.domain.UserPlanVO;
 import com.traveler.service.BookmarkServiceImpl;
+import com.traveler.service.UserPlanService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -22,6 +28,7 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class PlannerController {
 	private BookmarkServiceImpl b_service;
+	private UserPlanService planService;
 	private SpotAPI spot;
 	
 	@RequestMapping(value="/plan/my_plan", method=RequestMethod.GET)
@@ -31,11 +38,20 @@ public class PlannerController {
 		return "/plan/my_plan";
 	}
 	
-	@RequestMapping(value="/plan/my_plan2", method=RequestMethod.GET)
-	public String myPlan2(Model model) {
+	@RequestMapping(value="/plan/plandetail", method=RequestMethod.POST)
+	public String myPlan2(@RequestParam(value="planData") String data,Model model,HttpSession session) throws Exception {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		List<UserPlanVO> plan = planService.convertUserPlan(data, member.getUserId());
+		log.info(plan);
+		for(int i=0;i<plan.size();i++) {
+			boolean result = planService.saveUserPlan(plan.get(i));
+			if (result) log.info("plan is Saved");
+			else log.info("plan is Not Saved");
+		}
+		log.info(data);
 		
-		log.info("my_plan2");
-		return "/plan/my_plan2";
+		model.addAttribute("planList",plan);
+		return "/plan/plandetail";
 	}
 	
 	@RequestMapping(value="/plan/plan", method =RequestMethod.GET)
@@ -50,6 +66,7 @@ public class PlannerController {
 		model.addAttribute("plan_title", plan_title);
 		model.addAttribute("plan_date", plan_date);
 		model.addAttribute("total_date", total_date);
+		model.addAttribute("planNo",planService.getTotalCountPlan());
 		return "/plan/create";
 	}
 	

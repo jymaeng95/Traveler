@@ -10,6 +10,7 @@ $(document).ready(function() {
 	var keywordParam = { pageNo : 1, numOfRow : 5 ,keyword : ""};
 	var keyword_flag = false;
 	var flag = 0;	//0:추천 1:북마크 2: keyword
+	var plan_data=[];
 	//첫데이터 불러오기 
 	$.ajax({
 		url : "/spot/information",
@@ -203,7 +204,18 @@ $(document).ready(function() {
 	$("#btn-save").click(function(){
 		$(".position-data").each(function(){
 			console.log($(this).val());
+			plan_data.push(JSON.parse($(this).val()));
 		});
+		var frmData = {"data" : plan_data};
+		alert(frmData);
+		var planForm = document.getElementById("planForm");
+		var input = document.createElement('input');
+		input.setAttribute("type","hidden");
+		input.setAttribute("name","planData");
+		input.setAttribute("value",JSON.stringify(frmData));
+		planForm.appendChild(input);
+
+		planForm.submit();
 	});
 });
 function test(marker){
@@ -440,11 +452,16 @@ function addModal(position,map) {
 		content.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
 
 		$("#addModal").modal("hide");
+		var strArr = $("#plandate").val();
+		var stDate = new Date(parseInt(strArr.substr(0,4)), parseInt(strArr.substr(5,2))-1, parseInt(strArr.substr(8,2)));
+		stDate.setDate(stDate.getDate() + ($("#day").val() -1));
+		var split_date = stDate.getFullYear()+"-"+(stDate.getMonth()+1)+"-"+stDate.getDate()
 
 		position.planTitle = $("#plantitle").val();
-		position.planDate = $("#plandate").val();
+		position.planDate = split_date;
 		position.planDay = $("#day").val();
 		position.planTotalDate = $("#totaldate").val();
+		position.planno = $("#planno").val();
 		var marker = new Tmapv2.Marker({
 			position : position.lonlat,
 			icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_p.png",

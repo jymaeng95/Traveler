@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.traveler.mapper.UserPlanMapper">
+	<resultMap id="UserPlanVO"
+		type="com.traveler.domain.UserPlanVO">
+		<id column="plsnNo" property="planNo" />
+		<id column="userId" property="userId" />
+		<id column="title" property="title" />
+		<result column="contentId" property="contentId" />
+		<result column="contentTypeId" property="contentTypeId" />
+		<result column="addr" property="addr" />
+		<result column="img_src" property="img_src" />
+		<result column="mapX" property="mapX" />
+		<result column="mapY" property="mapY" />
+		<result column="planTitle" property="planTitle" />
+		<result column="planDate" property="planDate" />
+		<result column="planDay" property="planDay" />
+		<result column="planTotalDate" property="planTotalDate" />
+		<collection property="memberVO"
+			ofType="com.traveler.domain.MemberVO">
+			<id column="userId" property="userId" />
+			<result column="userPw" property="userPw" />
+			<result column="email" property="email" />
+			<result column="nickname" property="nickname" />
+			<result column="is_kakao" property="is_kakao" />
+		</collection>
+	</resultMap>
+	<insert id="insertPlan">
+		insert into userplan (planno,
+		userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planTitle,planDate,planDay,planTotalDate)
+		values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
+		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planTitle}, #{planDate}, #{planDay},
+		#{planTotalDate})
+	</insert>
+
+	<select id="readPlans" resultMap="UserPlanVO">
+		select * from userplan where
+		userId = #{userId} and planNo = #{planNo}
+	</select>
+
+	<delete id="deletePlan">
+		delete from userplan
+		where userId = #{userId} and
+		planNo = #{planNo}
+	</delete>
+
+	<update id="updatePlan">
+		merge into userplan
+		using dual
+		on (planNo=#{planNo} and
+		userId=#{userId} and title=#{title})
+		when matched then
+		update set
+		planDay = #{planDay}, planDate=#{planDate}
+		when not matched then
+		insert
+		(planNo,userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planTitle,planDate,planDay,planTotalDate)
+		VALUES (#{planNo},#{userId},#{title} #{contentId},#{contentTypeId},
+		#{addr}, #{img_src},
+		#{mapX}, #{mapY}, #{planTitle}, #{planDate},
+		#{planDay},
+		#{planTotalDate})
+	</update>
+
+	<select id="readAllPlans" resultMap="UserPlanVO">
+		select planno, plantitle, userid
+		from userplan
+		where userid=#{userId}
+		group by planno,plantitle,userid
+	</select>
+	
+	<select id="getCountPlanNo" resultType="int">
+		select count(distinct planno)+1
+		from userplan
+	</select>
+</mapper>
