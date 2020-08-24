@@ -41,15 +41,17 @@ public class PlannerController {
 	@RequestMapping(value="/plan/plandetail", method=RequestMethod.POST)
 	public String myPlan2(@RequestParam(value="planData") String data,Model model,HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		log.info(data);
 		List<UserPlanVO> plan = planService.convertUserPlan(data, member.getUserId());
 		log.info(plan);
-		for(int i=0;i<plan.size();i++) {
-			boolean result = planService.saveUserPlan(plan.get(i));
-			if (result) log.info("plan is Saved");
-			else log.info("plan is Not Saved");
-		}
-		log.info(data);
-		
+//		for(int i=0;i<plan.size();i++) {
+//			boolean result = planService.saveUserPlan(plan.get(i));
+//			if (result) log.info("plan is Saved");
+//			else log.info("plan is Not Saved");
+//		}
+//		log.info(data);
+//		
+		model.addAttribute("planLength",plan.size());
 		model.addAttribute("planList",plan);
 		return "/plan/plandetail";
 	}

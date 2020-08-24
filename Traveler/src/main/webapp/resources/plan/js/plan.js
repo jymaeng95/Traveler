@@ -297,7 +297,8 @@ function callAjaxRecommend(param,reco_markers,map) {
 function setListItems(data,markers,map,pageNo){
 	var positions=[];
 	$.each(data, function(i, result) {
-		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
+		var overview = result.overview.replace(/'/g,"");
+		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
 		// 부모 엘리먼트에 append 할 데이터를 셋팅한다.
 
 		var content='<li class="reco-ul"><hr><div class="row spot_info'+pageNo+'">'
@@ -425,7 +426,13 @@ function markerClick(map,marker,latlng,title,position){
 			$('.plan_title').each(function(i){
 				if($(this).text() == title) {
 					diff_title = false;
-					alert("이미 추가했습니다.")
+					if(confirm("이미 추가했습니다. \n삭제하시겠습니까?")){
+						marker.setMap(null);
+						$("."+position.contentId).remove();
+//						$("#"+position.contentId).remove();
+//						$('.position-data option[value="'+position.positionData+'"]').remove();
+						alert("d")
+					}
 					return false;
 				}
 			});
@@ -440,7 +447,7 @@ function addModal(position,map) {
 	$("#s_title").val(position.title);
 	$(".confirm").unbind("click").bind("click",function(){
 		alert(position.img) // day1형식
-		var content = $('<li class="list_add_content"><hr><div class="row">'
+		var content = $('<li class="list_add_content '+position.contentId+'"><hr><div class="row">'
 				+'<div class="col-lg-5" style="background-color : #f5f5f5"><img class="img-responsive" class="plan_photo"'
 				+'style="cursor: pointer;" src="'+position.img+'" alt="" width="150" height="100">'
 				+'</div><div class="col-lg-7" style="background-color : #f5f5f5">'
@@ -448,7 +455,6 @@ function addModal(position,map) {
 				+'<h6 class="plan_addr">'+position.addr+'</h6>'
 				+'</div></div></li>');
 
-//		var li = $('<li>'+ position.title +'</li>');
 		content.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
 
 		$("#addModal").modal("hide");
@@ -469,14 +475,15 @@ function addModal(position,map) {
 			title : "["+position.planDay+"일차]"+ position.title
 		});      
 		markerClick(map,marker,position.lonlat,position.title,position);
-		delete position['overview'];
+//		delete position['overview'];
 		var position_data = JSON.stringify(position);
-		var input = $("<input type='hidden' class='position-data' value='"+position_data+"'>");
+		position.positionData = position_data;
+
+		var input = $("<input type='hidden' class='position-data "+position.contentId+"' value='"+position_data+"'>");
 		input.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
 		$("#addModal").modal("hide");
 	});
 }
-
 function detailModal(contentId,contentTypeId){
 	$("#modalForm").append("<input id='modal-cid' class='cid' type='hidden' name='contentId' value="+contentId+">");
 	$("#modalForm").append("<input id='modal-ctId' class='ctid' type='hidden' name='contentTypeId' value="+contentTypeId+">");
@@ -526,7 +533,7 @@ function loadBookmark(){
 
 				$("#b_addr"+key).text(data[key].addr);
 
-				positions.push({title : data[key].title, lonlat : new Tmapv2.LatLng(data[key].mapX, data[key].mapY),addr : data[key].addr , overview : data[key].overview, img :  data[key].img_src, contentId : data[key].contentId, contentTypeId : data[key].contentTypeId });
+				positions.push({title : data[key].title, lonlat : new Tmapv2.LatLng(data[key].mapX, data[key].mapY),addr : data[key].addr , overview : data[key].overview.replace(/'/g,""), img :  data[key].img_src, contentId : data[key].contentId, contentTypeId : data[key].contentTypeId });
 				$(".totalCount").text(data[key].totalCount);
 			});				
 		},
@@ -540,7 +547,7 @@ function loadBookmark(){
 function keywordItems(data,markers,map,pageNo){
 	var positions=[];
 	$.each(data, function(i, result) {
-		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
+		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview.replace(/'/g,""), img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
 		// 부모 엘리먼트에 append 할 데이터를 셋팅한다.
 
 		var content='<li class="keyword-ul"><hr><div class="row keyword_info'+pageNo+'">'
@@ -580,7 +587,7 @@ function keywordItems(data,markers,map,pageNo){
 function TmapItems(data,markers,map,pageNo){
 	var positions=[];
 	$.each(data, function(i, result) {
-		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
+		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview.replace(/'/g,""), img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
 		// 부모 엘리먼트에 append 할 데이터를 셋팅한다.
 
 		var content='<li class="keyword-ul"><hr><div class="row keyword_info'+pageNo+'">'
