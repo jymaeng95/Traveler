@@ -1,7 +1,11 @@
 $(document).ready(function(){
 	$("#new_plan").click(function(){
-		$("#myModal").modal("show");
-
+		if($("#userId").val() == "") {
+			alert("로그인하세요")
+			location.href = "/";
+		}else {
+			$("#myModal").modal("show");
+		}
 	});
 	$("#confirm").click(function(){
 		if($("#p_title").val()=="" || $("#p_date").val()=="") {
@@ -22,28 +26,7 @@ $(document).ready(function(){
 
 			alert(btDay)
 			document.getElementById("t_date").value= btDay; 
-			
 			$("#plan_info").submit();
-
-
-//			$.ajax({
-//			url : "/plan/create_info",
-//			type : "post",
-//			dataType : "json",
-//			data : {
-//			"p_title" : $("#p_title").val(),
-//			"p_date" : $("#p_date").val()
-//			},
-//			success : function(data){
-//			if(data){
-//			$("#myModal").modal("hide");
-//			location.href= "/plan/create";
-//			}
-//			},
-//			error : function(error) {
-//			alert("에러")
-//			}
-//			});
 		}
 	});
 
@@ -53,7 +36,4 @@ $(document).ready(function(){
 		inline: true,
 		static : true
 	});
-
-
-
 });

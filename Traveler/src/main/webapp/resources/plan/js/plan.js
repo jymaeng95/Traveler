@@ -201,21 +201,23 @@ $(document).ready(function() {
 			.addClass("active");
 		}
 	});
-	$("#btn-save").click(function(){
+	$("#btn-save").click(function(){ // 수정
 		$(".position-data").each(function(){
 			console.log($(this).val());
 			plan_data.push(JSON.parse($(this).val()));
 		});
 		var frmData = {"data" : plan_data};
-		alert(frmData);
-		var planForm = document.getElementById("planForm");
-		var input = document.createElement('input');
-		input.setAttribute("type","hidden");
-		input.setAttribute("name","planData");
-		input.setAttribute("value",JSON.stringify(frmData));
-		planForm.appendChild(input);
-
-		planForm.submit();
+		if(frmData.data != ""){
+			var planForm = document.getElementById("planForm");
+			var input = document.createElement('input');
+			input.setAttribute("type","hidden");
+			input.setAttribute("name","planData");
+			input.setAttribute("value",JSON.stringify(frmData));
+			planForm.appendChild(input);
+			planForm.submit();
+		} else {
+			alert("저장된 여행지가 없습니다.")
+		}
 	});
 });
 function test(marker){
@@ -400,15 +402,29 @@ function markerClick(map,marker,latlng,title,position){
 		"<a href='javascript:void(0)' title='더 보기'><i class='fas fa-1x fa-info-circle'></i></a>"+
 		"</li>"+
 		"<li class='addList' style='display: table-cell; vertical-align: middle; width: 50%; height: 100%; border-right: 1px solid #EFEFEF;'>"+
-		"<a href='javascript:void(0)' title='공유하기'><i class='fas fa-1x fa-plus-circle'></i></a>"+
-		"</li>"+
-		/*	"<li style='display: table-cell; vertical-align: middle; width: 33.333%; height: 100%;'>"+
-		"<a href='#' title='길찾기'><img src='resources/images/sample/ico-road.svg'></a>"+
-		"</li>"+*/
-		"</ul>"+
-		"</div>"+
-		"<a href='javascript:void(0)' onclick='onClose()' class='btn-close' style='position: absolute; top: 10px; right: 10px; display: block; width: 15px; height: 15px; no-repeat center;'><i class='fas fa-times'></i></a>"+
-		"</div>";
+		"<a href='javascript:void(0)' title='공유하기'>"
+		if($.isNumeric(position.liIndex)){
+			content = content + "<i class='fas fa-1x fa-trash'>" +
+			"</i></a></li>"+
+			/*	"<li style='display: table-cell; vertical-align: middle; width: 33.333%; height: 100%;'>"+
+			"<a href='#' title='길찾기'><img src='resources/images/sample/ico-road.svg'></a>"+
+			"</li>"+*/
+			"</ul>"+
+			"</div>"+
+			"<a href='javascript:void(0)' onclick='onClose()' class='btn-close' style='position: absolute; top: 10px; right: 10px; display: block; width: 15px; height: 15px; no-repeat center;'><i class='fas fa-times'></i></a>"+
+			"</div>";
+		} else {
+			content = content + "<i class='fas fa-1x fa-plus-circle'>" +
+			"</i></a></li>"+
+			/*	"<li style='display: table-cell; vertical-align: middle; width: 33.333%; height: 100%;'>"+
+			"<a href='#' title='길찾기'><img src='resources/images/sample/ico-road.svg'></a>"+
+			"</li>"+*/
+			"</ul>"+
+			"</div>"+
+			"<a href='javascript:void(0)' onclick='onClose()' class='btn-close' style='position: absolute; top: 10px; right: 10px; display: block; width: 15px; height: 15px; no-repeat center;'><i class='fas fa-times'></i></a>"+
+			"</div>";
+		}
+
 		infoWindow = new Tmapv2.InfoWindow({
 			position: latlng, //Popup 이 표출될 맵 좌표
 			content: content, //Popup 표시될 text
@@ -423,39 +439,59 @@ function markerClick(map,marker,latlng,title,position){
 		}
 		$(".addList").unbind("click").bind("click",function(){
 			var diff_title = true;
+//			alert($.isNumeric(position.liIndex))
 			$('.plan_title').each(function(i){
 				if($(this).text() == title) {
 					diff_title = false;
 					if(confirm("이미 추가했습니다. \n삭제하시겠습니까?")){
 						marker.setMap(null);
-						$("."+position.contentId).remove();
+//						alert(position.planDay)
+						$(".day"+position.planDay+"-"+position.liIndex).remove();
+						position.liIndex = "fasle";
+						delete position['positionData'];
 //						$("#"+position.contentId).remove();
 //						$('.position-data option[value="'+position.positionData+'"]').remove();
-						alert("d")
+//						alert($("#day").val())
 					}
+
 					return false;
 				}
 			});
 			if(diff_title == true) {
-				addModal(position,map);
+				addModal(position,map,marker);
 			}
 		});
 	});
 }
-function addModal(position,map) {
+function addModal(position,map,marker) {
 	$("#addModal").modal("show");
 	$("#s_title").val(position.title);
 	$(".confirm").unbind("click").bind("click",function(){
 		alert(position.img) // day1형식
-		var content = $('<li class="list_add_content '+position.contentId+'"><hr><div class="row">'
+
+		var dayNum = $("#day").val();
+		var liIndex = $( '.sub-plan'+$("#day").val() ).find( "li" ).length + 1;
+		var content = $('<li class="list_add_content day'+dayNum+'-'+liIndex+'"><hr><div class="row testRemove">'
 				+'<div class="col-lg-5" style="background-color : #f5f5f5"><img class="img-responsive" class="plan_photo"'
 				+'style="cursor: pointer;" src="'+position.img+'" alt="" width="150" height="100">'
 				+'</div><div class="col-lg-7" style="background-color : #f5f5f5">'
 				+'<h5 class="plan_title">'+position.title+'</h5>'
 				+'<h6 class="plan_addr">'+position.addr+'</h6>'
+				+'<span style="float: right;"><i class="fas fa-1x fa-trash"></i></span>'
 				+'</div></div></li>');
 
-		content.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
+//		var li = $('<li>'+ position.title +'</li>');
+		content.appendTo($("#day"+ $("#day").val() +" .sub-plan" + $("#day").val() ));
+
+//		alert(liIndex)
+
+		$(".day"+dayNum+"-"+liIndex + " span").click(function(){
+			marker.setMap(null);
+			$(".day"+position.planDay+"-"+position.liIndex).remove();
+			position.liIndex = "fasle";
+			delete position['positionData'];
+			alert("삭제했습니다.")
+		});
 
 		$("#addModal").modal("hide");
 		var strArr = $("#plandate").val();
@@ -468,6 +504,7 @@ function addModal(position,map) {
 		position.planDay = $("#day").val();
 		position.planTotalDate = $("#totaldate").val();
 		position.planno = $("#planno").val();
+		position.liIndex = liIndex;
 		var marker = new Tmapv2.Marker({
 			position : position.lonlat,
 			icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_p.png",
@@ -479,8 +516,8 @@ function addModal(position,map) {
 		var position_data = JSON.stringify(position);
 		position.positionData = position_data;
 
-		var input = $("<input type='hidden' class='position-data "+position.contentId+"' value='"+position_data+"'>");
-		input.appendTo($("#day"+ $("#day").val() +" .sub-plan"));
+		var input = $("<input type='hidden' class='position-data day"+dayNum+"-"+liIndex+"' value='"+position_data+"'>");
+		input.appendTo($("#day"+ $("#day").val() +" .sub-plan" + $("#day").val()));
 		$("#addModal").modal("hide");
 	});
 }
@@ -587,7 +624,7 @@ function keywordItems(data,markers,map,pageNo){
 function TmapItems(data,markers,map,pageNo){
 	var positions=[];
 	$.each(data, function(i, result) {
-		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview.replace(/'/g,""), img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
+		var position = {title : result.title, lonlat : new Tmapv2.LatLng(result.mapX, result.mapY), addr : result.addr1 , overview : result.overview, img :  result.firstImage2, contentId : result.contentId, contentTypeId : result.contentTypeId };
 		// 부모 엘리먼트에 append 할 데이터를 셋팅한다.
 
 		var content='<li class="keyword-ul"><hr><div class="row keyword_info'+pageNo+'">'

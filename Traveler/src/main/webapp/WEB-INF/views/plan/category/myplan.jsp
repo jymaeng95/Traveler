@@ -10,7 +10,7 @@
             </a>
             
             <div class="sidebar-submenu" style="background: #f5f5f5;">
-              <ul class="sub-plan">
+              <ul class="sub-plan${i }"> <!-- 수정 -->
               </ul>
             </div>
             

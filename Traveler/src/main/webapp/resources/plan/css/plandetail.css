@@ -1,3 +1,7 @@
 .bottom-calendar { padding-top : 10%;}
 
 .right-planlist {overflow-y : hidden; overflow:auto; height:400px}
+
+ul { list-style:none; padding:0;}
+
+.right-planlist li { background : #e9ecef; border : none;}

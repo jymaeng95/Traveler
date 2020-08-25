@@ -15,6 +15,8 @@
 </head>
 <body>
 	<%@include file="../includes/sidebar.jsp"%>
+	<input type="hidden" name="userId" id="userId"
+		value="${userInfo.userId }">
 	<main class="page-content">
 		<div class="container" style="padding: 0">
 			<section class="bg-light" style="margin-top: 15px;">
