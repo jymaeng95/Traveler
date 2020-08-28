@@ -82,7 +82,7 @@ public class UserPlanServiceImpl implements UserPlanService{
 			JSONObject lonlat = (JSONObject) arrObj.get("lonlat");
 			plan.setMapX(lonlat.get("_lat").toString());
 			plan.setMapY(lonlat.get("_lng").toString());
-			plan.setPlanDate(Date.valueOf(arrObj.get("planDate").toString()));
+			plan.setPlanDate(arrObj.get("planDate").toString());
 			plan.setPlanTitle(arrObj.get("planTitle").toString());
 			plan.setPlanDay(arrObj.get("planDay").toString());
 			plan.setPlanTotalDate(arrObj.get("planTotalDate").toString());

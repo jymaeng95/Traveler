@@ -10,6 +10,7 @@
 <script src="/resources/plan/js/plandetail.js"></script>
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx15e7f0ab6ce4456f9a97564f50cf5e2f"></script>
+		<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -26,7 +27,7 @@
 						<hr>
 						<ul id="day1">
 							<c:set var="day" value="1"></c:set>
-							<c:forEach items="${planList }" var="list">
+							<c:forEach items="${planList }" var="list" varStatus="status">
 								<c:if test="${day ne list.planDay }">
 						</ul>
 						<button type="button" class="btn btn-primary optimize" value="최적화"></button>
@@ -38,12 +39,14 @@
 						<ul id="day${list.planDay }">
 							<hr>
 							</c:if>
-							<li class="ui-state-default" value="${list }">
+							<li class="ui-state-default" id='${status.index }'>
 								<div class="row">
+									<input type="hidden" name="jsondata" value='${list }'>
 									<div class="col-lg-5">
 										<img class="img-responsive" id="r_photo${i}" onclick=""
 											style="cursor: pointer;" src="${list.img_src }" alt=""
 											width="100" height="75">
+
 									</div>
 									<div class="col-lg-7">
 										<span id="r_title${i}" style="font-size: 12pt;"><c:out
@@ -61,7 +64,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="container bottom-calendar jumbotron">sdfasdf</div>
+		<div class="container bottom-calendar jumbotron">
+			<c:out value="${planList }"></c:out>
+		</div>
 	</main>
 	</div>
 </body>

@@ -22,6 +22,7 @@ import com.traveler.service.UserPlanService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import net.sf.json.JSONArray;
 
 @Controller
 @Log4j
@@ -52,7 +53,7 @@ public class PlannerController {
 //		log.info(data);
 //		
 		model.addAttribute("planLength",plan.size());
-		model.addAttribute("planList",plan);
+		model.addAttribute("planList",JSONArray.fromObject(plan));
 		return "/plan/plandetail";
 	}
 	

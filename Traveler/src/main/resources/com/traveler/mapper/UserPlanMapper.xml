@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into userplan (planno,
 		userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planTitle,planDate,planDay,planTotalDate)
 		values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
-		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planTitle}, #{planDate}, #{planDay},
+		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planTitle}, to_date(#{planDate},'YY/MM/DD'), #{planDay},
 		#{planTotalDate})
 	</insert>
 
@@ -53,13 +53,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userId=#{userId} and title=#{title})
 		when matched then
 		update set
-		planDay = #{planDay}, planDate=#{planDate}
+		planDay = #{planDay}, planDate=to_date(#{planDate},'YY/MM/DD')
 		when not matched then
 		insert
 		(planNo,userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planTitle,planDate,planDay,planTotalDate)
 		VALUES (#{planNo},#{userId},#{title} #{contentId},#{contentTypeId},
 		#{addr}, #{img_src},
-		#{mapX}, #{mapY}, #{planTitle}, #{planDate},
+		#{mapX}, #{mapY}, #{planTitle}, to_date(#{planDate},'YY/MM/DD'),
 		#{planDay},
 		#{planTotalDate})
 	</update>

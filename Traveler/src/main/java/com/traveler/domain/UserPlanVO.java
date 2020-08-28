@@ -16,7 +16,7 @@ public class UserPlanVO {
 	private String mapX;
 	private String mapY;
 	private String planTitle;
-	private Date planDate;
+	private String planDate;
 	private String planDay;
 	private String planTotalDate;
 }
