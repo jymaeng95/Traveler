@@ -3,12 +3,19 @@
 tabtable {
   margin: 0 auto;
   padding: 0px 0px 0px 0px;
+  margin-left:120px;
+}
+h1 {
+	margin-left:120px;
 }
 
 tabsection {
   display: none;
   padding: 40px 30px 40px 30px;
   border: 1px solid #ddd;
+  margin-left:120px;
+  margin-right:120px;
+  background: #ffffff;
 }
 
 input.tab {
@@ -28,6 +35,8 @@ label.tab {
   border: 1px solid #ddd;
   background: #eeeeee;
 }
+
+
 
 label.tab:before {
   font-family: fontawesome;
@@ -177,3 +186,12 @@ body {
 		vertical-align: middle;
 		margin-right: 10px;
 	}
+	
+	#pagination-demo {
+	display: inline-block;
+	margin-bottom: 1.75em;
+}
+
+#pagination-demo li {
+	display: inline-block;
+}

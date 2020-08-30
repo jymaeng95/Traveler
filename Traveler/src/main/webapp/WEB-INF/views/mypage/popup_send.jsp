@@ -71,21 +71,22 @@ form div label, form div input {
   
   </script>
   <body>
+  <h4>쪽지 보내기</h4><hr/>
     <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">보내는 사람</label>
         <input class="form-control" type="text" name="sender" id="sender" value="${userInfo.userId }" style="display:none;"/>
         <input class="form-control" type="text" name="userId" id="userId" />
         
     </div>
     
     <div class="form-group">
-    	<label for="message">Leave a message</label>
+    	<label for="message">내용</label>
     	<textarea class="form-control" name="mcontent" id="mcontent" rows="15" cols="30" onkeyup="count(this.value)"></textarea>
     	<span style="color:#aaa;" id="counter">(0 / 최대 200자)</span>
     </div>
     
     <p>
-        <button class="form-btn" type="button" id="btn-submit" onClick="sendMsg('${userInfo.userId}');">Send</button>
+        <input type="submit" value="보내기" class="btn btn-primary btn-block" onclick="sendMsg('${userInfo.userId}')"/>
     </p>
   </body>
 </html>

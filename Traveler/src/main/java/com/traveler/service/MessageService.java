@@ -20,14 +20,16 @@ public interface MessageService {
 	
 	public ArrayList<MessageVO> getMessagePage4(MessageVO message) throws Exception;
 	
+	public MessageVO Read(MessageVO message) throws Exception;
+	
 	public int countMessage(MessageVO message) throws Exception;
 	public int countMessage2(MessageVO message) throws Exception;
 	public int countMessage3(MessageVO message) throws Exception;
 	public int countMessage4(MessageVO message) throws Exception;
 	
+	
 	public boolean deleteMessage(MessageVO message) throws Exception;
 	
 	public boolean updateMessage(MessageVO message) throws Exception;
 	public boolean updateMessage2(MessageVO message) throws Exception;
-
 }

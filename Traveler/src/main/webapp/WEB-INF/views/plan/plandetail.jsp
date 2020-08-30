@@ -23,50 +23,53 @@
 				</div>
 				<div class="col-md-4 ml-auto right-planlist">
 					<div>
-						<h4>Day 1</h4>
-						<hr>
-						<ul id="day1">
-							<c:set var="day" value="1"></c:set>
-							<c:forEach items="${planList }" var="list" varStatus="status">
-								<c:if test="${day ne list.planDay }">
-						</ul>
-						<button type="button" class="btn btn-primary optimize" value="최적화"></button>
-					</div>
-					<div>
-						<h4>
-							<c:out value="Day ${list.planDay }"></c:out>
-						</h4>
-						<ul id="day${list.planDay }">
+					<h4>Day 1</h4>
+					<hr>
+					<ul id="day1">
+					<c:set var="day" value="1"></c:set>
+					<c:forEach items="${planList }" var="list" varStatus="status">
+						<c:if test="${day ne list.planDay }">
+							</ul>
+			
+								<button type="button" class="btn btn-primary optimize" value="optimize">최적화</button> 
+							
+							</div><div>
+							<h4>
+								<c:out value="Day ${list.planDay }"></c:out>
+							</h4>
+							<ul id="day${list.planDay }">
 							<hr>
-							</c:if>
-							<li class="ui-state-default" id='${status.index }'>
-								<div class="row">
-									<input type="hidden" name="jsondata" value='${list }'>
-									<div class="col-lg-5">
-										<img class="img-responsive" id="r_photo${i}" onclick=""
-											style="cursor: pointer;" src="${list.img_src }" alt=""
-											width="100" height="75">
-
-									</div>
-									<div class="col-lg-7">
-										<span id="r_title${i}" style="font-size: 12pt;"><c:out
-												value="${list.title }"></c:out></span> <span id="r_addr${i}"
-											style="font-size: 10pt;"><c:out value="${list.addr }"></c:out></span>
-									</div>
-								</div>
-								<hr>
-							</li>
-							<c:set var="day" value="${list.planDay }"></c:set>
-							</c:forEach>
-						</ul>
-						<button type="button" class="btn btn-primary optimize" value="최적화"></button>
+						</c:if>
+						<li class="ui-state-default" id='${status.index }'>
+						<div class="row">
+							<input type="hidden" name="jsondata" value='${list }'>
+							<div class="col-lg-5">
+								<img class="img-responsive" id="r_photo${i}" onclick=""
+									style="cursor: pointer;" src="${list.img_src }" alt=""
+									width="100" height="75">
+						
+							</div>
+							<div class="col-lg-7">
+								<span id="r_title${i}" style="font-size: 12pt;"><c:out
+										value="${list.title }"></c:out></span> <span id="r_addr${i}"
+									style="font-size: 10pt;"><c:out value="${list.addr }"></c:out></span>
+							</div>
+						</div>
+						<hr>
+						</li>
+						<c:set var="day" value="${list.planDay }"></c:set>
+					</c:forEach>
+					</ul>
+					<button type="button" class="btn btn-primary optimize" value="최적화">최적화</button> 
 					</div>
 				</div>
 			</div>
+			<div style="padding-top:20px">
+				<p id="result"></p>
+			</div>
 		</div>
-		<div class="container bottom-calendar jumbotron">
-			<c:out value="${planList }"></c:out>
-		</div>
+
+		<div class="container bottom-calendar jumbotron"><c:out value="${planList }"></c:out></div>
 	</main>
 	</div>
 </body>

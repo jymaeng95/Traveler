@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.traveler.domain.MemberVO;
 import com.traveler.domain.MessageVO;
 import com.traveler.domain.PageVO;
+import com.traveler.mapper.MemberMapper;
 import com.traveler.mapper.MessageMapper;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.extern.log4j.Log4j;
 public class MessageServiceImpl implements MessageService {
 	
 	private MessageMapper mapper;
+	private MemberMapper m_mapper;
 	
 	@Override
 	public boolean addMessage(MessageVO message) throws Exception {
@@ -55,14 +57,6 @@ public class MessageServiceImpl implements MessageService {
 		log.info("읽음처리: " + message);
 		return mapper.messageUpdate2(message) > 0;
 	}
-
-//	@Override
-//	public ArrayList<MessageVO> getUserMessage2(MessageVO message) throws Exception {
-//		// TODO Auto-generated method stub
-//		log.info("보낸 메세지 불러오기  :" + message);
-//		return mapper.messageRead2(message);
-//	}
-
 	
 	//---페이징
 	@Override
@@ -112,6 +106,12 @@ public class MessageServiceImpl implements MessageService {
 		// TODO Auto-generated method stub
 		log.info("get send_list archive : " + message);
 		return mapper.messagePaging4(message);
+	}
+
+	@Override
+	public MessageVO Read(MessageVO message) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.Read(message);
 	}
 
 }

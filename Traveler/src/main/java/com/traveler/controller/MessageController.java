@@ -34,22 +34,17 @@ public class MessageController {
 		
 		member = (MemberVO)session.getAttribute("userInfo");
 		message.setUserId(member.getUserId());
-		
-		int total = service.countMessage(message);
-		int total2 = service.countMessage2(message);
-		int total3 = service.countMessage3(message);
-		int total4 = service.countMessage4(message);
+
 		model.addAttribute("arcPage",arcPage);
 		model.addAttribute("tabPage",tabPage);
 		model.addAttribute("msg_list", service.getMessagePage(message));
 		model.addAttribute("msg_list2", service.getMessagePage2(message));
 		model.addAttribute("msg_list3", service.getMessagePage3(message));
 		model.addAttribute("msg_list4", service.getMessagePage4(message));
-		model.addAttribute("pageMaker", new PageVO(pageNo, total,10));
-		model.addAttribute("pageMaker2", new PageVO(pageNo, total2,10));
-		model.addAttribute("pageMaker3", new PageVO(pageNo, total3,10));
-		model.addAttribute("pageMaker4", new PageVO(pageNo, total4,10));
-		model.addAttribute("tabPage", tabPage);
+		model.addAttribute("pageMaker", new PageVO(pageNo, service.countMessage(message),10));
+		model.addAttribute("pageMaker2", new PageVO(pageNo, service.countMessage2(message),10));
+		model.addAttribute("pageMaker3", new PageVO(pageNo, service.countMessage3(message),10));
+		model.addAttribute("pageMaker4", new PageVO(pageNo, service.countMessage4(message),10));
 
 		return "/mypage/message";	
 	}
@@ -87,17 +82,15 @@ public class MessageController {
 	}
 	
 	@RequestMapping(value = "/mypage/popup_more", method = RequestMethod.GET)
-	public void popupGet(Model model) throws Exception{
-		
+	public void popupGet(@RequestParam("mid") int mid, 
+			@RequestParam("readType") String readType, Model model, MessageVO message) throws Exception{
+		model.addAttribute("msg", service.Read(message));
+		model.addAttribute("readType", readType);
 	}
-	@RequestMapping(value = "/mypage/popup_more2", method = RequestMethod.GET)
-	public void popupGet2(Model model) throws Exception{
-		
-	}
+
 	@RequestMapping(value = "/mypage/popup_send", method = RequestMethod.GET)
 	public void popupGet3(Model model) throws Exception{
 			
 	}
-	
 
 }

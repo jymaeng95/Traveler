@@ -25,39 +25,42 @@ form div label, form div input {
 </style>
 </head>
 <script>
-$(document).ready(function() {
-    document.getElementById("name").value = $("#parentId",opener.document).val();
-    document.getElementById("time").value = $("#parentId2",opener.document).val();
-    document.getElementById("content").value = $("#parentId3",opener.document).val();
-});
-
 function popup(){	
-	
 	var url = "/mypage/message2";
 	var name = "popup2";
 	window.open(url,name,"width=500, height=500, resizable=yes ");
-	
-	}
-
+}
 </script>
 <body>
+	<c:if test="${readType eq 'rcv'}"><h4>받은 쪽지</h4><hr/>
 	<div>
-        <label>보낸 사람</label>
-        <input type="text" name="name" id="name" disabled/>
+        <label>보낸 사람   <c:out value="${msg.sender }"/></label>
     </div>
     <div>
-        <label>받은 시간</label>
-        <input type="text" name="time" id="time" disabled/>
+        <label>받은 시간   <c:out value="${msg.senddate }"/></label>
     </div>
     <div class="form-group">
     	<label for="message">내용</label>
-    	<textarea class="form-control" name="content" id="content" rows="15" cols="30" disabled></textarea>
+    	<textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent }" disabled></textarea>
     </div>
     
-    <input type="submit" value="답장하기" class="btn btn-primary btn-block" onclick="popup()"/>
+    <input type="submit" value="답장하기" class="btn btn-primary btn-block" onclick="popup()"/></c:if>
     
-</form>	
-<pre id="output"></pre>
+    <c:if test="${readType eq 'send' }">
+    <h4>보낸 쪽지</h4><hr/>
+	<div>
+        <label>받는 사람   <c:out value="${msg.userId }"/></label>
+    </div>
+    <div>
+        <label>보낸 시간   <c:out value="${msg.senddate }"/></label>
+    </div>
+    <div class="form-group">
+    	<label for="message">내용</label>
+    	<textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent }" disabled></textarea>
+    </div>
+    </c:if>
+
+<!-- <pre id="output"></pre> -->
 
 </body>
 </html>

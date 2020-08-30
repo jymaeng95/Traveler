@@ -13,9 +13,11 @@ public class MessageVO {
 	private String senddate;
 	private String readstatus;	
 	private String status;
+	private String delstatus;
 	private MemberVO memberVO;
 	private int pageNum = 1;
 	private String tabPage = "rcv_list";
 	private String arcPage = "rcv_arc";
+	private String readType = "rcv";
 	private PageVO pageVO;
 }
