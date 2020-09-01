@@ -6,7 +6,10 @@ import com.traveler.domain.UserPlanVO;
 
 public interface UserPlanMapper {
 	//플랜 삽입
-	public int insertPlan(UserPlanVO plan);
+	public int insertPlanFirst(UserPlanVO plan);
+	
+	//스케줄러 삽입 
+	public int finalPlan(UserPlanVO plan);
 	//플랜 불러오기 
 	public List<UserPlanVO> readPlans(UserPlanVO plan);
 	//플랜 삭제 

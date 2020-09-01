@@ -25,7 +25,7 @@ public class UserPlanServiceImpl implements UserPlanService{
 	@Override
 	public boolean saveUserPlan(UserPlanVO plan) throws Exception {
 		log.info(plan);
-		int resultCount = mapper.insertPlan(plan);
+		int resultCount = mapper.insertPlanFirst(plan);
 		return resultCount>0;
 	}
 
@@ -58,6 +58,33 @@ public class UserPlanServiceImpl implements UserPlanService{
 		return mapper.readAllPlans(userId);
 	}
 	
+	public List<UserPlanVO> convertSchedule(String data) throws Exception {
+		List<UserPlanVO> schedule = new ArrayList<UserPlanVO>();
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(data);
+		JSONObject jobj = (JSONObject) obj;
+		JSONArray arr = (JSONArray) jobj.get("data");	
+		for(int i=0;i<arr.size();i++) {
+			UserPlanVO plan = new UserPlanVO();
+			JSONObject arrObj = (JSONObject) arr.get(i);
+			plan.setPlanNo(Integer.parseInt(arrObj.get("planNo").toString()));
+			plan.setUserId(arrObj.get("userId").toString());
+			plan.setTitle(arrObj.get("title").toString());
+			plan.setPlanDate(arrObj.get("planDate").toString());
+			if(arrObj.get("planTitle")!=null)
+				plan.setPlanTitle(arrObj.get("planTitle").toString());
+			plan.setPlanDay(arrObj.get("planDay").toString());
+			plan.setPlanTotalDate(arrObj.get("planTotalDate").toString());	
+			if(arrObj.get("descript")!=null)
+				plan.setDescript(arrObj.get("descript").toString());
+			plan.setStartDate(arrObj.get("startDate").toString());
+			plan.setEndDate(arrObj.get("endDate").toString());
+			plan.setIs_insertAfter(arrObj.get("is_insertAfter").toString());
+			
+			schedule.add(plan);
+		}
+		return schedule;
+	}
 	public List<UserPlanVO> convertUserPlan(String data,String userId) throws ParseException{
 		List<UserPlanVO> planInfo = new ArrayList<UserPlanVO>();
 		JSONParser parser = new JSONParser();
@@ -96,6 +123,14 @@ public class UserPlanServiceImpl implements UserPlanService{
 	@Override
 	public int getTotalCountPlan() throws Exception {
 		return mapper.getCountPlanNo();
+	}
+
+	@Override
+	public boolean saveSchedule(UserPlanVO plan) throws Exception {
+		// TODO Auto-generated method stub
+		log.info(plan);
+		int resultCount = mapper.finalPlan(plan);
+		return resultCount>0;
 	}
 	
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.traveler.api.SpotAPI;
 import com.traveler.domain.BookmarkVO;
@@ -45,18 +46,32 @@ public class PlannerController {
 		log.info(data);
 		List<UserPlanVO> plan = planService.convertUserPlan(data, member.getUserId());
 		log.info(plan);
-//		for(int i=0;i<plan.size();i++) {
-//			boolean result = planService.saveUserPlan(plan.get(i));
-//			if (result) log.info("plan is Saved");
-//			else log.info("plan is Not Saved");
-//		}
-//		log.info(data);
-//		
+		for(int i=0;i<plan.size();i++) {
+			boolean result = planService.saveUserPlan(plan.get(i));
+			if (result) log.info("plan is Saved");
+			else log.info("plan is Not Saved");
+		}
+		log.info(data);
+		
 		model.addAttribute("planLength",plan.size());
 		model.addAttribute("planList",JSONArray.fromObject(plan));
 		return "/plan/plandetail";
 	}
 	
+	@RequestMapping(value="plan/save/schedule", method=RequestMethod.POST)
+	public String savePlan(@RequestParam(value="schedule") String data, Model model, RedirectAttributes rttr) throws Exception {
+		log.info(data);
+		List<UserPlanVO> schedule = planService.convertSchedule(data);
+		
+		for(int i=0;i<schedule.size();i++) {
+			boolean result = planService.saveSchedule(schedule.get(i));
+			if (result) log.info("schedule is Saved");
+			else log.info("schedule is Not Saved");
+		}
+		log.info(data);
+//		
+		return "redirect:/plan/plandetail";
+	}
 	@RequestMapping(value="/plan/plan", method =RequestMethod.GET)
 	public String plannerIndex(Model model) {
 		log.info("planner_index");

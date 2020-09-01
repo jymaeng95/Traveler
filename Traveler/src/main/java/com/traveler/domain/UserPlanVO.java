@@ -19,4 +19,8 @@ public class UserPlanVO {
 	private String planDate;
 	private String planDay;
 	private String planTotalDate;
+	private String startDate;
+	private String endDate;
+	private String descript;
+	private String is_insertAfter;
 }

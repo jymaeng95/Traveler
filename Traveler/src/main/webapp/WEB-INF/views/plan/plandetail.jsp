@@ -79,6 +79,9 @@
 			<div id="scheduler"></div>
 			<button type="button" id="test">데이터 테스트</button>
 		</div>
+		<form action="/plan/save/schedule" method="post" id="scheduleForm">
+			<input type="hidden" id="schedule-plan" name="schedule" value="">
+		</form>
 		<div class="container datatest jumbotron">
 			<c:out value="${planList }"></c:out>
 		</div>

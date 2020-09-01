@@ -18,6 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="planDate" property="planDate" />
 		<result column="planDay" property="planDay" />
 		<result column="planTotalDate" property="planTotalDate" />
+		<result column="startDate" property="startDate" />
+		<result column="endDate" property="endDate" />
+		<result column="descript" property="descript" />
+		<result column="is_insertAfter" property="is_insertAfter" />
 		<collection property="memberVO"
 			ofType="com.traveler.domain.MemberVO">
 			<id column="userId" property="userId" />
@@ -27,17 +31,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<result column="is_kakao" property="is_kakao" />
 		</collection>
 	</resultMap>
-	<insert id="insertPlan">
+	<insert id="insertPlanFirst">
 		insert into userplan (planno,
 		userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planTitle,planDate,planDay,planTotalDate)
 		values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
-		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planTitle}, to_date(#{planDate},'YY/MM/DD'), #{planDay},
+		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planTitle}, #{planDate}, #{planDay},
 		#{planTotalDate})
 	</insert>
-
+	
+	<update id="finalPlan">
+		merge into userplan
+		using dual
+		on (planNo=#{planNo} and
+		userId=#{userId} and title=#{title} and is_insertAfter=#{is_insertAfter})
+		when matched then
+		<if test='descript!=null'>
+			update set
+			planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}, descript=#{descript}
+			when not matched then
+		</if>
+		update set
+		planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}
+		when not matched then
+		
+		<if test='descript != null'>
+			insert
+			(planNo,userId,title,planTitle,planDate,planDay,planTotalDate,startDate,endDate,descript,is_insertAfter)
+			VALUES (#{planNo},#{userId},#{title}, #{planTitle}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
+			#{endDate},#{descript},#{is_insertAfter})
+		</if>
+		insert
+		(planNo,userId,title,planTitle,planDate,planDay,planTotalDate,startDate,endDate,is_insertAfter)
+		VALUES (#{planNo},#{userId},#{title}, #{planTitle}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
+		#{endDate},#{is_insertAfter})
+	</update>
+	
 	<select id="readPlans" resultMap="UserPlanVO">
 		select * from userplan where
-		userId = #{userId} and planNo = #{planNo}
+		userId = #{userId} and planNo = #{planNo} and is_insertAfter = 'N'
 	</select>
 
 	<delete id="deletePlan">
@@ -53,13 +84,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userId=#{userId} and title=#{title})
 		when matched then
 		update set
-		planDay = #{planDay}, planDate=to_date(#{planDate},'YY/MM/DD')
+		planDay = #{planDay}, planDate=#{planDate}
 		when not matched then
 		insert
 		(planNo,userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planTitle,planDate,planDay,planTotalDate)
 		VALUES (#{planNo},#{userId},#{title} #{contentId},#{contentTypeId},
 		#{addr}, #{img_src},
-		#{mapX}, #{mapY}, #{planTitle}, to_date(#{planDate},'YY/MM/DD'),
+		#{mapX}, #{mapY}, #{planTitle}, #{planDate},
 		#{planDay},
 		#{planTotalDate})
 	</update>
