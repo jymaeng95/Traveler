@@ -9,26 +9,39 @@ $(document).ready(function(){
 	var schedule = new Array();
 	var start = 9;
 	var end = 10;
-	var today = new Date();
+	var userId = $("#uid").val();
+	var planTitle = $("#p_title").text();
+	var planNo = $("#planno").val();
 	$('.right-planlist').find('ul').find('input').each(function(){
 		allInfo.push(JSON.parse($(this).val()));
 	});
 	var firstDate = allInfo[0].planDate.split('-');
 	for(var i=0;i<allInfo.length;i++){
+		console.log(allInfo[i]);
 		var data = {};
+		var date;
 		data.text = allInfo[i].title;
-		var date = allInfo[i].planDate.split('-');
-		if(firstDate[0] != date[0] || firstDate[1] != date[1] || firstDate[2] != date[2]){
-			firstDate = date;
-			start = 9;
-			end = 10;
+		if(allInfo[i].startDate =="" || allInfo[i].endDate==""){
+			date = allInfo[i].planDate.split('-');
+			if(firstDate[0] != date[0] || firstDate[1] != date[1] || firstDate[2] != date[2]){
+				firstDate = date;
+				start = 9;
+				end = 10;
+			}
+			data.startDate = new Date(date[0], (date[1]-1), date[2], start, 00);
+			data.endDate = new Date(date[0], (date[1]-1), date[2], end, 00);
+			console.log('start:'+start);
+			console.log('end:'+end);
+			start += 2; end+=2;
+			schedule.push(data);
+		}else {
+			date = allInfo[i].startDate.split('-');
+			data.startDate = new Date(date[0], (date[1]-1), date[2], date[3], date[4]);
+			date = allInfo[i].endDate.split('-');
+			data.endDate = new Date(date[0], (date[1]-1), date[2], date[3], date[4]);
+			data.descript = allInfo[i].descript;
+			schedule.push(data);
 		}
-		data.startDate = new Date(date[0], (date[1]-1), date[2], start, 00);
-		data.endDate = new Date(date[0], (date[1]-1), date[2], end, 00);
-		console.log('start:'+start);
-		console.log('end:'+end);
-		start += 2; end+=2;
-		schedule.push(data);
 	}
 	console.log(schedule);
 
@@ -51,28 +64,29 @@ $(document).ready(function(){
 		var jsonData = new Array();
 		var viaData = new Array();
 		var result = $(this).siblings('ul').sortable('toArray');
-		$(this).siblings('ul').sortable().find('input').each(function(){
+		$(this).siblings('ul').sortable().find('input[name=planData]').each(function(){
 			jsonData.push(JSON.parse($(this).val()));
 		});
-
-		ex_marker.push(addMarker(map,"start",jsonData[0]));
-		for(var i=1;i<jsonData.length-1;i++){
-			ex_marker.push(addMarker(map,"pass",jsonData[i]));
-			viaData.push(jsonData[i]);
+		if(jsonData.length >2) {
+			ex_marker.push(addMarker(map,"start",jsonData[0]));
+			for(var i=1;i<jsonData.length-1;i++){
+				ex_marker.push(addMarker(map,"pass",jsonData[i]));
+				viaData.push(jsonData[i]);
+			}
+			ex_marker.push(addMarker(map,"end",jsonData[jsonData.length-1]));
+			ex_polyline = testAPI(map,jsonData[0],jsonData[jsonData.length-1],viaData);
+		}else {
+			alert("경유지가 최소 한개 이상이어야합니다.");
 		}
-		ex_marker.push(addMarker(map,"end",jsonData[jsonData.length-1]));
-
-		ex_polyline = testAPI(map,jsonData[0],jsonData[jsonData.length-1],viaData);
-
 	});
-
-
+	var calendarDate = allInfo[0].planDate.split('-');
 	var instance = $("#scheduler").dxScheduler({
 		dataSource: schedule,
-		views: ["day","week", "agenda"],
+		views: ["week", "agenda"],
 		currentView: "week", 
-		currentDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+		currentDate: new Date(calendarDate[0], (calendarDate[1]-1), calendarDate[2]),
 		startDayHour: 9,
+		showAllDayPanel : false,
 		height: 600,
 		editing: {
 			allowDeleting:false
@@ -83,15 +97,13 @@ $(document).ready(function(){
 	}).dxScheduler("instance");
 
 
-	$("#test").click(function(){
-		
-		
+	$("#btn-save").click(function(){
 		var s_instance = instance.getDataSource().items();
 		var totalDate = getBetweenDate(getMaxTime(s_instance), getMinTime(s_instance));
 		var lastDate = getMinTime(s_instance);
 		var finalData = new Array();
 		var buffer;
-		
+
 		console.log(lastDate);
 		console.log(totalDate);
 		for(var i=0;i<s_instance.length;i++){
@@ -99,37 +111,37 @@ $(document).ready(function(){
 			buffer = {};
 			for(var j=0;j<allInfo.length;j++){
 				if(allInfo[j].title == s_instance[i].text){
-					buffer.userId = allInfo[j].userId;
-					buffer.planNo = allInfo[j].planNo;
+					buffer.userId = userId;
+					buffer.planNo = planNo;
 					buffer.title = allInfo[j].title;
 					var date = s_instance[i].startDate;
-					buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+date.getMinutes();
+					buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					date = s_instance[i].endDate;
-					buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+date.getMinutes();
+					buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					if(s_instance[i].descript != "") buffer.descript = s_instance[i].descript;
 					else buffer.descript = "";
-					buffer.planTitle = allInfo[j].planTitle;
+					buffer.planTitle = planTitle;
 					buffer.planDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 					buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
 					buffer.planTotalDate = totalDate;
-					buffer.is_insertAfter = 'N';
+					buffer.is_insertAfter = allInfo[j].is_insertAfter;
 					finalData.push(buffer);
 					flag = true;
 				}
 			}
 			if(!flag){
-				buffer.userId = allInfo[0].userId;
-				buffer.planNo = allInfo[0].planNo;
+				buffer.userId = userId;
+				buffer.planNo = planNo;
 				buffer.title =	s_instance[i].text;
 				var date = s_instance[i].startDate;
-				buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+date.getMinutes();
+				buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				date = s_instance[i].endDate;
-				buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+date.getMinutes();
+				buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				buffer.descript = s_instance[i].descript;
 				buffer.planDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 				buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
 				buffer.planTotalDate = totalDate;
-				buffer.planTitle = allInfo[0].planTitle;
+				buffer.planTitle = planTitle;
 				buffer.is_insertAfter = 'Y';
 				finalData.push(buffer);
 			}
@@ -182,9 +194,7 @@ function testAPI(map,startInfo,endInfo,viaInfo){
 	var line_arr = new Array();
 	var headers = {}; 
 	let today =  new Date();
-	var realTime;
-	if((today.getMonth()+1) <10) realTime = today.getFullYear()+'0'+(today.getMonth()+1)+today.getDate()+today.getHours()+today.getMinutes();
-	else realTime = today.getFullYear()+(today.getMonth()+1)+today.getDate()+today.getHours()+today.getMinutes();
+	var realTime = getRealTime();
 
 	var viaPoints = new Array();
 	for(var i=0;i<viaInfo.length;i++){
@@ -195,6 +205,11 @@ function testAPI(map,startInfo,endInfo,viaInfo){
 		viaPoint.viaY = viaInfo[i].mapX;
 		viaPoints.push(viaPoint);
 	}
+
+	console.log(viaPoints[0]);
+	console.log(startInfo);
+	console.log(endInfo);
+
 	headers["appKey"]="l7xx15e7f0ab6ce4456f9a97564f50cf5e2f";
 	$.ajax({
 		type:"POST",
@@ -294,4 +309,15 @@ function getMinTime(instance){
 		}
 	}
 	return min;
+}
+
+function getRealTime(){
+	var today = new Date();
+	var year = today.getFullYear();
+	var month = ((today.getMonth()+1)<10?'0':'')+(today.getMonth()+1);
+	var date = (today.getDate()<10?'0':'')+today.getDate();
+	var hour = (today.getHours()<10?'0':'')+today.getHours();
+	var min = (today.getMinutes()<10?'0':'')+today.getMinutes();
+	var realTime = year+month+date+hour+min;
+	return realTime;
 }

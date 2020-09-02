@@ -40,8 +40,28 @@ public class PlannerController {
 		return "/plan/my_plan";
 	}
 	
-	@RequestMapping(value="/plan/plandetail", method=RequestMethod.POST)
-	public String myPlan2(@RequestParam(value="planData") String data,Model model,HttpSession session) throws Exception {
+
+	@RequestMapping(value="/plan/plan/detail", method=RequestMethod.GET)
+	public String myPlan2(@RequestParam(value="planNo") int planNo, @RequestParam(value="when") String when,Model model,HttpSession session) throws Exception {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		log.info(planNo);
+		List<UserPlanVO> plan = new ArrayList<>();
+		if (when.equals("plan")) {
+			plan = planService.getUserPlanFromPlanNo(planNo,member.getUserId());
+			log.info("plan data : " + plan);
+		}
+		if (when.equals("schedule")) {
+			plan = planService.getUserScheduleFromPlanNo(planNo, member.getUserId());
+			log.info("schedule data : " + plan);
+		}
+		model.addAttribute("userId",member.getUserId());
+		model.addAttribute("planNo",planNo);
+		model.addAttribute("planTitle",plan.get(0).getPlanTitle());
+		model.addAttribute("planList",JSONArray.fromObject(plan));
+		return "/plan/plandetail";
+	}
+	@RequestMapping(value="plan/save/plan",method=RequestMethod.POST)
+	public String savePlan(@RequestParam(value="planData") String data,RedirectAttributes rttr,HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		log.info(data);
 		List<UserPlanVO> plan = planService.convertUserPlan(data, member.getUserId());
@@ -52,26 +72,30 @@ public class PlannerController {
 			else log.info("plan is Not Saved");
 		}
 		log.info(data);
-		
-		model.addAttribute("planLength",plan.size());
-		model.addAttribute("planList",JSONArray.fromObject(plan));
-		return "/plan/plandetail";
+
+		rttr.addAttribute("planNo",plan.get(0).getPlanNo());
+		rttr.addAttribute("when","plan");
+		return "redirect:/plan/plan/detail";
 	}
 	
 	@RequestMapping(value="plan/save/schedule", method=RequestMethod.POST)
 	public String savePlan(@RequestParam(value="schedule") String data, Model model, RedirectAttributes rttr) throws Exception {
 		log.info(data);
 		List<UserPlanVO> schedule = planService.convertSchedule(data);
-		
+
 		for(int i=0;i<schedule.size();i++) {
 			boolean result = planService.saveSchedule(schedule.get(i));
 			if (result) log.info("schedule is Saved");
 			else log.info("schedule is Not Saved");
 		}
 		log.info(data);
-//		
-		return "redirect:/plan/plandetail";
+		//		
+		rttr.addAttribute("planNo",schedule.get(0).getPlanNo());
+		rttr.addAttribute("when", "schedule");
+		return "redirect:/plan/plan/detail";
 	}
+
+	
 	@RequestMapping(value="/plan/plan", method =RequestMethod.GET)
 	public String plannerIndex(Model model) {
 		log.info("planner_index");

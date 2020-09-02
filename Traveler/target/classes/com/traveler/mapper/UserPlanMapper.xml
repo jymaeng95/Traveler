@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.traveler.mapper.UserPlanMapper">
 	<resultMap id="UserPlanVO"
 		type="com.traveler.domain.UserPlanVO">
-		<id column="plsnNo" property="planNo" />
+		<id column="planNo" property="planNo" />
 		<id column="userId" property="userId" />
 		<id column="title" property="title" />
 		<result column="contentId" property="contentId" />
@@ -50,27 +50,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}, descript=#{descript}
 			when not matched then
 		</if>
-		update set
-		planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}
-		when not matched then
-		
+		<if test='descript==null'>
+			update set
+			planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}
+			when not matched then
+		</if>
 		<if test='descript != null'>
 			insert
 			(planNo,userId,title,planTitle,planDate,planDay,planTotalDate,startDate,endDate,descript,is_insertAfter)
 			VALUES (#{planNo},#{userId},#{title}, #{planTitle}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
 			#{endDate},#{descript},#{is_insertAfter})
 		</if>
-		insert
-		(planNo,userId,title,planTitle,planDate,planDay,planTotalDate,startDate,endDate,is_insertAfter)
-		VALUES (#{planNo},#{userId},#{title}, #{planTitle}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
-		#{endDate},#{is_insertAfter})
+		<if test='descript == null'>
+			insert
+			(planNo,userId,title,planTitle,planDate,planDay,planTotalDate,startDate,endDate,is_insertAfter)
+			VALUES (#{planNo},#{userId},#{title}, #{planTitle}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
+			#{endDate},#{is_insertAfter})
+		</if>
 	</update>
 	
 	<select id="readPlans" resultMap="UserPlanVO">
 		select * from userplan where
 		userId = #{userId} and planNo = #{planNo} and is_insertAfter = 'N'
+		order by planDay
 	</select>
 
+	<select id="readSchedule" resultMap="UserPlanVO">
+		select * from userplan where
+		userId = #{userId} and planNo = #{planNo}
+		order by planDay, startDate
+	</select>
+	
 	<delete id="deletePlan">
 		delete from userplan
 		where userId = #{userId} and
@@ -103,7 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="getCountPlanNo" resultType="int">
-		select count(distinct planno)+1
+		select max	(distinct planno)+1
 		from userplan
 	</select>
 </mapper>

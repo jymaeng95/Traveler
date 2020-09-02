@@ -30,8 +30,11 @@ public class UserPlanServiceImpl implements UserPlanService{
 	}
 
 	@Override
-	public List<UserPlanVO> getUserPlanFromPlanNo(UserPlanVO plan) throws Exception {
+	public List<UserPlanVO> getUserPlanFromPlanNo(int planNo,String userId) throws Exception {
 		// TODO Auto-generated method stub
+		UserPlanVO plan = new UserPlanVO();
+		plan.setPlanNo(planNo);
+		plan.setUserId(userId);
 		log.info(plan);
 		return mapper.readPlans(plan);
 	}
@@ -131,6 +134,16 @@ public class UserPlanServiceImpl implements UserPlanService{
 		log.info(plan);
 		int resultCount = mapper.finalPlan(plan);
 		return resultCount>0;
+	}
+
+	@Override
+	public List<UserPlanVO> getUserScheduleFromPlanNo(int planNo, String userId) throws Exception {
+		// TODO Auto-generated method stub
+		UserPlanVO plan = new UserPlanVO();
+		plan.setPlanNo(planNo);
+		plan.setUserId(userId);
+		log.info(plan);
+		return mapper.readSchedule(plan);
 	}
 	
 }

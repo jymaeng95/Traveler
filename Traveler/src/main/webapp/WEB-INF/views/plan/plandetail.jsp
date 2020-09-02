@@ -20,6 +20,9 @@
 </head>
 <body>
 	<%@include file="../includes/sidebar.jsp"%>
+	<input type="hidden" id="uid" value="${userInfo.userId }">
+	<input type="hidden" id="planno" value="${planNo }">
+	
 	<main class="page-content">
 		<div class="container jumbotron">
 			<div class="row">
@@ -27,13 +30,15 @@
 					<div id="map_div" style="width: 90%"></div>
 				</div>
 				<div class="col-md-4 ml-auto right-planlist">
+					<div><h3 id="p_title"><c:out value="${planTitle }"></c:out></h3><hr>
 					<div>
 						<h4>Day 1</h4>
 						<hr>
 						<ul id="day1">
 							<c:set var="day" value="1"></c:set>
 							<c:forEach items="${planList }" var="list" varStatus="status">
-								<c:if test="${day ne list.planDay }">
+								<c:if test="${list.is_insertAfter eq 'N'}">
+									<c:if test="${day ne list.planDay }">
 						</ul>
 
 						<button type="button" class="btn btn-primary optimize"
@@ -49,7 +54,7 @@
 							</c:if>
 							<li class="ui-state-default" id='${status.index }'>
 								<div class="row">
-									<input type="hidden" name="jsondata" value='${list }'>
+									<input type="hidden" name="planData" value='${list }'>
 									<div class="col-lg-5">
 										<img class="img-responsive" id="r_photo${i}" onclick=""
 											style="cursor: pointer;" src="${list.img_src }" alt=""
@@ -65,6 +70,10 @@
 								<hr>
 							</li>
 							<c:set var="day" value="${list.planDay }"></c:set>
+							</c:if>
+							<c:if test="${list.is_insertAfter eq 'Y'}">
+								<input type="hidden" name="scheduleData" value='${list }'>
+							</c:if>
 							</c:forEach>
 						</ul>
 						<button type="button" class="btn btn-primary optimize" value="최적화">최적화</button>
@@ -75,9 +84,13 @@
 				<p id="result"></p>
 			</div>
 		</div>
+		</div>
 		<div class="container bottom-calendar jumbotron">
 			<div id="scheduler"></div>
-			<button type="button" id="test">데이터 테스트</button>
+			<div id="btn-save" style="padding : 20px 0 35px 0">
+				<button type="button" id="btn-save" class="btn btn-primary"
+					style="float: right">저장</button>
+			</div>
 		</div>
 		<form action="/plan/save/schedule" method="post" id="scheduleForm">
 			<input type="hidden" id="schedule-plan" name="schedule" value="">

@@ -10,8 +10,11 @@ public interface UserPlanMapper {
 	
 	//스케줄러 삽입 
 	public int finalPlan(UserPlanVO plan);
+	
 	//플랜 불러오기 
 	public List<UserPlanVO> readPlans(UserPlanVO plan);
+	
+	public List<UserPlanVO> readSchedule(UserPlanVO plan);
 	//플랜 삭제 
 	public int deletePlan(UserPlanVO plan);
 	//플랜 업데이트 

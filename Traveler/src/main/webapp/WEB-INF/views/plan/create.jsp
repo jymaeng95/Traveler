@@ -157,7 +157,7 @@
 	<input type="hidden" id="plantitle" value="${plan_title}">
 	<input type="hidden" id="plandate" value="${plan_date }">
 	<input type="hidden" id="planno" value="${planNo }">
-	<form id="planForm" name="planForm" action="/plan/plandetail" method="POST">
+	<form id="planForm" name="planForm" action="/plan/save/plan" method="POST">
 	</form>
 	<div class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="mySmallModalLabel" id="addModal" aria-hidden="true">

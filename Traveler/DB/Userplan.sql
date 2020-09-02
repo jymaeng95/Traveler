@@ -11,25 +11,34 @@ CREATE TABLE USERPLAN (
     MAPX VARCHAR2(20),
     MAPY VARCHAR2(20),
     PLANTITLE VARCHAR2(200),
-    PLANDATE DATE, 
+    PLANDATE VARCHAR2(20),
     PLANDAY VARCHAR2(30),
     PLANTOTALDATE VARCHAR2(30),
+    STARTDATE VARCHAR2(20),
+    ENDDATE VARCHAR2(20),
+    DESCRIPT VARCHAR2(1000),
+    IS_INSERTAFTER VARCHAR(1) DEFAULT 'N',
     PRIMARY KEY(PLANNO,USERID, TITLE),
     CONSTRAINT USERPLAN_FK_USERID FOREIGN KEY(USERID)
     REFERENCES MEMBER(USERID) ON DELETE CASCADE
     );
 
 INSERT INTO USERPLAN (PLANNO, USERID, TITLE, CONTENTID, CONTENTTYPEID, ADDR,IMG_SRC,
-MAPX, MAPY, PLANTITLE, PLANDATE,PLANDAY, PLANTOTALDATE)
+MAPX, MAPY, PLANTITLE, PLANDATE, PLANDAY, PLANTOTALDATE)
 VALUES (1,'jymaeng95', '휴애리자연생활공원', '322836','12','제주특별자치도 서귀포시 남원읍 신례동로 256', 
 'http://tong.visitkorea.or.kr/cms/resource/47/2615547_image2_1.bmp', '33.3085171454','126.6344317363',
-'제주여행', '2020-08-19', '1', '3');
+'제주여행', '2020-08-20', '1', '3');
 
 INSERT INTO USERPLAN (PLANNO, USERID, TITLE, CONTENTID, CONTENTTYPEID, ADDR,IMG_SRC,
-MAPX, MAPY, PLANTITLE, PLANDATE,PLANDAY, PLANTOTALDATE)
+MAPX, MAPY, PLANTITLE,PLANDATE,PLANDAY, PLANTOTALDATE)
 VALUES (1,'jymaeng95', '성산일출봉', '123456','13','제주특별자치도 서귀포시 남원읍 신례동로 256', 
 'http://tong.visitkorea.or.kr/cms/resource/47/2615547_image2_1.bmp', '33.3085171454','126.6344317363',
-'제주여행', '2020-08-20', '2', '3');
+'제주여행', TO_CHAR(SYSDATE,'HH24-mi'), '2', '3');
+
+select to_char(plandate, 'YYYY-MM-DD')
+from userplan;
+
+SELECT * FROM USERPLAN;
 
 MERGE INTO  userplan 
 USING dual
@@ -52,9 +61,11 @@ SELECT COUNT(DISTINCT PLANNO) FROM USERPLAN;
 INSERT INTO USERPLAN (PLANNO, USERID,TITLE) 
 VALUES ((SELECT COUNT(DISTINCT PLANNO)+1 FROM USERPLAN) , 'jymaeng95','휴애리자연생활공원');
 
+update userplan 
+set plandate=to_date('2020-08-21','YY-MM-DD');
+delete userplan;
 select * from userplan where userid='jymaeng95' and planNo=1;
 
 select planno, plantitle, userid 
 from userplan
 where userid='jymaeng95'
-group by planno,plantitle,userid;

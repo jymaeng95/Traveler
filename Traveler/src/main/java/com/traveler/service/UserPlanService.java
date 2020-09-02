@@ -9,8 +9,10 @@ public interface UserPlanService {
 	
 	public boolean saveSchedule(UserPlanVO plan) throws Exception;
 	
-	public List<UserPlanVO> getUserPlanFromPlanNo(UserPlanVO plan) throws Exception;
+	public List<UserPlanVO> getUserPlanFromPlanNo(int planNo, String userId) throws Exception;
 
+	public List<UserPlanVO> getUserScheduleFromPlanNo(int planNo, String userId) throws Exception;
+	
 	public boolean deleteUserPlan(UserPlanVO plan) throws Exception;
 	
 	public boolean updateUserPlan(UserPlanVO plan) throws Exception;

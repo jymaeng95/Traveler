@@ -23,4 +23,5 @@ public class UserPlanVO {
 	private String endDate;
 	private String descript;
 	private String is_insertAfter;
+	private MemberVO memberVO;
 }
