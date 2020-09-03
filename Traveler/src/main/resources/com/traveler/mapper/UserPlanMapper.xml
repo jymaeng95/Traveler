@@ -103,12 +103,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{planTotalDate})
 	</update>
 
-	<select id="readAllPlans" resultMap="UserPlanVO">
+<!-- 	<select id="readAllPlans" resultMap="UserPlanVO">
 		select planno, plantitle, userid
 		from userplan
 		where userid=#{userId}
 		group by planno,plantitle,userid
-	</select>
+	</select> -->
 	
 	<select id="getCountPlanNo" resultType="int">
 		select nvl(max(planno),0)+1
