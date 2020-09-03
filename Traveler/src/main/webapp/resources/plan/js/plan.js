@@ -499,7 +499,7 @@ function addModal(position,map,marker) {
 		stDate.setDate(stDate.getDate() + ($("#day").val() -1));
 		var split_date = stDate.getFullYear()+"-"+(stDate.getMonth()+1)+"-"+stDate.getDate()
 
-		position.planTitle = $("#plantitle").val();
+//		position.planTitle = $("#plantitle").val();
 		position.planDate = split_date;
 		position.planDay = $("#day").val();
 		position.planTotalDate = $("#totaldate").val();

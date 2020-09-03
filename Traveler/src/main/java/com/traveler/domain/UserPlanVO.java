@@ -15,7 +15,6 @@ public class UserPlanVO {
 	private String img_src;
 	private String mapX;
 	private String mapY;
-	private String planTitle;
 	private String planDate;
 	private String planDay;
 	private String planTotalDate;
@@ -23,5 +22,5 @@ public class UserPlanVO {
 	private String endDate;
 	private String descript;
 	private String is_insertAfter;
-	private MemberVO memberVO;
+	private PlannerVO plannerVO;
 }

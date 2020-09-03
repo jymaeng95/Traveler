@@ -74,8 +74,8 @@ public class UserPlanServiceImpl implements UserPlanService{
 			plan.setUserId(arrObj.get("userId").toString());
 			plan.setTitle(arrObj.get("title").toString());
 			plan.setPlanDate(arrObj.get("planDate").toString());
-			if(arrObj.get("planTitle")!=null)
-				plan.setPlanTitle(arrObj.get("planTitle").toString());
+//			if(arrObj.get("planTitle")!=null)
+//				plan.setPlanTitle(arrObj.get("planTitle").toString());
 			plan.setPlanDay(arrObj.get("planDay").toString());
 			plan.setPlanTotalDate(arrObj.get("planTotalDate").toString());	
 			if(arrObj.get("descript")!=null)
@@ -113,7 +113,7 @@ public class UserPlanServiceImpl implements UserPlanService{
 			plan.setMapX(lonlat.get("_lat").toString());
 			plan.setMapY(lonlat.get("_lng").toString());
 			plan.setPlanDate(arrObj.get("planDate").toString());
-			plan.setPlanTitle(arrObj.get("planTitle").toString());
+//			plan.setPlanTitle(arrObj.get("planTitle").toString());
 			plan.setPlanDay(arrObj.get("planDay").toString());
 			plan.setPlanTotalDate(arrObj.get("planTotalDate").toString());
 			//			planInfo.add(plan);
@@ -145,5 +145,4 @@ public class UserPlanServiceImpl implements UserPlanService{
 		log.info(plan);
 		return mapper.readSchedule(plan);
 	}
-	
 }

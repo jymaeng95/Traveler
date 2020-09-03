@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.traveler.mapper.PlannerMapper">
+	<resultMap id="PlannerVO" type="com.traveler.domain.PlannerVO">
+		<id column="planNo" property="planNo" />
+		<id column="userId" property="userId" />
+		<result column="planTitle" property="planTitle" />
+		<result column="info" property="info" />
+		<result column="planImg" property="planImg" />
+		<collection property="memberVO"	ofType="com.traveler.domain.MemberVO">
+			<id column="userId" property="userId" />
+			<result column="userPw" property="userPw" />
+			<result column="email" property="email" />
+			<result column="nickname" property="nickname" />
+			<result column="is_kakao" property="is_kakao" />
+		</collection>
+	</resultMap>
+	<insert id="insertNewPlanner" >
+		insert into planner(planno, userid, plantitle, info)
+		values (planno.nextval, #{userId}, #{planTitle}, #{info})
+	</insert>
+	<select id="readAllPlanner" resultMap="PlannerVO">
+		select * from planner where userId = #{userId}
+	</select>
+	
+	<select id="readPlanner" resultMap="PlannerVO">
+		select * from planner where userId = #{userId} and planNo = #{planNo}
+	</select>
+	
+	<select id="readPlanNo" resultType="integer">
+		select planno.currval from dual
+	</select>
+	<update id="updatePlanner">
+		update planner
+		set planTitle = #{planTitle} and planImg = #{planImg} and info = #{info}
+		where userId = #{userId} and planNo = #{planNo}
+	</update>
+	
+	<delete id="deletePlanner">
+		delete planner 
+		where userId = #{userId} and planNo = #{planNo}
+	</delete>
+</mapper>

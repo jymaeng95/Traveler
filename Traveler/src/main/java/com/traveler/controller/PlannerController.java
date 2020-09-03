@@ -16,9 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.traveler.api.SpotAPI;
 import com.traveler.domain.BookmarkVO;
 import com.traveler.domain.MemberVO;
+import com.traveler.domain.PlannerVO;
 import com.traveler.domain.SpotVO;
 import com.traveler.domain.UserPlanVO;
 import com.traveler.service.BookmarkServiceImpl;
+import com.traveler.service.PlannerService;
 import com.traveler.service.UserPlanService;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +33,7 @@ import net.sf.json.JSONArray;
 public class PlannerController {
 	private BookmarkServiceImpl b_service;
 	private UserPlanService planService;
+	private PlannerService plannerService;
 	private SpotAPI spot;
 	
 	@RequestMapping(value="/plan/my_plan", method=RequestMethod.GET)
@@ -45,6 +48,12 @@ public class PlannerController {
 	public String myPlan2(@RequestParam(value="planNo") int planNo, @RequestParam(value="when") String when,Model model,HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		log.info(planNo);
+		
+		PlannerVO planner = new PlannerVO();
+		planner.setPlanNo(planNo);
+		planner.setUserId(member.getUserId());
+		planner = plannerService.getPlanner(planner);
+		
 		List<UserPlanVO> plan = new ArrayList<>();
 		if (when.equals("plan")) {
 			plan = planService.getUserPlanFromPlanNo(planNo,member.getUserId());
@@ -54,9 +63,10 @@ public class PlannerController {
 			plan = planService.getUserScheduleFromPlanNo(planNo, member.getUserId());
 			log.info("schedule data : " + plan);
 		}
+		model.addAttribute("planTitle",planner.getPlanTitle());
+		model.addAttribute("info",planner.getInfo());
 		model.addAttribute("userId",member.getUserId());
 		model.addAttribute("planNo",planNo);
-		model.addAttribute("planTitle",plan.get(0).getPlanTitle());
 		model.addAttribute("planList",JSONArray.fromObject(plan));
 		return "/plan/plandetail";
 	}
@@ -103,12 +113,16 @@ public class PlannerController {
 		
 	}
 	@RequestMapping(value="/plan/create", method=RequestMethod.GET)
-	public String makePlan(Model model, String plan_title, String plan_date, String total_date) throws Exception {
-		log.info("make_plan");
-		model.addAttribute("plan_title", plan_title);
+	public String makePlan(Model model, PlannerVO planner , String plan_date, String total_date,HttpSession session) throws Exception {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		planner.setUserId(member.getUserId());
+		if(plannerService.savePlanner(planner)) log.info("planner Saved"+planner);
+		else log.info("planner is not Saved" + planner);
+		
+		model.addAttribute("plan_title", planner.getPlanTitle());
 		model.addAttribute("plan_date", plan_date);
 		model.addAttribute("total_date", total_date);
-		model.addAttribute("planNo",planService.getTotalCountPlan());
+		model.addAttribute("planNo",plannerService.getPlanNo());
 		return "/plan/create";
 	}
 	

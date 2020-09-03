@@ -82,11 +82,12 @@
 				</div>
 				<form id="plan_info" method="get" action="/plan/create">
 				<div class="modal-body">
-					<input type="text" id="p_title" name="plan_title"
+					<input type="text" id="p_title" name="planTitle"
 						placeholder="여행제목" style="width: 308px"><br> <input
 						type="text" id="p_date" name="plan_date" placeholder="여행날짜" style="width: 100%"
 						readonly />
 					<input type="hidden" name="total_date" id="t_date" />
+							<input type="hidden" name="info" value="test">
 				</div>
 				</form>
 				<div class="modal-footer">
