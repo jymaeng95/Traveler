@@ -39,7 +39,7 @@ $(document).ready(function(){
 			data.startDate = new Date(date[0], (date[1]-1), date[2], date[3], date[4]);
 			date = allInfo[i].endDate.split('-');
 			data.endDate = new Date(date[0], (date[1]-1), date[2], date[3], date[4]);
-			data.descript = allInfo[i].descript;
+			data.description = allInfo[i].descript;
 			schedule.push(data);
 		}
 	}
@@ -118,7 +118,7 @@ $(document).ready(function(){
 					buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					date = s_instance[i].endDate;
 					buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
-					if(s_instance[i].descript != "") buffer.descript = s_instance[i].descript;
+					if(s_instance[i].description != "") buffer.descript = s_instance[i].description;
 					else buffer.descript = "";
 					buffer.planTitle = planTitle;
 					buffer.planDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -137,7 +137,7 @@ $(document).ready(function(){
 				buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				date = s_instance[i].endDate;
 				buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
-				buffer.descript = s_instance[i].descript;
+				buffer.descript = s_instance[i].description;
 				buffer.planDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 				buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
 				buffer.planTotalDate = totalDate;

@@ -95,6 +95,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 	
+	<select id="Read" resultMap="MessageVO">
+		select *
+		from message
+		where mid = #{mid} 
+	</select>
+	
 	
 	<select id="countMessage" resultType="int">
 		select count(*)
@@ -136,7 +142,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set	readstatus = #{readstatus}
 		where userId = #{userId} and mid = #{mid}
 	</update>
-	
 
 </mapper>
 
