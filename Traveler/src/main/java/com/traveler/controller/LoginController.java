@@ -40,8 +40,13 @@ public class LoginController {
 		MemberVO k_userInfo = new MemberVO();
 		k_userInfo.setUserId(userInfo.get("id").toString());
 		k_userInfo.setNickname(userInfo.get("properties").get("nickname").toString().replaceAll("\"", ""));
-		k_userInfo.setUser_img(userInfo.get("properties").get("thumbnail_image").toString().replaceAll("\"", ""));
-		
+
+		if(userInfo.get("properties").get("thumbnail_image") == null) {
+			k_userInfo.setUser_img("");
+		} else {
+			k_userInfo.setUser_img(userInfo.get("properties").get("thumbnail_image").toString().replaceAll("\"", ""));
+		}
+
 		MemberVO member = service.kakaoLogin(k_userInfo);
 		log.info(member);
 		//카카오로 한번이라도 로그인 했으면 안하게 함
@@ -50,7 +55,7 @@ public class LoginController {
 			service.kakaoRegister(k_userInfo);
 			member = service.kakaoLogin(k_userInfo);
 		}
-		
+
 		model.addAttribute("k_userInfo", member);
 		model.addAttribute("id", member.getUserId());
 
@@ -70,7 +75,7 @@ public class LoginController {
 		log.info("logout");
 		return "/index/index";
 	}
-	
+
 	//�α��� ������ ���� �̵��� 
 	@RequestMapping(value="/login/index", method=RequestMethod.GET)
 	public String login() {
@@ -79,35 +84,35 @@ public class LoginController {
 	}
 
 
-//	@RequestMapping(value="/login/login", method=RequestMethod.POST)
-//	public String login(Model model,MemberVO member, RedirectAttributes rttr,HttpSession session) throws Exception {
-//		log.info("login");
-//		MemberVO userInfo = service.memberLogin(member);
-//
-//		if(userInfo != null) {
-//			session.setAttribute("userId", userInfo.getUserId());
-//			session.setAttribute("userPw", userInfo.getUserPw());
-//			log.info("id : " + userInfo.getUserId()+ "pw : "+userInfo.getUserPw());
-//			model.addAttribute("userInfo", userInfo);
-//			model.addAttribute("userId", userInfo.getUserId());
-//			//		model.addAttribute("nickname", nickname);
-//			
-//			return "redirect:/";
-//		} else {
-//			session.setAttribute("userId", null);
-//			model.addAttribute("userId", null);
-//			log.info(userInfo);
-//			rttr.addFlashAttribute("result","fail");
-//			return "redirect:/login/index";
-//		}
-//	}
+	//	@RequestMapping(value="/login/login", method=RequestMethod.POST)
+	//	public String login(Model model,MemberVO member, RedirectAttributes rttr,HttpSession session) throws Exception {
+	//		log.info("login");
+	//		MemberVO userInfo = service.memberLogin(member);
+	//
+	//		if(userInfo != null) {
+	//			session.setAttribute("userId", userInfo.getUserId());
+	//			session.setAttribute("userPw", userInfo.getUserPw());
+	//			log.info("id : " + userInfo.getUserId()+ "pw : "+userInfo.getUserPw());
+	//			model.addAttribute("userInfo", userInfo);
+	//			model.addAttribute("userId", userInfo.getUserId());
+	//			//		model.addAttribute("nickname", nickname);
+	//			
+	//			return "redirect:/";
+	//		} else {
+	//			session.setAttribute("userId", null);
+	//			model.addAttribute("userId", null);
+	//			log.info(userInfo);
+	//			rttr.addFlashAttribute("result","fail");
+	//			return "redirect:/login/index";
+	//		}
+	//	}
 
 	@ResponseBody
 	@RequestMapping(value="/login/login",method=RequestMethod.POST)
 	public boolean login(MemberVO member, HttpSession session) throws Exception {
 		log.info("process login");
 		MemberVO userInfo = service.memberLogin(member);
-		
+
 		if(userInfo != null) {
 			session.setAttribute("userInfo", userInfo);
 			return true;
@@ -117,7 +122,7 @@ public class LoginController {
 			return false;
 		}
 	}
-	
+
 	//회원가입
 	@ResponseBody
 	@RequestMapping(value="/login/register", method=RequestMethod.POST, produces="application/text;charset=utf8")
@@ -138,21 +143,21 @@ public class LoginController {
 			return "회원가입에 성공하였습니다.";
 		}		
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/login/idCheck", method = RequestMethod.POST)
 	public boolean idCheck(MemberVO member) throws Exception{
 		log.info("아이디 중복 체크 ");
 		return service.idCheck(member);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/login/nickCheck", method = RequestMethod.POST)
 	public boolean nickCheck(MemberVO member) throws Exception {
 		log.info("닉네임 중복 체크");
 		return service.nickCheck(member);
 	}
-	
+
 	//�������������� ȸ������ ���� �� ���� �ʿ� 
 	//@RequestMappging(value="jsp ���� ��ġ " , method=RequestMethod.GET)
 	//public String modifyMemberInfo(MemberVO) throws Exception {
