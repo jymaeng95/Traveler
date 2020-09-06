@@ -113,7 +113,7 @@
 						<div class="col-md-5 ">
 							<button type="button" class="btn Spot"
 								style="font-size: 30px; background-color: white;"
-								onclick="location.href='#'">
+								onclick="location.href='/budget/budget'">
 								<i class="fas fa-won-sign fa-8x text-primary mb-4"></i>
 								<h3 class="h4 mb-2">Budget</h3>
 

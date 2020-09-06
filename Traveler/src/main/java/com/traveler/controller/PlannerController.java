@@ -124,7 +124,7 @@ public class PlannerController {
 		model.addAttribute("total_date", total_date);
 		model.addAttribute("planNo",plannerService.getPlanNo());
 		return "/plan/create";
-	}
+	}	
 	
 	@RequestMapping(value="/plan/guide", method=RequestMethod.GET)
 	public String guideSpot(SpotVO spotVO, Model model) throws Exception {

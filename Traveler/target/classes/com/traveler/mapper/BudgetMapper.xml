@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.traveler.mapper.BudgetMapper">
+	<resultMap id="BudgetVO" type="com.traveler.domain.BudgetVO">
+		<id column="bno" property="bno" />
+		<id column="planNo" property="planNo" />
+		<id column="userId" property="userId" />
+		<result column="title" property="title" />
+		<result column="cat" property="cat" />
+		<result column="income" property="income" />
+		<result column="expend" property="expend" />
+		<result column="total" property="total" />
+		<result column="planDate" property="planDate" />
+		<result column="descript" property="descript" />
+		<collection property="plannerVO"
+			ofType="com.traveler.domain.PlannerVO">
+			<id column="planNo" property="planNo" />
+			<id column="userId" property="userId" />
+			<result column="planTitle" property="planTitle" />
+			<result column="info" property="info" />
+		</collection>
+	</resultMap>
+	<insert id="insertBudget">
+		insert into budget (bno, planno,userid, title,cat,income,expend,total,planDate,descript)
+		values (bno.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income}, #{expend}, #{total}, #{planDate},#{descript})
+	</insert>
+	
+	<select id="readBudget" resultMap="BudgetVO">
+		select * from budget
+		where planno = #{planNo} and userid = #{userId}
+	</select>
+
+	
+</mapper>
