@@ -4,7 +4,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Roboto:300,400');
 
 body {
-  font-family: 'Open Sans', sans-serif;
   background-color: rgb(255, 204, 102);
 }
 
@@ -29,7 +28,7 @@ body {
 .left-wallet {
   background-color: #f2f2f2;
   width: 40%;
-  height: initial;
+  height: 100%;
   padding: 40px;
   border-radius: 5px;
 }
@@ -37,7 +36,7 @@ body {
 .right-trans {
   background-color: #FFFFFF;
   width: 60%;
-  height: initial;
+  height: 100%;
   padding: 40px;
   border-radius: 5px;
 }
@@ -47,29 +46,23 @@ h1 {
   margin: 0;
   font-weight: 400;
   font-size: 25px;
-  font-family: 'Open Sans', sans-serif;
 }
 
 h4 {
   margin: 0;
   font-size: 30px;
   font-weight: bold;
-  font-family: 'Open Sans', sans-serif;
 }
 
 .left-wallet h1,
 .left-wallet modal-open,
 .right-trans h1,
 .right-trans #balance {
-  font-family: 'Open Sans', sans-serif;
   display: inline-block;
 }
 
 #balance {
-  float: right;
-  line-height: 34px;
-  font-size: 30px;
-  font-weight: bold;
+  float: left;
   color: #464646;
 }
 
@@ -96,13 +89,22 @@ h4 {
 .trans-list {
   display: none;
   border-top: 1px solid #f2f2f2;
-  margin-top: 40px;
   overflow-y: scroll;
-  max-height: 550px;
+  max-height: 85%;
 }
 
 .trans {
   margin-top: 15px;
+}
+
+.trans-footer {
+	position : absolute;
+	right: 5%;
+	bottom: 7%;
+}
+
+.trans-footer button {
+	margin-right : 10px;
 }
 
 .trans-plus {
@@ -133,20 +135,21 @@ h4 {
   width: 80%;
 }
 
-.trans-name,
-.trans-type-date {
+.trans-title,
+.trans-planDate, .trans-descipt ,.trans-cat{
   margin: 3px;
 }
 
-.trans-name {
+.trans-title {
   display: inline-block;
 }
 
-.trans-type-date {
+.trans-planDate, .trans-descript , .trans-cat{
   color: #888;
+  margin-left : 5%;
 }
 
-.trans-amt {
+.trans-price {
   float: right;
   line-height: 55px;
   font-size: 18px;
@@ -164,7 +167,7 @@ h4 {
 .cc-select {
   margin-top: 34px;
   overflow-y: scroll;
-  max-height: 540px;
+  max-height: 95%;
   padding: 5px;
 }
 
@@ -211,13 +214,11 @@ h4 {
 }
 
 .cc-num {
-  font-family: 'Roboto', sans-serif;
   font-size: 15px;
 }
 
 .cc-date {
   margin-top: 8px;
-  font-family: 'Roboto', sans-serif;
   color: #888;
 }
 
@@ -238,7 +239,7 @@ h4 {
 
 
 
-.modal {
+.modal, .add-budget-modal{
   text-align: center;
   display: none;
   position: fixed;
@@ -264,7 +265,7 @@ h4 {
   position: relative;
 }
 
-.modal-close {
+.modal-close, .add-modal-close {
   position: absolute;
   top: 5px;
   right: 10px;
@@ -303,8 +304,7 @@ h4 {
   float: left;
 }
 
-.modal-add-cc {
-  position: absolute;
+.modal-add-cc , #income, #expend, #add-income, #add-expend{
   bottom: 15px;
   left: 190px;
   color: #fff;
