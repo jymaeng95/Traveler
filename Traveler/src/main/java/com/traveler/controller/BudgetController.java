@@ -1,11 +1,13 @@
 package com.traveler.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,5 +57,13 @@ public class BudgetController {
 		log.info(budget);
 		return budget;
 	}
-	
+	@ResponseBody
+	@RequestMapping(value="budget/save/budget",method=RequestMethod.POST)
+	public String saveBudget(@RequestBody Map<String,Object> trans) {
+		log.info("planNo : "+trans.get("planNo"));
+		log.info("total : "+trans.get("total"));
+		log.info("transactions : "+trans.get("transactions"));
+		
+		return "pass";
+	}
 }

@@ -14,7 +14,7 @@
 <!-- Josh Channin -->
 <body>
 	<%@ include file="../includes/sidebar.jsp"%>
-	<main class="page-content">
+<main class="page-content">
 		<div>
 			<div class="wallet">
 				<aside class="left-wallet">
@@ -45,22 +45,24 @@
 				<content class="right-trans">
 				<h1 id="planTitle">Current Balance</h1>
 				<div class="trans-list">
-					<div class="trans trans-type">
-						<div class="trans-details">
-							<span class="action"></span>
-							<h3 class="trans-name"></h3>
-							<h5 class="trans-type-date"></h5>
-						</div>
-						<div class="trans-amt">
-							<h4 class="trans-amt amt-blue"></h4>
-						</div>
+						<div class="trans trans-type">
+							<div class="trans-details">
+								<span class="action"></span>
+								<h3 class="trans-name"></h3>
+								<h5 class="trans-type-date"></h5>
+							</div>
+							<div class="trans-amt">
+								<h4 class="trans-amt amt-blue"></h4>
+							</div>
 					</div>
 				</div>
 				<div class="row trans-footer">
-					<h4 id="balance"></h4>
-					<button type="button" id="btn-save" class="btn btn-primary">저장</button>
-					<button type="button" id="btn-calc" class="btn btn-primary">계산</button>
-					<button type="button" id="btn-graph" class="btn btn-primary">그래프</button>
+					<div class="row btn-div">
+						<h4 id="balance" style="margin-right:20px;"></h4>
+						<button type="button" id="btn-save" class="btn btn-primary">저장</button>
+						<button type="button" id="btn-calc" class="btn btn-primary">계산</button>
+						<button type="button" id="btn-graph" class="btn btn-primary">그래프</button>
+					</div>
 				</div>
 				</content>
 			</div>
@@ -73,17 +75,17 @@
 				<div class="modal-contents">
 					<div style="padding: 10px;">
 						<h5>간단한 수입/지출 정보를 입력하세요.</h5>
-						<input type="text" id="info" placeholder="ex) 솜사탕">
+						<input type="text" id="info" placeholder="ex) 솜사탕" required>
 					</div>
 					<div class="category" style="padding: 10px;">
-						<input type="radio" name="cat" value="관광">관광 <input
+						<input type="radio" name="cat" value="관광" checked>관광 <input
 							type="radio" name="cat" value="숙박">숙박 <input type="radio"
 							name="cat" value="식비">식비 <input type="radio" name="cat"
 							value="교통">교통 <input type="radio" name="cat" value="기타">기타
 					</div>
 					<div style="padding: 10px;">
 						<input type="text" name="price" id="price" placeholder="ex) 3000"
-							numberOnly>
+							onkeypress="onlyNumber();" required>
 					</div>
 
 				</div>
@@ -102,25 +104,25 @@
 				<div class="modal-contents">
 					<div style="padding:10px;">
 						<h5>주제를 입력하세요.</h5>
-						<input type="text" id="add-title" placeholder="ex) 제주공항">
+						<input type="text" id="add-title" placeholder="ex) 제주공항" required>
 					</div>
 					<div style="padding: 10px;">
 						<h5>간단한 수입/지출 정보를 입력하세요.</h5>
-						<input type="text" id="add-info" placeholder="ex) 솜사탕">
+						<input type="text" id="add-info" placeholder="ex) 솜사탕" required>
 					</div>
 					<div style="padding:10px;">
 						<h5>날짜를 입력해주세요.</h5>
-						<input type="text" id="add-date" placeholder="ex) 2020-09-06">
+						<input type="text" id="add-date" placeholder="ex) 2020-09-06" required>
 					</div>
 					<div class="category" style="padding: 10px;">
-						<input type="radio" name="add-cat" value="관광">관광 <input
+						<input type="radio" name="add-cat" value="관광" checked>관광 <input
 							type="radio" name="add-cat" value="숙박">숙박 <input type="radio"
 							name="add-cat" value="식비">식비 <input type="radio" name="add-cat"
 							value="교통">교통 <input type="radio" name="add-cat" value="기타">기타
 					</div>
 					<div style="padding: 10px;">
 						<input type="text" name="price" id="add-price" placeholder="ex) 3000"
-							numberOnly>
+							onkeypress="onlyNumber();" required>
 					</div>
 
 				</div>

@@ -98,13 +98,19 @@ h4 {
 }
 
 .trans-footer {
-	position : absolute;
-	right: 5%;
-	bottom: 7%;
+	width : 100%;
+	padding-top:20px;
 }
 
 .trans-footer button {
 	margin-right : 10px;
+}
+
+.btn-div{
+	float : right;
+	position:absolute;
+	right:5%;
+	bottom : 7%;
 }
 
 .trans-plus {
