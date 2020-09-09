@@ -12,9 +12,9 @@
 </head>
 
 <!-- Josh Channin -->
-<body>
+<body style="background-color:#C3D9F0;">
 	<%@ include file="../includes/sidebar.jsp"%>
-<main class="page-content">
+	<main class="page-content">
 		<div>
 			<div class="wallet">
 				<aside class="left-wallet">
@@ -43,7 +43,8 @@
 					</div>
 				</aside>
 				<content class="right-trans">
-				<h1 id="planTitle">Current Balance</h1>
+				<h1 id="planTitle"></h1>
+				<input type="hidden" name="planNo" id="planNo">
 				<div class="trans-list">
 						<div class="trans trans-type">
 							<div class="trans-details">
@@ -70,7 +71,7 @@
 
 		<div class="modal">
 			<div class="modal-body">
-				<h3 id="title">dfdfdf</h3>
+				<h3 id="title"></h3>
 				<div class="modal-close">x</div>
 				<div class="modal-contents">
 					<div style="padding: 10px;">
@@ -112,7 +113,7 @@
 					</div>
 					<div style="padding:10px;">
 						<h5>날짜를 입력해주세요.</h5>
-						<input type="text" id="add-date" placeholder="ex) 2020-09-06" required>
+						<input type="text" id="add-date" placeholder="ex) 2020-9-06" required>
 					</div>
 					<div class="category" style="padding: 10px;">
 						<input type="radio" name="add-cat" value="관광" checked>관광 <input

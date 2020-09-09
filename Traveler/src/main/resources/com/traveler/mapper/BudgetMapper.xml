@@ -23,14 +23,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 	<insert id="insertBudget">
-		insert into budget (bno, planno,userid, title,cat,income,expend,total,planDate,descript)
-		values (bno.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income}, #{expend}, #{total}, #{planDate},#{descript})
+		insert into budget (bno, planno,userid,
+		title,cat,income,expend,total,planDate,descript)
+		values
+		(bno.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income},
+		#{expend}, #{total}, #{planDate},#{descript})
 	</insert>
-	
+
 	<select id="readBudget" resultMap="BudgetVO">
 		select * from budget
-		where planno = #{planNo} and userid = #{userId}
+		where
+		planno = #{planNo} and userid = #{userId}
 	</select>
 
-	
+	<update id="updateBudget">
+		merge into budget
+		using dual
+		on (planNo=#{planNo} and
+		userId=#{userId} and title=#{title} and planDate=#{planDate})
+		when
+		matched then
+		update set
+		income = #{income}, expend=#{expend},
+		total=#{total},descript = #{descript}, cat =#{cat}
+		when not matched
+		then
+		insert
+		(bno,planNo,userId,title,cat,income,expend,total,descript,planDate)
+		VALUES (bno.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income},
+		#{expend},#{total},
+		#{descript},#{planDate})
+	</update>
 </mapper>

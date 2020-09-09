@@ -57,13 +57,23 @@ public class BudgetController {
 		log.info(budget);
 		return budget;
 	}
+
 	@ResponseBody
 	@RequestMapping(value="budget/save/budget",method=RequestMethod.POST)
-	public String saveBudget(@RequestBody Map<String,Object> trans) {
+	public String saveBudget(@RequestBody Map<String,Object> trans, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		log.info("planNo : "+trans.get("planNo"));
 		log.info("total : "+trans.get("total"));
 		log.info("transactions : "+trans.get("transactions"));
 		
-		return "pass";
+		List<BudgetVO> budget = budgetService.convertJSONintoBudget(trans, member.getUserId());
+		log.info(budget);
+		
+		for(int i=0;i<budget.size();i++) {
+			boolean result = budgetService.saveBudget(budget.get(i));
+			if(result) log.info("budget is saved");
+			else log.info("budget is not saved");
+		}
+		return "\"저장을 완료했습니다.\"";
 	}
 }

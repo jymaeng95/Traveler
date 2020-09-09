@@ -2,6 +2,7 @@ package com.traveler.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -52,4 +53,33 @@ public class BudgetServiceImpl implements BudgetService{
 		return budget;
 	}
 	
+	@Override
+	public List<BudgetVO> convertJSONintoBudget(Map<String,Object> data,String userId) {
+		List<BudgetVO> budget = new ArrayList<>();
+		
+		int planNo = Integer.parseInt(data.get("planNo").toString());
+		int total = Integer.parseInt(data.get("total").toString());
+		List<Map> trans = (List<Map>) data.get("transactions");
+		for(int i=0;i<trans.size();i++) {
+			Map<String,Object> oneTrans = trans.get(i);
+			BudgetVO oneBudget = new BudgetVO();
+			oneBudget.setPlanNo(planNo);
+			oneBudget.setUserId(userId);
+			oneBudget.setTitle(oneTrans.get("title").toString());
+			if(oneTrans.get("cat")==null)
+				oneBudget.setCat("");
+			else
+				oneBudget.setCat(oneTrans.get("cat").toString());
+			oneBudget.setIncome(Integer.parseInt(oneTrans.get("income").toString()));
+			oneBudget.setExpend(Integer.parseInt(oneTrans.get("expend").toString()));
+			oneBudget.setTotal(total);
+			oneBudget.setPlanDate(oneTrans.get("planDate").toString());
+			if(oneTrans.get("descript")==null)
+				oneBudget.setDescript("");
+			else
+				oneBudget.setDescript(oneTrans.get("descript").toString());
+			budget.add(oneBudget);
+		}
+		return budget;
+	}
 }

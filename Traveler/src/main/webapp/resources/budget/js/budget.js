@@ -98,6 +98,47 @@ var load = function(data) {
 //append trans data
 function startAppend(data) {
 	for (var i = 0; i < data.length; i++) {
+		if(data[i].income > 0){
+			$(".trans-list").append(
+					'<div class="trans-each">\
+					<div class="trans-details">\
+					<span class="action"></span>\
+					<h3 class="trans-title">' +
+					data[i].title +
+					'</h3><div class="row">\
+					<h5 class="trans-descript">' +
+					data[i].descript + '</h5>\
+					<h5 class="trans-cat">'+data[i].cat+'</h5>\
+					<h5 class="trans-planDate">'+data[i].planDate+
+					'</h5></div>\
+					</div>\
+					<div class="trans-price">\
+					<h4 class="trans-price income" style="color:rgb(113, 207, 66)">'+data[i].income+'\\\
+					</h4>\
+					</div>\
+					</div><hr>'
+			).show('fast');
+		}else if(data[i].expend > 0){
+			$(".trans-list").append(
+					'<div class="trans-each">\
+					<div class="trans-details">\
+					<span class="action"></span>\
+					<h3 class="trans-title">' +
+					data[i].title +
+					'</h3><div class="row">\
+					<h5 class="trans-descript">' +
+					data[i].descript + '</h5>\
+					<h5 class="trans-cat">'+data[i].cat+'</h5>\
+					<h5 class="trans-planDate">'+data[i].planDate+
+					'</h5></div>\
+					</div>\
+					<div class="trans-price">\
+					<h4 class="trans-price expend" style="color:#ff3232">'+data[i].expend+'\\\
+					</h4>\
+					</div>\
+					</div><hr>'
+			).show('fast');
+		} else {
 		$(".trans-list").append(
 				'<div class="trans-each">\
 				<div class="trans-details">\
@@ -107,16 +148,17 @@ function startAppend(data) {
 				'</h3><div class="row">\
 				<h5 class="trans-descript">' +
 				data[i].descript + '</h5>\
-				<h5 class="trans-cat"></h5>\
+				<h5 class="trans-cat">'+data[i].cat+'</h5>\
 				<h5 class="trans-planDate">'+data[i].planDate+
 				'</h5></div>\
 				</div>\
 				<div class="trans-price">\
-				<h4 class="trans-price">\
+				<h4 class="trans-price">0\\\
 				</h4>\
 				</div>\
 				</div><hr>'
 		).show('fast');
+		}
 		noTrans();
 	}    
 	detachAddBtn();
@@ -155,28 +197,30 @@ var noTrans = function() {
 $(document).ready(function() {    
 	$(".cc:eq(0)").addClass("cc-active")  
 	var planNo = $(".cc:eq(0)").find('input').val();
+	$("#planNo").val(planNo);
 	var title = $(".cc:eq(0)").find('div.cc-num').text();
 	$("#planTitle").text(title);
-	var data = getUserPlan(planNo);
+	var data = getUserBudget(planNo);
 	load(data) ;
+});
 
-	$(document).on("click","#btn-save",function(){
-		var budget = setBudgetData(planNo);
-		console.log(budget);
-		$.ajax({
-			url : "/budget/save/budget",
-			dataType: "json",
-			type : "post",
-			data : JSON.stringify(budget),
-			contentType : "application/json; charset=UTF-8",
-			success : function(data) {
-				alert("저장 완료!");
-				location.reload(true);
-			},
-			error : function(error){
-				alert("저장 실패 ");
-			}
-		});
+$(document).on("click","#btn-save",function(){
+	var planNo = $("#planNo").val();
+	var budget = setBudgetData(planNo);
+	console.log(budget);
+	$.ajax({
+		url : "/budget/save/budget",
+		dataType: "json",
+		type : "post",
+		data : JSON.stringify(budget),
+		contentType : "application/json; charset=UTF-8",
+		success : function(data) {
+			alert("저장 완료!");
+			location.reload(true);
+		},
+		error : function(error){
+			alert("저장 실패 ");
+		}
 	});
 });
 //close modal
@@ -197,17 +241,19 @@ $(document).on("click",".trans-each",function(){
 	var title = $(this).find('h3').text();
 	var descript = $(this).find('h5.trans-descript').text();
 	var cat = $(this).find('h5.trans-cat').text();
-	if(cat != "") {
+	var price = $(this).find('h4.trans-price').text().split("\\");
+	if(cat != "카테고리") {
 		switch(cat){
-		case "관광" : $("input[value='관광']").attr("checked"); break;
-		case "숙박" : $("input[value='숙박']").attr("checked"); break;
-		case "식비" : $("input[value='식비']").attr("checked"); break;
-		case "교통" : $("input[value='교통']").attr("checked"); break;
-		case "기타" : $("input[value='기타']").attr("checked"); break;
+		case "관광" : $("input[value='관광']").attr("checked",true); break;
+		case "숙박" : $("input[value='숙박']").attr("checked",true); break;
+		case "식비" : $("input[value='식비']").attr("checked",true); break;
+		case "교통" : $("input[value='교통']").attr("checked",true); break;
+		case "기타" : $("input[value='기타']").attr("checked",true); break;
 		}
 	}
 	$("#title").text(title);
 	$("#info").val(descript);
+	$("#price").val(price[0]);
 	$(".modal").show();
 });
 
@@ -216,14 +262,19 @@ $(document).on("click", ".cc", function(e) {
 	$(".cc").removeClass("cc-active");
 	$(this).addClass("cc-active");
 	var planNo = $(this).find('input').val();
+	$("#planNo").val(planNo);
 	var title = $(this).find('div.cc-num').text();
 	$("#planTitle").text(title);
-	var data = getUserPlan(planNo);
+	var data = getUserBudget(planNo);
 	load(data);
 });
 
 //모달에서 수입 버튼 클릭 시 
 $(document).on("click","#income",function(){
+	if(!checkModal()){
+		alert("빈칸을 채워주세요");
+		return false;
+	}
 	$(".trans-each").each(function(){
 		if($(this).find("h3").text() == $("#title").text()){
 			$(this).find('h5.trans-descript').text($("#info").val());
@@ -231,16 +282,18 @@ $(document).on("click","#income",function(){
 			$(this).find('h4.trans-price').text($("#price").val()+"\\");
 			$(this).find('h4.trans-price').css("color", "rgb(113, 207, 66)");
 			$(this).find('h4.trans-price').addClass("income");
-			if(checkModal()){
-				clearModal();
-				$('.modal').hide();
-			}else  alert("빈칸을 채워주세요.");
 		}
 	});
+	$(".modal").hide();
+	clearModal();
 });
 
 //모달 지출 버튼 클릭 시 
 $(document).on("click","#expend",function(){
+	if(!checkModal()){
+		alert("빈칸을 채워주세요");
+		return false;
+	}
 	$(".trans-each").each(function(){
 		if($(this).find("h3").text() == $("#title").text()){
 			$(this).find('h5.trans-descript').text($("#info").val());
@@ -248,12 +301,11 @@ $(document).on("click","#expend",function(){
 			$(this).find('h4.trans-price').text($("#price").val()+"\\");
 			$(this).find('h4.trans-price').css("color", "#ff3232");
 			$(this).find('h4.trans-price').addClass("expend");
-			if(checkModal()){
-				clearModal();
-				$('.modal').hide();
-			}else  alert("빈칸을 채워주세요.");
 		}
 	});
+	$(".modal").hide();
+	clearModal();
+
 });
 
 //새로운 계획 추가에서 수입 클릭 시 
@@ -263,8 +315,8 @@ $(document).on("click","#add-income",function(){
 	var planDate = $("#add-date").val();
 	var cat = $("input[name='add-cat']:checked").val();
 	var price = $("#add-price").val();
-	if(!checkAddModal()) {
-		alert("빈칸을 채워주세요.")
+	if(!checkAddModal()){
+		alert("빈칸을 채워주세요");
 		return false;
 	}
 	addlist = $("#add-list").detach();
@@ -300,10 +352,9 @@ $(document).on("click","#add-expend",function(){
 	var cat = $("input[name='add-cat']:checked").val();
 	var price = $("#add-price").val();
 	if(!checkAddModal()){
-		alert("빈칸을 채워주세요.");
+		alert("빈칸을 채워주세요");
 		return false;
 	}
-	
 	addlist = $("#add-list").detach();
 	$(".trans-list").append(
 			'<div class="trans-each">\
@@ -327,6 +378,7 @@ $(document).on("click","#add-expend",function(){
 	$(".trans-list").append(addlist);
 	$(".add-budget-modal").hide();
 	clearAddModal();
+
 });
 
 //새로운 예산 (+) 버튼 클릭 
@@ -355,8 +407,7 @@ function calcBalance(){
 	return sum;
 }
 
-
-function getUserPlan(planNo){
+function getUserBudget(planNo){
 	var result = new Array();
 	$.ajax({
 		url : "/budget/load/userplan",
@@ -369,7 +420,21 @@ function getUserPlan(planNo){
 				var jsondata = {}
 				jsondata.title = data[i].title;
 				jsondata.planDate = data[i].planDate;
-				jsondata.descript = data[i].descript;
+				if(data[i].descript !="")
+					jsondata.descript = data[i].descript;
+				else 
+					jsondata.descript = "정보";
+				if(data[i].cat!="")
+					jsondata.cat = data[i].cat;
+				else 
+					jsondata.cat = "카테고리";
+				if(data[i].income > 0){
+					jsondata.income = data[i].income;
+					jsondata.expend = 0;
+				}else {
+					jsondata.income = 0;
+					jsondata.expend = data[i].expend;
+				}
 				result.push(jsondata); 
 			});
 		},
@@ -408,7 +473,7 @@ function setBudgetData(planNo){
 			trans.expend = 0;
 		} else if($(this).find('h4.trans-price').hasClass('expend') == true) {
 			trans.income = 0;
-			trans.exepnd = $(this).find('h4.expend').text().split("\\")[0];
+			trans.expend = $(this).find('h4.expend').text().split("\\")[0];
 		} else {
 			trans.income = 0;
 			trans.expend = 0;
@@ -432,14 +497,14 @@ function onlyNumber(){
 }
 
 function checkAddModal() {
-	if($('#add-title').val("")==""||$('#add-date').val("")==""||$('#add-price').val("")==""||
-			$("#add-info").val("")==""){
+	if($('#add-title').val()==""||$('#add-date').val()==""||$('#add-price').val()==""||
+			$("#add-info").val()==""){
 		return false;
 	}
 	return true;
 }
 function checkModal() {
-	if($('#price').val("")==""||$("#info").val("")==""){
+	if($('#price').val()==""||$("#info").val()==""){
 		return false;
 	}
 	return true;
