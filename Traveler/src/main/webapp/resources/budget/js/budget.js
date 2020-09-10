@@ -139,25 +139,25 @@ function startAppend(data) {
 					</div><hr>'
 			).show('fast');
 		} else {
-		$(".trans-list").append(
-				'<div class="trans-each">\
-				<div class="trans-details">\
-				<span class="action"></span>\
-				<h3 class="trans-title">' +
-				data[i].title +
-				'</h3><div class="row">\
-				<h5 class="trans-descript">' +
-				data[i].descript + '</h5>\
-				<h5 class="trans-cat">'+data[i].cat+'</h5>\
-				<h5 class="trans-planDate">'+data[i].planDate+
-				'</h5></div>\
-				</div>\
-				<div class="trans-price">\
-				<h4 class="trans-price">0\\\
-				</h4>\
-				</div>\
-				</div><hr>'
-		).show('fast');
+			$(".trans-list").append(
+					'<div class="trans-each">\
+					<div class="trans-details">\
+					<span class="action"></span>\
+					<h3 class="trans-title">' +
+					data[i].title +
+					'</h3><div class="row">\
+					<h5 class="trans-descript">' +
+					data[i].descript + '</h5>\
+					<h5 class="trans-cat">'+data[i].cat+'</h5>\
+					<h5 class="trans-planDate">'+data[i].planDate+
+					'</h5></div>\
+					</div>\
+					<div class="trans-price">\
+					<h4 class="trans-price">0\\\
+					</h4>\
+					</div>\
+					</div><hr>'
+			).show('fast');
 		}
 		noTrans();
 	}    
@@ -201,6 +201,15 @@ $(document).ready(function() {
 	var title = $(".cc:eq(0)").find('div.cc-num').text();
 	$("#planTitle").text(title);
 	var data = getUserBudget(planNo);
+	var planData = getUserPlanDate(planNo);
+	var firstDate = planData.firstDate.split("-");
+	var startDate = new Date(firstDate[0], (firstDate[1]-1), firstDate[2]);
+	var totalDate= planData.totalDate;
+
+	$("#add-date").flatpickr({
+		minDate: startDate,
+		maxDate: startDate.fp_incr(totalDate-1)
+	});
 	load(data) ;
 });
 
@@ -223,6 +232,42 @@ $(document).on("click","#btn-save",function(){
 		}
 	});
 });
+
+$(document).on("click","#btn-graph",function(){
+	$(".trans-list").attr("style","display:none;");
+	$(".trans-graph").attr("style","display:block;");
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+	var catData = getCatInfo();
+	//{"unknown" : catData[0], "sight" : catData[1], "hotel" : catData[2],
+//	"food" : catData[3], "transport" : catData[4], "etc" : catData[5]};
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([
+			['Category', 'Count'],
+			['관광', catData.sight],
+			['숙박', catData.hotel],
+			['교통', catData.transport],
+			['식비', catData.food],
+			['기타', catData.etc]
+			]);
+		var options = {
+				title: '카테고리 별 지출/수입 현황',
+				chartArea:{left:'20px', width:'100%',height:'85%'},
+				colors : ['#5b6777','#f15628','#ffc81b','#1ca392','#57b4c1'],
+				
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+		chart.draw(data, options);
+	}
+});
+
+$(document).on("click","#btn-trans",function(){
+	$(".trans-graph").attr("style","display:none");
+	$(".trans-list").attr("style","display:block");
+});
+
 //close modal
 $(document).on("click", ".modal-close", function(e) {
 	$(".modal").hide();
@@ -261,11 +306,20 @@ $(document).on("click",".trans-each",function(){
 $(document).on("click", ".cc", function(e) {
 	$(".cc").removeClass("cc-active");
 	$(this).addClass("cc-active");
+	$(".trans-graph").attr("style","display:none");
 	var planNo = $(this).find('input').val();
 	$("#planNo").val(planNo);
 	var title = $(this).find('div.cc-num').text();
 	$("#planTitle").text(title);
 	var data = getUserBudget(planNo);
+	var planData = getUserPlanDate(planNo);
+	var firstDate = planData.firstDate.split("-");
+	var startDate = new Date(firstDate[0], (firstDate[1]-1), firstDate[2]);
+	var totalDate= planData.totalDate;
+	$("#add-date").flatpickr({
+		minDate: startDate,
+		maxDate: startDate.fp_incr(totalDate-1)
+	});
 	load(data);
 });
 
@@ -281,6 +335,8 @@ $(document).on("click","#income",function(){
 			$(this).find('h5.trans-cat').text($("input[name='cat']:checked").val());
 			$(this).find('h4.trans-price').text($("#price").val()+"\\");
 			$(this).find('h4.trans-price').css("color", "rgb(113, 207, 66)");
+			if($(this).find('h4.trans-price').hasClass("expend")) 
+				$(this).find('h4.trans-price').removeClass("expend");
 			$(this).find('h4.trans-price').addClass("income");
 		}
 	});
@@ -300,12 +356,13 @@ $(document).on("click","#expend",function(){
 			$(this).find('h5.trans-cat').text($("input[name='cat']:checked").val());
 			$(this).find('h4.trans-price').text($("#price").val()+"\\");
 			$(this).find('h4.trans-price').css("color", "#ff3232");
+			if($(this).find('h4.trans-price').hasClass("income")) 
+				$(this).find('h4.trans-price').removeClass("income");
 			$(this).find('h4.trans-price').addClass("expend");
 		}
 	});
 	$(".modal").hide();
 	clearModal();
-
 });
 
 //새로운 계획 추가에서 수입 클릭 시 
@@ -391,6 +448,25 @@ $(document).on("click","#btn-calc",function(){
 	$("#balance").text("총계 : "+calcBalance()+"원");
 });
 
+function getCatInfo(){
+	//정보(미정) 관광, 숙박 식비 교통 기타 
+	var catCount = [0,0,0,0,0]
+	$(".trans-cat").each(function(){
+		cat = $(this).text();
+		switch(cat){
+		case "관광" : catCount[0]++; break;
+		case "숙박" : catCount[1]++; break;
+		case "식비" : catCount[2]++; break;
+		case "교통" : catCount[3]++; break;
+		case "기타" : catCount[4]++; break;
+		}
+	});
+	var catData = {"sight" : catCount[0], "hotel" : catCount[1],
+			"food" : catCount[2], "transport" : catCount[3], "etc" : catCount[4]};
+	console.log(catData);
+	return catData;
+}
+
 function calcBalance(){
 	var sum = 0;
 	var income = 0;
@@ -405,6 +481,25 @@ function calcBalance(){
 	})
 	sum = income + expend;
 	return sum;
+}
+
+function getUserPlanDate(planNo) {
+	var result = new Object();
+	$.ajax({
+		url : "/budget/load/date",
+		async : false,
+		dataType : "json",
+		type : "get",
+		data : {"planNo" : planNo },
+		success : function(data) {
+			result.firstDate = data.planDate;
+			result.totalDate = data.planTotalDate;
+		},
+		error : function(error){
+			alert("날짜 불러오기 오류");
+		}
+	});
+	return result;
 }
 
 function getUserBudget(planNo){
@@ -478,9 +573,7 @@ function setBudgetData(planNo){
 			trans.income = 0;
 			trans.expend = 0;
 		}
-
-		if($(this).find('h5.trans-descript').text()=="null") trans.descript="";
-		else trans.descript = $(this).find('h5.trans-descript').text();
+		trans.descript = $(this).find('h5.trans-descript').text();
 		trans.planDate = $(this).find('h5.trans-planDate').text();
 		transactions.push(trans);
 	});

@@ -24,4 +24,6 @@ public interface UserPlanService {
 	public List<UserPlanVO> convertSchedule(String data) throws Exception;
 	//public void convertUserPlan(List<String> data,String userId) throws Exception;
 	public int getTotalCountPlan() throws Exception;
+	
+	public UserPlanVO getUserPlanDate(UserPlanVO plan) throws Exception;
 }

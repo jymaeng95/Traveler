@@ -36,37 +36,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
 		#{planTotalDate})
 	</insert>
-	
+
 	<update id="finalPlan">
 		merge into userplan
 		using dual
 		on (planNo=#{planNo} and
-		userId=#{userId} and title=#{title} and is_insertAfter=#{is_insertAfter})
-		when matched then
+		userId=#{userId}
+		and title=#{title} and is_insertAfter=#{is_insertAfter})
+		when matched
+		then
 		<if test='descript!=null'>
 			update set
-			planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}, descript=#{descript}
-			when not matched then
+			planDay = #{planDay},
+			planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate =
+			#{startDate}, endDate=#{endDate}, descript=#{descript}
+			when not
+			matched then
 		</if>
 		<if test='descript==null'>
 			update set
-			planDay = #{planDay}, planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate = #{startDate}, endDate=#{endDate}
+			planDay = #{planDay},
+			planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate =
+			#{startDate}, endDate=#{endDate}
 			when not matched then
 		</if>
 		<if test='descript != null'>
 			insert
 			(planNo,userId,title,planDate,planDay,planTotalDate,startDate,endDate,descript,is_insertAfter)
-			VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
+			VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},
 			#{endDate},#{descript},#{is_insertAfter})
 		</if>
 		<if test='descript == null'>
 			insert
 			(planNo,userId,title,planDate,planDay,planTotalDate,startDate,endDate,is_insertAfter)
-			VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay}, #{planTotalDate},#{startDate},
+			VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},
 			#{endDate},#{is_insertAfter})
 		</if>
 	</update>
-	
+
 	<select id="readPlans" resultMap="UserPlanVO">
 		select * from userplan where
 		userId = #{userId} and planNo = #{planNo} and is_insertAfter = 'N'
@@ -78,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userId = #{userId} and planNo = #{planNo}
 		order by planDay, startDate
 	</select>
-	
+
 	<delete id="deletePlan">
 		delete from userplan
 		where userId = #{userId} and
@@ -92,6 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userId=#{userId} and title=#{title})
 		when matched then
 		update set
+
 		planDay = #{planDay}, planDate=#{planDate}
 		when not matched then
 		insert
@@ -103,15 +113,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{planTotalDate})
 	</update>
 
-<!-- 	<select id="readAllPlans" resultMap="UserPlanVO">
-		select planno, plantitle, userid
-		from userplan
-		where userid=#{userId}
-		group by planno,plantitle,userid
-	</select> -->
-	
+	<!-- <select id="readAllPlans" resultMap="UserPlanVO"> select planno, plantitle, 
+		userid from userplan where userid=#{userId} group by planno,plantitle,userid 
+		</select> -->
+
 	<select id="getCountPlanNo" resultType="int">
-		select nvl(max(planno),0)+1
+		select
+		nvl(max(planno),0)+1
 		from userplan
+	</select>
+
+	<select id="readPlanDate" resultMap="UserPlanVO">
+		select planDate, planTotalDate
+		from userplan
+		where planno=#{planNo} and userid=#{userId} and rownum = 1
+		order by planDate
 	</select>
 </mapper>

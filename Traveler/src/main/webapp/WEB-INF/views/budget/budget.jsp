@@ -7,8 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="/resources/budget/css/budget.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <%@ include file="../includes/sidebar_setting.jsp"%>
 <script src="/resources/budget/js/budget.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <!-- Josh Channin -->
@@ -57,11 +61,13 @@
 							</div>
 					</div>
 				</div>
+				<div id="piechart" class="trans-graph"></div>
 				<div class="row trans-footer">
 					<div class="row btn-div">
 						<h4 id="balance" style="margin-right:20px;"></h4>
 						<button type="button" id="btn-save" class="btn btn-primary">저장</button>
 						<button type="button" id="btn-calc" class="btn btn-primary">계산</button>
+						<button type="button" id="btn-trans" class="btn btn-primary">예산</button>
 						<button type="button" id="btn-graph" class="btn btn-primary">그래프</button>
 					</div>
 				</div>

@@ -145,4 +145,12 @@ public class UserPlanServiceImpl implements UserPlanService{
 		log.info(plan);
 		return mapper.readSchedule(plan);
 	}
+
+	@Override
+	public UserPlanVO getUserPlanDate(UserPlanVO plan) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return mapper.readPlanDate(plan);
+	}
+	
 }

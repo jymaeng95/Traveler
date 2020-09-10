@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,13 +61,13 @@ public class BudgetController {
 
 	@ResponseBody
 	@RequestMapping(value="budget/save/budget",method=RequestMethod.POST)
-	public String saveBudget(@RequestBody Map<String,Object> trans, HttpSession session) {
+	public String saveBudget(@RequestBody Map<String,Object> trans, HttpSession session) throws ParseException {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		log.info("planNo : "+trans.get("planNo"));
 		log.info("total : "+trans.get("total"));
 		log.info("transactions : "+trans.get("transactions"));
 		
-		List<BudgetVO> budget = budgetService.convertJSONintoBudget(trans, member.getUserId());
+		List<BudgetVO> budget = budgetService.convertMapIntoBudget(trans, member.getUserId());
 		log.info(budget);
 		
 		for(int i=0;i<budget.size();i++) {
@@ -75,5 +76,16 @@ public class BudgetController {
 			else log.info("budget is not saved");
 		}
 		return "\"저장을 완료했습니다.\"";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="budget/load/date", method=RequestMethod.GET)
+	public UserPlanVO getUserPlanDate(@RequestParam(value="planNo") int planNo, HttpSession session) throws Exception {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		UserPlanVO plan = new UserPlanVO();
+		plan.setPlanNo(planNo);
+		plan.setUserId(member.getUserId());
+		
+		return planService.getUserPlanDate(plan);
 	}
 }

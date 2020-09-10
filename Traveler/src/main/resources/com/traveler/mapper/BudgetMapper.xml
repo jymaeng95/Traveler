@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id column="bno" property="bno" />
 		<id column="planNo" property="planNo" />
 		<id column="userId" property="userId" />
-		<result column="title" property="title" />
+		<id column="title" property="title" />
 		<result column="cat" property="cat" />
 		<result column="income" property="income" />
 		<result column="expend" property="expend" />
@@ -36,22 +36,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		planno = #{planNo} and userid = #{userId}
 	</select>
 
-	<update id="updateBudget">
+	<update id="insertAndUpdateBudget">
 		merge into budget
 		using dual
 		on (planNo=#{planNo} and
 		userId=#{userId} and title=#{title} and planDate=#{planDate})
-		when
-		matched then
+		when matched then
 		update set
-		income = #{income}, expend=#{expend},
-		total=#{total},descript = #{descript}, cat =#{cat}
-		when not matched
-		then
+		income = #{income}, expend=#{expend}, total=#{total}, descript = #{descript}, cat =#{cat}
+		when not matched then
 		insert
 		(bno,planNo,userId,title,cat,income,expend,total,descript,planDate)
-		VALUES (bno.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income},
-		#{expend},#{total},
+		VALUES (bno.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income}, #{expend},#{total},
 		#{descript},#{planDate})
 	</update>
+
 </mapper>

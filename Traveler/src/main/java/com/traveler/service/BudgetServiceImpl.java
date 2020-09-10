@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.traveler.domain.BudgetVO;
@@ -22,7 +26,7 @@ public class BudgetServiceImpl implements BudgetService{
 	@Override
 	public boolean saveBudget(BudgetVO budget) {
 		// TODO Auto-generated method stub
-		return mapper.insertBudget(budget) > 0;
+		return mapper.insertAndUpdateBudget(budget) > 0;
 	}
 
 	@Override
@@ -47,14 +51,17 @@ public class BudgetServiceImpl implements BudgetService{
 			onePlan.setExpend(0);
 			onePlan.setTotal(0);
 			onePlan.setPlanDate(schedule.get(i).getPlanDate());
-			onePlan.setDescript(schedule.get(i).getDescript());
+			if(schedule.get(i).getDescript()==null)
+				onePlan.setDescript("");
+			else
+				onePlan.setDescript(schedule.get(i).getDescript());
 			budget.add(onePlan);
 		}
 		return budget;
 	}
-	
+
 	@Override
-	public List<BudgetVO> convertJSONintoBudget(Map<String,Object> data,String userId) {
+	public List<BudgetVO> convertMapIntoBudget(Map<String,Object> data,String userId) throws ParseException {
 		List<BudgetVO> budget = new ArrayList<>();
 		
 		int planNo = Integer.parseInt(data.get("planNo").toString());
@@ -80,6 +87,8 @@ public class BudgetServiceImpl implements BudgetService{
 				oneBudget.setDescript(oneTrans.get("descript").toString());
 			budget.add(oneBudget);
 		}
+		
 		return budget;
 	}
+	
 }
