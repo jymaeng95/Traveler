@@ -85,4 +85,10 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mapper.kakaoRead(member);
 	}
+
+	@Override
+	public boolean deleteKakaoMember(MemberVO member) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.deleteKakao(member) > 0 ;
+	}
 } 

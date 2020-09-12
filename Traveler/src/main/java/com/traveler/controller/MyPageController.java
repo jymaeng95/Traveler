@@ -93,6 +93,17 @@ public class MyPageController {
 
 		return result;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="mypage/delete/kakao", method=RequestMethod.POST)
+	public boolean deleteUserForKakao(MemberVO member, HttpSession session) throws Exception {
+		log.info("kakao delete : "+ member);
+		
+		boolean result = service.deleteKakaoMember(member);
+		if(result) 	session.invalidate();
+		
+		return result;
+	}
 
 	@ResponseBody
 	@RequestMapping(value="/mypage/pwdcheck", method=RequestMethod.POST)

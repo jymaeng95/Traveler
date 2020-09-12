@@ -39,6 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from member
 		where userId = #{userId} and userPw = #{userPw}
 	</delete>
+		
+	<delete id="deleteKakao">
+		delete
+		from member
+		where userId = #{userId} and is_kakao = #{is_kakao}
+	</delete>
 	
 	<!-- 아이디 중복 체크  -->
 	<select id="idCheck" resultType="int">

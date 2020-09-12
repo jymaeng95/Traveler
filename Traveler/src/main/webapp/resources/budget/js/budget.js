@@ -1,67 +1,7 @@
-/* Josh Channin
-   Fake data from generatedata.com
- */
-//vars
+
 var balance = 0;
 
-////append cc to modal
-//var ccModalAppend= function(ccType, ccNum, month, year) {
-//if(ccType == 'amex') {	
-//$(".cc-select").prepend(
-//'<div class="cc ' +
-//ccType +
-//' cc-active">\
-//<div class="cc-img-main"></div>\
-//<div class="cc-num">**** *******  ' +
-//ccNum +
-//'</div>\
-//<div class="cc-date">Valid Thru: ' +
-//month +
-//"/" +
-//year +
-//"</div>\
-//</div>"
-//);
-//} else {
-//$(".cc-select").prepend(
-//'<div class="cc ' +
-//ccType +
-//' cc-active">\
-//<div class="cc-img-main"></div>\
-//<div class="cc-num">**** **** **** ' +
-//ccNum +
-//'</div>\
-//<div class="cc-date">Valid Thru: ' +
-//month +
-//"/" +
-//year +
-//"</div>\
-//</div>"
-//);
-//}	
-//}
 
-
-//append credit cards
-//var ccAppend = function(data) {
-//$(".cc-select").append(
-//'<div id="'+data.id+'" class="cc ' +
-//data.type +
-//'">\
-//<div class="cc-img-main"></div>\
-//<div class="cc-num">' +
-//data.number +
-//'</div>\
-//<div class="cc-date">Valid Thru: ' +
-//data.month +
-//"/" +
-//data.year +
-//"</div>\
-//</div>"
-//)	
-//}
-
-//load trams data 
 var load = function(data) {  
 	clearTrans();
 	balance = 0;
@@ -69,31 +9,6 @@ var load = function(data) {
 //	balanceCalc(balance);  
 	noTrans();
 };
-
-//count valid cc numbers
-//var countValid = function(ccType) {    
-//if(ccType == 'amex') {
-//if($('#ccnum').val().length != 15) {
-//$('#ccnum').removeClass('valid-green')
-//$('#ccnum').addClass('valid-red')
-//return false;
-//} else {
-//$('#ccnum').addClass('valid-green')
-//$('#ccnum').removeClass('valid-red')
-//return true;
-//}
-//} else {
-//if($('#ccnum').val().length != 16) {
-//$('#ccnum').addClass('valid-red')
-//$('#ccnum').removeClass('valid-green')
-//return false;
-//} else {
-//$('#ccnum').addClass('valid-green')
-//$('#ccnum').removeClass('valid-red')
-//return true;
-//}
-//}  
-//}
 
 //append trans data
 function startAppend(data) {
@@ -163,11 +78,6 @@ function startAppend(data) {
 	}    
 	detachAddBtn();
 }
-
-//calc balance and format
-/*var balanceCalc = function balanceCalc(balance) {
-	return balance < 0  ? $("#balance").html("$(" + Math.abs(balance).toLocaleString() + ")")  : $("#balance").html("$" + balance.toLocaleString() + "");
-}*/
 
 //clear trans list
 var clearTrans = function(){
@@ -534,7 +444,8 @@ function getUserBudget(planNo){
 			});
 		},
 		error : function(error){
-			alert("데이터 로딩 x")
+			alert("생성할 예산이 존재하지 않습니다.");
+			location.href = "/";
 		}
 	});
 
@@ -602,53 +513,4 @@ function checkModal() {
 	}
 	return true;
 }
-//click listener for active card in modal selector
-//$(document).on("click", ".cc-img", function(e) {
-//$(".cc-img").removeClass("cc-md-active");
-//$(this).addClass("cc-md-active");
-//($(".md-cc > .cc-md-active").attr("class").split(" ")[1] == 'amex') ? $('#ccnum').attr('placeholder','**** ****** *****') : $('#ccnum').attr('placeholder','**** **** **** ****')   
-//$('#ccnum, #year, #month').removeAttr('disabled');
-//});
 
-
-
-
-//add new card logic
-//TODO: Add numbous checks, sanitize, error catching
-//$(document).on("click", ".modal-add-cc", function(e) {
-//var ccType = null;
-//if ($(".md-cc > .cc-md-active").attr("class")) {
-//ccType = $(".md-cc > .cc-md-active").attr("class").split(" ")[1];
-//}
-//var ccNum = $("#ccnum").val().substr($("#ccnum").val().length - 4);
-//var month = $("#month").val();
-//var year = $("#year").val();
-
-//if (ccNum && month && year && ccType) {
-//$(".modal").hide();
-//$(".cc").removeClass("cc-active");
-
-//ccModalAppend(ccType,ccNum,month,year)
-//var p = data[data.length-1].id + 1
-//data.push({
-//type: ccType,
-//number: (ccType == 'amex') ? "**** ****** "+ccNum : "**** **** **** "+ccNum ,
-//month: month,
-//year: year,
-//id: p,
-//transactions: []
-//})
-//clearTrans()
-//clearModal();
-//load(ccType,data)
-
-//} else {
-//alert("Sorry, missing required fields"); // will do for now
-//}
-//});
-
-//keypress cc count
-//$('#ccnum').on('keyup', function(){
-//var ccType = $(".md-cc > .cc-md-active").attr("class").split(" ")[1];
-//countValid(ccType);
-//})

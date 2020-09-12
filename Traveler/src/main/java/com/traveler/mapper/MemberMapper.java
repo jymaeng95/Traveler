@@ -3,7 +3,7 @@ package com.traveler.mapper;
 import com.traveler.domain.MemberVO;
 
 public interface MemberMapper {
-	// Member CRUD ���� 
+	// Member CRUD 占쏙옙占쏙옙 
 	// Create
 	public void insert(MemberVO member);
 	
@@ -16,10 +16,10 @@ public interface MemberMapper {
 	// Delete
 	public int delete(MemberVO member);
 	
-	//���̵� �ߺ� üũ 
+	//占쏙옙占싱듸옙 占쌩븝옙 체크 
 	public int idCheck(MemberVO member);
 
-	//�г��� �ߺ� üũ 
+	//占싻놂옙占쏙옙 占쌩븝옙 체크 
 	public int nickCheck(MemberVO member);
 	
 	public int pwCheck(MemberVO member);
@@ -28,5 +28,8 @@ public interface MemberMapper {
 	
 	public void kakaoSignUp(MemberVO member);
 	
+	public int deleteKakao(MemberVO member);
+	
 	public MemberVO kakaoRead(MemberVO member);
+	
 }

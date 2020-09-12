@@ -18,11 +18,15 @@ CREATE TABLE PLANNER (
     );
     
 INSERT INTO PLANNER(PLANNO,USERID,PLANTITLE,INFO)
-VALUES (PLANNO.NEXTVAL,'423412314','ì œì£¼ì—¬í–‰','í…ŒìŠ¤íŠ¸');
+VALUES (PLANNO.NEXTVAL,'423412314','Á¦ÁÖ¿©Çà','Å×½ºÆ®');
 
 select planno.currval from dual;
-
-
+select planno.nextval from dual;
+select last_number from user_sequences where sequence_name = 'planno';
 SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'PLANNER';
 
 select planno from planner;
+
+select planner.planno, planner.userid, userplan.plandate, userplan.planday
+from planner, userplan 
+where planner.planno = userplan.planno and planner.userid = userplan.userid and planner.planno = 1;

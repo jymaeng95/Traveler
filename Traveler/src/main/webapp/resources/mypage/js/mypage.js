@@ -14,17 +14,42 @@ $(document).ready(function(){
 		$('input[type=file]').click();
 	});
 	$("#confirm").click(function(){
-		if($("#upw").val()=="") {
-			alert("패스워드를 입력하세요.")
-			$("#upw").focus();
+		if($('#is_kakao').val() != 'Y') {
+			if($("#upw").val()=="") {
+				alert("패스워드를 입력하세요.")
+				$("#upw").focus();
+			} else {
+				$.ajax({
+					url : "/mypage/delete",
+					type : "post",
+					dataType : "json",
+					data : {
+						"userId" : $("#session-id").val(),
+						"userPw" : $("#upw").val()
+					},
+					success : function(data){
+						if(data){
+							$("#myModal").modal("hide");
+							location.href= "/";
+						}
+						else {
+							$("#myModal").modal("hide");
+							alert("패스워드가 일치하지않습니다.")
+						}
+					},
+					error : function(error) {
+						alert("에러")
+					}
+				});
+			}
 		} else {
 			$.ajax({
-				url : "/mypage/delete",
+				url : "/mypage/delete/kakao",
 				type : "post",
 				dataType : "json",
 				data : {
 					"userId" : $("#session-id").val(),
-					"userPw" : $("#upw").val()
+					"is_kakao" : $("#is_kakao").val()
 				},
 				success : function(data){
 					if(data){
@@ -33,7 +58,7 @@ $(document).ready(function(){
 					}
 					else {
 						$("#myModal").modal("hide");
-						alert("패스워드가 일치하지않습니다.")
+						alert("탈퇴에 실패했습니다.")
 					}
 				},
 				error : function(error) {

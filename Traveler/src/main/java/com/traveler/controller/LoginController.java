@@ -48,14 +48,14 @@ public class LoginController {
 		}
 
 		MemberVO member = service.kakaoLogin(k_userInfo);
-		log.info(member);
-		//카카오로 한번이라도 로그인 했으면 안하게 함
-		//처음 카카오 로그인이라면 회원가입 들어가게해야함
+		log.info("member for kakao login : " + member);
+		//移댁뭅�삤濡� �븳踰덉씠�씪�룄 濡쒓렇�씤 �뻽�쑝硫� �븞�븯寃� �븿
+		//泥섏쓬 移댁뭅�삤 濡쒓렇�씤�씠�씪硫� �쉶�썝媛��엯 �뱾�뼱媛�寃뚰빐�빞�븿
 		if(member == null) {
 			service.kakaoRegister(k_userInfo);
 			member = service.kakaoLogin(k_userInfo);
+			log.info("member in register for kakao : "+member);
 		}
-
 		model.addAttribute("k_userInfo", member);
 		model.addAttribute("id", member.getUserId());
 

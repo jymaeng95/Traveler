@@ -62,9 +62,11 @@ $(document).ready(function() {
 		$("#bookmark").attr("disabled",false);
 		$("#result").attr("dabled",true);
 		$("#recommend").attr("disabled",false);
+		$("#myplan").attr("disabled",false);
 		$(".book-ul").remove();
 		$("#ul-recommend").hide();
 		$("#ul-bookmark").hide();
+		$("#ul-myPlan").hide();
 		$("#ul-search").show();
 		var keyword = $("#search-field").val();
 		if(keyword == "") {
@@ -170,6 +172,7 @@ $(document).ready(function() {
 		flag = 4;
 		$("#myplan").attr("disabled",true);
 		$("#bookmark").attr("disabled",false);
+		$("#result").attr("disabled",false);
 		$("#recommend").attr("disabled",false);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		$(".book-ul").remove();

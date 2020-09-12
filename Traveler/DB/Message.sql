@@ -1,3 +1,4 @@
+DROP TABLE MESSAGE;
 create table message (
     mid int,
     userId varchar2(50) REFERENCES member(userId),
@@ -6,7 +7,10 @@ create table message (
     senddate varchar2(50) default to_char(sysdate,'yyyy.mm.dd hh24:mi'),
     readstatus varchar2(50) default '0',
     status varchar2(50) default '0',
-    CONSTRAINT msg_pk primary key(mid,userId)
+    primary key(mid,userId),
+    CONSTRAINT MESSAGE_FK_USERID FOREIGN KEY(USERID)
+    REFERENCES MEMBER(USERID) ON DELETE CASCADE
     );
-    
+    DROP SEQUENCE TMP_SEQ;
     CREATE SEQUENCE tmp_seq START WITH 1 INCREMENT BY 1 NOCYCLE NOCACHE;
+    

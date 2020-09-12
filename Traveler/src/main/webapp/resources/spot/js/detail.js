@@ -187,7 +187,8 @@ function loadImage(contentId, contentTypeId) {
 		dataType : "json",
 		data : {
 			"contentId" : contentId,
-			"contentTypeId" : contentTypeId
+			"contentTypeId" : contentTypeId,
+			"numOfRow" : "4"
 		},
 		success : function(data) {
 			for(var i=0;i<4;i++){
