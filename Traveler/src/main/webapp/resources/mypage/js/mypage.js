@@ -13,6 +13,12 @@ $(document).ready(function(){
 	$("#btn-photo").click(function(){
 		$('input[type=file]').click();
 	});
+	$('#file-upload').change(function(){
+		  alert($('input[type=file]')[0].files[0].name); //파일이름
+	       alert($("#file-upload")[0].files[0].type); // 파일 타임
+	       alert($("#file-upload")[0].files[0].size); // 파일 크기
+	       $("#upload-form").submit();
+	});
 	$("#confirm").click(function(){
 		if($('#is_kakao').val() != 'Y') {
 			if($("#upw").val()=="") {

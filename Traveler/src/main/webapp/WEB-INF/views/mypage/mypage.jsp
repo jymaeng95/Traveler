@@ -63,7 +63,11 @@
 								<i class="fas fa-cog" aria-hidden="true"></i>
 							</button>
 						</div>
-						<input type="file" style="visibility: hidden;" />
+						<form action="/upload/user/img" method="post" id="upload-form"
+							enctype="multipart/form-data">
+							<input type="file" style="visibility: hidden;" name="file"
+								id='file-upload' />
+						</form>
 						<div class="profile-stats">
 
 							<!--북마크 개수 / 여행 갯수 / 등 수치 정보 넣으면 좋을듯  -->
@@ -106,8 +110,8 @@
 											class="visually-hidden">Comments:</span><i
 											class="fas fa-comment" aria-hidden="true"></i> 2</li> -->
 										<li class="gallery-item-likes" id="bmk-title"><span
-											class="visually-hidden"> </span>
-										<c:out value="${list.title }"></c:out></li>
+											class="visually-hidden"> </span> <c:out
+												value="${list.title }"></c:out></li>
 									</ul>
 								</div>
 							</div>
