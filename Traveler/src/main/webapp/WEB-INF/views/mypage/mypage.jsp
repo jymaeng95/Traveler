@@ -65,7 +65,7 @@
 						</div>
 						<form action="/upload/user/img" method="post" id="upload-form"
 							enctype="multipart/form-data">
-							<input type="file" style="visibility: hidden;" name="file"
+							<input type="file" style="visibility: hidden;" name="userImg"
 								id='file-upload' />
 						</form>
 						<div class="profile-stats">

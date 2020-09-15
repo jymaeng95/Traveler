@@ -1,5 +1,7 @@
 package com.traveler.mapper;
 
+import java.util.Map;
+
 import com.traveler.domain.MemberVO;
 
 public interface MemberMapper {
@@ -32,4 +34,5 @@ public interface MemberMapper {
 	
 	public MemberVO kakaoRead(MemberVO member);
 	
+	public int insertUserImg(Map<String,Object> fileInfo);
 }

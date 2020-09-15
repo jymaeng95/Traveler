@@ -3,29 +3,43 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.MemberMapper">
-	<!--일반 회원가입  -->
+	<!--일반 회원가입 -->
 	<insert id="insert">
-		insert into member (userId, userPw, email, nickname,is_kakao)
-		values (#{userId}, #{userPw}, #{email}, #{nickname}, 'N')
+		insert into member (userId, userPw, email,
+		nickname,is_kakao)
+		values (#{userId}, #{userPw}, #{email}, #{nickname},
+		'N')
 	</insert>
-	
+
 	<insert id="kakaoSignUp">
-		insert into member (userId, nickname, is_kakao, user_img)
+		insert into member (userId, nickname, is_kakao,
+		user_img)
 		values (#{userId}, #{nickname}, 'Y', #{user_img})
 	</insert>
+
+	<insert id="insertUserImg" parameterType="hashMap">
+		insert into userimg
+		(idx, userId, org_filename, save_filename, file_size)
+		values
+		(idx.nextval,#{userId}, #{org_filename},#{save_filename},
+		#{file_size})
+	</insert>
+	
 	<!-- 일반 로그인 -->
 	<select id="read" resultType="com.traveler.domain.MemberVO">
 		select *
 		from member
-		where userId = #{userId} and userPw = #{userPw}
+		where userId =
+		#{userId} and userPw = #{userPw}
 	</select>
-	
+
 	<select id="kakaoRead" resultType="com.traveler.domain.MemberVO">
 		select *
 		from member
-		where userId = #{userId}
+		where
+		userId = #{userId}
 	</select>
-	<!-- 회원정보 수정  -->
+	<!-- 회원정보 수정 -->
 	<update id="update">
 		update member
 		set userPw = #{userPw},
@@ -33,44 +47,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		nickname = #{nickname}
 		where userId = #{userId}
 	</update>
-	
+
 	<delete id="delete">
-		delete 
+		delete
 		from member
 		where userId = #{userId} and userPw = #{userPw}
 	</delete>
-		
+
 	<delete id="deleteKakao">
 		delete
 		from member
-		where userId = #{userId} and is_kakao = #{is_kakao}
+		where userId = #{userId} and
+		is_kakao = #{is_kakao}
 	</delete>
-	
-	<!-- 아이디 중복 체크  -->
+
+	<!-- 아이디 중복 체크 -->
 	<select id="idCheck" resultType="int">
-		select count(*) 
+		select count(*)
 		from member
 		where userId = #{userId}
 	</select>
-	
-	<!-- 닉네임 중복 체크  -->
+
+	<!-- 닉네임 중복 체크 -->
 	<select id="nickCheck" resultType="int">
 		select count(*)
 		from member
 		where nickname = #{nickname}
 	</select>
-	
-	<!-- 비밀번호 체크  -->
+
+	<!-- 비밀번호 체크 -->
 	<select id="pwCheck" resultType="int">
 		select count(*)
 		from member
-		where userId = #{userId} and userPw = #{userPw}
+		where
+		userId = #{userId} and userPw = #{userPw}
 	</select>
-	
-	<!-- 정보 불러오기 -->	
+
+	<!-- 정보 불러오기 -->
 	<select id="loadInfo" resultType="com.traveler.domain.MemberVO">
 		select *
 		from member
-		where userId = #{userId}
+		where userId
+		= #{userId}
 	</select>
 </mapper>

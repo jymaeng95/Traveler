@@ -1,9 +1,16 @@
 package com.traveler.service;
 
+import java.io.IOException;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.traveler.domain.MemberVO;
 import com.traveler.mapper.MemberMapper;
+import com.traveler.util.FileUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -14,6 +21,9 @@ import lombok.extern.log4j.Log4j;
 public class MemberServiceImpl implements MemberService {
 
 	private MemberMapper mapper;
+	
+	@Resource(name="fileUtils")
+	private FileUtils fileUtil;
 	
 	@Override
 	public void memberRegister(MemberVO member) {
@@ -90,5 +100,17 @@ public class MemberServiceImpl implements MemberService {
 	public boolean deleteKakaoMember(MemberVO member) throws Exception {
 		// TODO Auto-generated method stub
 		return mapper.deleteKakao(member) > 0 ;
+	}
+	
+	@Override
+	public boolean insertUserImg(Map<String,Object> fileInfo) {
+		// TODO Auto-generated method stub
+		return mapper.insertUserImg(fileInfo) > 0;
+	}
+
+	@Override
+	public Map<String,Object> getFileInfo(MultipartHttpServletRequest request, String userId) throws IllegalStateException, IOException {
+		// TODO Auto-generated method stub
+		return fileUtil.getFileInfo(request, userId);
 	}
 } 

@@ -1,5 +1,10 @@
 package com.traveler.service;
 
+import java.io.IOException;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.traveler.domain.MemberVO;
 
 public interface MemberService {
@@ -35,5 +40,8 @@ public interface MemberService {
 	public boolean pwCheck(MemberVO member) throws Exception;
 
 	public MemberVO loadInfo(MemberVO member) throws Exception;
-
+	
+	public boolean insertUserImg(Map<String,Object> fileInfo);
+	
+	public Map<String,Object> getFileInfo(MultipartHttpServletRequest request, String userId) throws IllegalStateException, IOException;
 }
