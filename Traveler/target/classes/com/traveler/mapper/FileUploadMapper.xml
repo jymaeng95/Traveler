@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.traveler.mapper.FileUploadMapper">
+
+	<insert id="insertUserImg" parameterType="hashMap">
+		insert into userimg (idx, userId, org_filename, save_filename, full_path, file_size)
+		values (idx.nextval,#{userId}, #{org_filename},#{save_filename},#{full_path}, #{file_size})
+	</insert>
+	
+	<select id="readUserImgPath" resultType="string">
+		select full_path 
+		from userimg 
+		where userid = #{userId}
+	</select>
+	
+	<delete id="deleteUserImg">
+		delete userimg 
+		where userid = #{userId}
+	</delete>
+	
+	<select id="readUserImgCount" resultType="int">
+		select count(userid) 
+		from userimg 
+		where userid=#{userId}
+	</select>
+	
+	<select id="readUserImgName" resultType="string">
+		select save_filename
+		from userimg
+		where userid=#{userId}
+	</select>
+</mapper>

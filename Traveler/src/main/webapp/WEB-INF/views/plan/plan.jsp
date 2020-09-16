@@ -54,7 +54,7 @@
 								</div>
 								<div class="col-sm-6">
 									<!-- 임시 마이플랜으로 이동  -->
-									<a href="/plan/create2"
+									<a href="/spot/spot"
 										style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid">스팟
 										찾기</a>
 								</div>

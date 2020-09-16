@@ -26,19 +26,20 @@ public class FileUtils {
 		File dir = new File(path); 
 		if(!dir.exists()) { 
 			dir.mkdirs(); 
-		} //파일 업로드
+		} // 파일 업로드
 		
 		if(!file.isEmpty()) {
 			String orgFileName = file.getOriginalFilename();
 			String orgFileExtension = orgFileName.substring(orgFileName.lastIndexOf("."));
 			String saveFileName = getRandomString() + orgFileExtension;
 			
-			dir = new File(path+saveFileName);
+			dir = new File(path+"/"+saveFileName);
 			file.transferTo(dir);
 			
 			fileInfo.put("userId", userId);
 			fileInfo.put("org_filename",orgFileName);
 			fileInfo.put("save_filename",saveFileName);
+			fileInfo.put("full_path",path+"/"+saveFileName);
 			fileInfo.put("file_size",file.getSize());
 		}
 		return fileInfo;
@@ -47,5 +48,14 @@ public class FileUtils {
 	private String getRandomString() {
 		// TODO Auto-generated method stub
 		return UUID.randomUUID().toString().replaceAll("-", "");
+	}
+	
+	public boolean deleteFile(String path) {
+		File file = new File(path);
+		if(file.exists())	{
+			file.delete();
+			return true;
+		}
+		else return false;
 	}
 }

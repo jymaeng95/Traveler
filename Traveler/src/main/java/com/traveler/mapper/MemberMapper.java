@@ -33,6 +33,4 @@ public interface MemberMapper {
 	public int deleteKakao(MemberVO member);
 	
 	public MemberVO kakaoRead(MemberVO member);
-	
-	public int insertUserImg(Map<String,Object> fileInfo);
 }

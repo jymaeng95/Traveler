@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.traveler.api.KakaoAPI;
 import com.traveler.domain.MemberVO;
+import com.traveler.service.FileUploadService;
 import com.traveler.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +30,10 @@ public class LoginController {
 	private KakaoAPI kakao;
 
 	private MemberService service;
+	private FileUploadService fileService;
+	
+	private final static String SERVER_FILE_PATH = "/resources/upload/img/user/";
+	
 	//īī�� �α���
 	@PostMapping("/index/index")
 	@RequestMapping(value="/oauth")
@@ -112,8 +117,11 @@ public class LoginController {
 	public boolean login(MemberVO member, HttpSession session) throws Exception {
 		log.info("process login");
 		MemberVO userInfo = service.memberLogin(member);
-
+		String img = fileService.getUserFileName(member.getUserId());
+		
 		if(userInfo != null) {
+			if(img != null) 
+				userInfo.setUser_img(SERVER_FILE_PATH+img);
 			session.setAttribute("userInfo", userInfo);
 			return true;
 		}else {

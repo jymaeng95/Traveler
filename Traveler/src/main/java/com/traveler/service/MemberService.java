@@ -41,7 +41,5 @@ public interface MemberService {
 
 	public MemberVO loadInfo(MemberVO member) throws Exception;
 	
-	public boolean insertUserImg(Map<String,Object> fileInfo);
 	
-	public Map<String,Object> getFileInfo(MultipartHttpServletRequest request, String userId) throws IllegalStateException, IOException;
 }
