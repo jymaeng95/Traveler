@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class UserPlanServiceImpl implements UserPlanService{
 	private UserPlanMapper mapper;
-	
+
 	@Override
 	public boolean saveUserPlan(UserPlanVO plan) throws Exception {
 		log.info(plan);
@@ -60,7 +60,7 @@ public class UserPlanServiceImpl implements UserPlanService{
 		// TODO Auto-generated method stub
 		return mapper.readAllPlans(userId);
 	}
-	
+
 	public List<UserPlanVO> convertSchedule(String data) throws Exception {
 		List<UserPlanVO> schedule = new ArrayList<UserPlanVO>();
 		JSONParser parser = new JSONParser();
@@ -74,8 +74,8 @@ public class UserPlanServiceImpl implements UserPlanService{
 			plan.setUserId(arrObj.get("userId").toString());
 			plan.setTitle(arrObj.get("title").toString());
 			plan.setPlanDate(arrObj.get("planDate").toString());
-//			if(arrObj.get("planTitle")!=null)
-//				plan.setPlanTitle(arrObj.get("planTitle").toString());
+			//			if(arrObj.get("planTitle")!=null)
+			//				plan.setPlanTitle(arrObj.get("planTitle").toString());
 			plan.setPlanDay(arrObj.get("planDay").toString());
 			plan.setPlanTotalDate(arrObj.get("planTotalDate").toString());	
 			if(arrObj.get("descript")!=null)
@@ -83,7 +83,7 @@ public class UserPlanServiceImpl implements UserPlanService{
 			plan.setStartDate(arrObj.get("startDate").toString());
 			plan.setEndDate(arrObj.get("endDate").toString());
 			plan.setIs_insertAfter(arrObj.get("is_insertAfter").toString());
-			
+
 			schedule.add(plan);
 		}
 		return schedule;
@@ -113,9 +113,10 @@ public class UserPlanServiceImpl implements UserPlanService{
 			plan.setMapX(lonlat.get("_lat").toString());
 			plan.setMapY(lonlat.get("_lng").toString());
 			plan.setPlanDate(arrObj.get("planDate").toString());
-//			plan.setPlanTitle(arrObj.get("planTitle").toString());
+			//			plan.setPlanTitle(arrObj.get("planTitle").toString());
 			plan.setPlanDay(arrObj.get("planDay").toString());
 			plan.setPlanTotalDate(arrObj.get("planTotalDate").toString());
+			plan.setOverview(arrObj.get("overview").toString());
 			//			planInfo.add(plan);
 			log.info(plan);
 			planInfo.add(plan);
@@ -147,10 +148,29 @@ public class UserPlanServiceImpl implements UserPlanService{
 	}
 
 	@Override
-	public UserPlanVO getUserPlanDate(UserPlanVO plan) throws Exception {
+	public UserPlanVO getUserPlanDate(String userId, int planNo) throws Exception {
 		// TODO Auto-generated method stub
-		
+		UserPlanVO plan = new UserPlanVO();
+		plan.setPlanNo(planNo);
+		plan.setUserId(userId);
 		return mapper.readPlanDate(plan);
 	}
-	
+
+	@Override
+	public boolean saveUserModifyPlan(UserPlanVO plan) throws Exception {
+		log.info(plan);
+		if(plan.getContentId() == null) plan.setContentId("");
+		if(plan.getContentTypeId() == null) plan.setContentTypeId("");
+		if(plan.getOverview() == null) plan.setOverview("");
+		int resultCount = mapper.insertModifyPlanFirst(plan);
+		return resultCount>0;
+	}
+
+	@Override
+	public boolean deleteUserSchedule(UserPlanVO plan) throws Exception {
+		// TODO Auto-generated method stub
+		log.info(plan);
+		int resultCount = mapper.deleteSchedule(plan);
+		return resultCount > 0;
+	}
 }

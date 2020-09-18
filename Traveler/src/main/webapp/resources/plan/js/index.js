@@ -7,6 +7,17 @@ $(document).ready(function(){
 			$("#myModal").modal("show");
 		}
 	});
+
+	$(".planner__button").on("click",function(){
+		var planNo = $(this).val();
+		var modifyForm = document.getElementById("modifyForm");
+		var input = document.createElement('input');
+		input.setAttribute("type","hidden");
+		input.setAttribute("name","planNo");
+		input.setAttribute("value",planNo);
+		modifyForm.appendChild(input);
+		modifyForm.submit();
+	});
 	$("#confirm").click(function(){
 		if($("#p_title").val()=="" || $("#p_date").val()=="") {
 			alert("내용을 모두 입력해주세요");
@@ -36,4 +47,17 @@ $(document).ready(function(){
 		inline: true,
 		static : true
 	});
+
+	$('.planLoad').each(function(i){
+		$(this).click(function(){
+			var modifyForm = document.getElementById("modifyForm");
+			var input = document.createElement('input');
+			input.setAttribute("type","hidden");
+			input.setAttribute("name","planNo");
+			input.setAttribute("value",$(this).attr("id"));
+			modifyForm.appendChild(input);
+			modifyForm.submit();
+		});
+	});
+
 });

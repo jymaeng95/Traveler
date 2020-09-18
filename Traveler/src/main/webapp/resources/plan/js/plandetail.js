@@ -21,6 +21,7 @@ $(document).ready(function(){
 		var data = {};
 		var date;
 		data.text = allInfo[i].title;
+		data.is_insertAfter = allInfo[i].is_insertAfter;
 		if(allInfo[i].startDate =="" || allInfo[i].endDate==""){
 			date = allInfo[i].planDate.split('-');
 			if(firstDate[0] != date[0] || firstDate[1] != date[1] || firstDate[2] != date[2]){
@@ -44,7 +45,20 @@ $(document).ready(function(){
 		}
 	}
 	console.log(schedule);
+	$(".dx-tab").on("click",function(){
+		alert("1234");
+		var type = $(this).find(".dx-tab-content").find("span.dx-tab-text").text();
+		console.log(type);
+		if(type == "Agenda"){
+			$(".dx-scheduler-navigator").css("visibility : visible;");
+		}else {
+			$(".dx-scheduler-navigator").css("visibility : hidden");
+		}
+	})
 
+	$("#btn-modify").click(function(){
+		$("#ModifyForm").submit();
+	});
 
 	$(".right-planlist").find('ul').each(function(){
 		$(this).sortable();
@@ -79,23 +93,99 @@ $(document).ready(function(){
 			alert("경유지가 최소 한개 이상이어야합니다.");
 		}
 	});
-	var calendarDate = allInfo[0].planDate.split('-');
-	var instance = $("#scheduler").dxScheduler({
-		dataSource: schedule,
-		views: ["week", "agenda"],
-		currentView: "week", 
-		currentDate: new Date(calendarDate[0], (calendarDate[1]-1), calendarDate[2]),
-		startDayHour: 9,
-		showAllDayPanel : false,
-		height: 600,
-		editing: {
-			allowDeleting:false
-		},
-		onAppointmentAdded: function(e){  
-			console.log(e.appointmentData);  
-		} 
-	}).dxScheduler("instance");
 
+	var calendarDate = allInfo[0].planDate.split('-');
+	var instance;
+
+	if($("#modify-state").val() == 'Y') {
+		instance = $("#scheduler").dxScheduler({
+			dataSource: schedule,
+			views: ["week", "agenda"],
+			currentView: "week", 
+			currentDate: new Date(calendarDate[0], (calendarDate[1]-1), calendarDate[2]),
+			startDayHour: 9,
+			showAllDayPanel : false,
+			height: 600,
+			onAppointmentDeleting: function (e) {  
+				e.cancel = new $.Deferred();  
+				if(e.appointmentData.is_insertAfter == 'N') {
+					alert("adsf")
+					e.cancel.resolve(true);
+				} else {
+					e.cancel.resolve(false);
+				}
+			},
+			editing: {
+				allowDeleting:false
+			},
+			onAppointmentFormOpening: function(e) {
+				e.popup.option('showTitle', true);
+				e.popup.option('title', e.appointmentData.text ? 
+						e.appointmentData.text : 
+				'Create a new appointment');
+				const form = e.form;
+				let formItems = form.option("items");
+				if(e.appointmentData.is_insertAfter == 'N') {
+					formItems[0].items[0].visible = false;
+				} else {
+					formItems[0].items[0].visible = true;
+				}
+				form.option("items", formItems); 
+			},
+//			onAppointmentFormOpening: function(e) {
+//			if(e.targetedAppointmentData.is_insertAfter == 'Y') {
+//			e.component.option("editing.allowDeleting", true);
+//			}
+//			},
+			onAppointmentAdded: function(e){  
+				console.log(e.appointmentData);  
+			} 
+		}).dxScheduler("instance");
+	} else {
+		instance = $("#scheduler").dxScheduler({
+			dataSource: schedule,
+			views: [{name: "travelDay", type: "day", intervalCount: 10, startDate: new Date(2020, 9, 20)},
+				{name: "agenda", type: "agenda", intervalCount: 11, startDate: new Date(2020, 9, 20)}],
+
+				startDayHour: 9,
+				showAllDayPanel : false,
+				height: 600,
+				onAppointmentDeleting: function (e) {  
+					e.cancel = new $.Deferred();  
+					if(e.appointmentData.is_insertAfter == 'N') {
+						alert("adsf")
+						e.cancel.resolve(true);
+					} else {
+						e.cancel.resolve(false);
+					}
+				},
+				editing: {
+					allowDeleting:true
+				},
+				onAppointmentFormOpening: function(e) {
+					e.popup.option('showTitle', true);
+					e.popup.option('title', e.appointmentData.text ? 
+							e.appointmentData.text : 
+					'Create a new appointment');
+					const form = e.form;
+					let formItems = form.option("items");
+					if(e.appointmentData.is_insertAfter == 'N') {
+						formItems[0].items[0].visible = false;
+					} else {
+						formItems[0].items[0].visible = true;
+					}
+					form.option("items", formItems); 
+				},
+//				onAppointmentFormOpening: function(e) {
+//				if(e.targetedAppointmentData.is_insertAfter == 'Y') {
+//				e.component.option("editing.allowDeleting", true);
+//				}
+//				},
+				onAppointmentAdded: function(e){  
+					console.log(e.appointmentData);  
+				} 
+		}).dxScheduler("instance");
+	}
 
 	$("#btn-save").click(function(){
 		var s_instance = instance.getDataSource().items();
@@ -115,13 +205,13 @@ $(document).ready(function(){
 					buffer.planNo = planNo;
 					buffer.title = allInfo[j].title;
 					var date = s_instance[i].startDate;
-					buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+					buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					date = s_instance[i].endDate;
-					buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+					buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					if(s_instance[i].description != "") buffer.descript = s_instance[i].description;
 					else buffer.descript = "";
 					buffer.planTitle = planTitle;
-					buffer.planDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+					buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate();
 					buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
 					buffer.planTotalDate = totalDate;
 					buffer.is_insertAfter = allInfo[j].is_insertAfter;
@@ -134,11 +224,11 @@ $(document).ready(function(){
 				buffer.planNo = planNo;
 				buffer.title =	s_instance[i].text;
 				var date = s_instance[i].startDate;
-				buffer.startDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+				buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				date = s_instance[i].endDate;
-				buffer.endDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+				buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				buffer.descript = s_instance[i].description;
-				buffer.planDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+				buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate();
 				buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
 				buffer.planTotalDate = totalDate;
 				buffer.planTitle = planTitle;

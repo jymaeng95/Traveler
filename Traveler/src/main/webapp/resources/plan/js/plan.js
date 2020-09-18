@@ -172,8 +172,8 @@ $(document).ready(function() {
 		flag = 4;
 		$("#myplan").attr("disabled",true);
 		$("#bookmark").attr("disabled",false);
-		$("#result").attr("disabled",false);
 		$("#recommend").attr("disabled",false);
+		$("#result").attr("disabled",false);
 		if(ex_markers != false) deleteMarkers(ex_markers);
 		$(".book-ul").remove();
 		$("#ul-myPlan").show();
@@ -500,8 +500,9 @@ function addModal(position,map,marker) {
 		var strArr = $("#plandate").val();
 		var stDate = new Date(parseInt(strArr.substr(0,4)), parseInt(strArr.substr(5,2))-1, parseInt(strArr.substr(8,2)));
 		stDate.setDate(stDate.getDate() + ($("#day").val() -1));
-		var split_date = stDate.getFullYear()+"-"+(stDate.getMonth()+1)+"-"+stDate.getDate()
-
+		var month = ((stDate.getMonth()+1)<10?'0':'')+(stDate.getMonth()+1);
+		var split_date = stDate.getFullYear()+"-"+month+"-"+stDate.getDate();
+		
 //		position.planTitle = $("#plantitle").val();
 		position.planDate = split_date;
 		position.planDay = $("#day").val();

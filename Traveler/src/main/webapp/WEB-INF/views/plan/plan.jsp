@@ -5,8 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- <link href="/resources/plan/css/index.css" rel="stylesheet"> -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="/resources/plan/css/index.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <%@ include file="../includes/sidebar_setting.jsp"%>
 <script src="/resources/plan/js/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -21,15 +22,64 @@
 		<div class="container" style="padding: 0">
 			<section class="bg-light" style="margin-top: 15px;">
 				<div class="container"
-					style="padding-top: 0px; margin-top: 0px; margin-bottom: 10px;">
-					<h2 class="pt-3"
+					style="overflow-x: scroll; padding-top: 0px; margin-top: 0px; margin-bottom: 10px;">
+					<h2 class="pt-3 pb-3"
 						style="padding-left: 20px; font-size: 18pt; font-weight: 300; color: #696969">
 						내 제주도 여행</h2>
-					<div style="clear: both"></div>
 					<!-- c태그로 if문으로 제어  -->
-					<div
-						style="text-align: center; padding-top: 40px; padding-bottom: 40px; color: #c0c0c0; font-size: 12pt">
-						새로운 여행을 만들어 보세요!</div>
+					<c:if test="${userInfo.userId == null }">
+						<div
+							style="text-align: center; padding-top: 40px; padding-bottom: 40px; color: #c0c0c0; font-size: 12pt">
+							새로운 여행을 만들어 보세요!</div>
+					</c:if>
+					<c:if test="${userInfo.userId != null }">
+						<c:if test="${resultData.size() == 0 }">
+							<div
+								style="text-align: center; padding-top: 40px; padding-bottom: 40px; color: #c0c0c0; font-size: 12pt">
+								새로운 여행을 만들어 보세요!</div>
+						</c:if>
+						<c:if test="${resultData.size() != 0 }">
+
+							<form action="/plan/plan/detail" method="GET" id="modifyForm">
+								<div class="scrolling-wrapper-flexbox">
+									<c:forEach items="${resultData }" var="list">
+										<div class="planner planner--big"
+											style="margin: 10px 30px 20px 30px;">
+											<div class="planner__image">
+												<img class="planner_image" src="${list.planInfo.planImg}"
+													style="width: 100%; height: 100%"></img>
+											</div>
+											<h2 class="planner__title">
+												<c:out
+													value="${list.planInfo.planTitle }(${list.planTotalDate }일간의 여행)"></c:out>
+											</h2>
+											<p class="planner__info">
+												<c:out value="${list.planInfo.info }"></c:out>
+												<br>
+												<c:out value="${list.planStartDate } ~ ${list.planEndDate }"></c:out>
+												<br>
+											</p>
+											<div class="planner__action-bar">
+												<button class="planner__button"
+													value="${list.planInfo.planNo }">Modify</button>
+
+											</div>
+										</div>
+
+										<%-- 	<div style="text-align: center; font-size: 12pt;">
+										<a class="planLoad" id="${list.planNo }"
+											href="javascript:void(0);"> <span class="plan_title"><c:out
+													value="${list.planTitle }"></c:out></span></a>
+									</div> --%>
+
+									</c:forEach>
+								</div>
+								<input type="hidden" name="when" value="modify">
+							</form>
+
+						</c:if>
+
+					</c:if>
 				</div>
 			</section>
 			<section
@@ -49,8 +99,11 @@
 								새로운 여행을 계획해 봅시다.</h2>
 							<div class="row">
 								<div class="col-sm-6">
-									<button type="button" id="new_plan" style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid"> <!-- href="/plan/create" -->
-										새 로운 여행</button>
+									<button type="button" id="new_plan"
+										style="border-radius: 30px; margin-right: 5px; text-align: center; margin-top: 70%; width: 100%; text-decoration: none; font-weight: 300; color: #000; font-size: 14pt; display: inline-block; padding: 10px 20px; border: 1px solid">
+										<!-- href="/plan/create" -->
+										새 로운 여행
+									</button>
 								</div>
 								<div class="col-sm-6">
 									<!-- 임시 마이플랜으로 이동  -->
@@ -81,14 +134,14 @@
 
 				</div>
 				<form id="plan_info" method="get" action="/plan/create">
-				<div class="modal-body">
-					<input type="text" id="p_title" name="planTitle"
-						placeholder="여행제목" style="width: 308px"><br> <input
-						type="text" id="p_date" name="plan_date" placeholder="여행날짜" style="width: 100%"
-						readonly />
-					<input type="hidden" name="total_date" id="t_date" />
-							<input type="hidden" name="info" value="test">
-				</div>
+					<div class="modal-body">
+						<input type="text" id="p_title" name="planTitle"
+							placeholder="여행제목" style="width: 308px"><br> <input
+							type="text" id="p_date" name="plan_date" placeholder="여행날짜"
+							style="width: 100%" readonly /> <input type="hidden"
+							name="total_date" id="t_date" /> <input type="hidden"
+							name="info" value="test">
+					</div>
 				</form>
 				<div class="modal-footer">
 					<button class="btn btn-primary" type="button" id="confirm">예</button>

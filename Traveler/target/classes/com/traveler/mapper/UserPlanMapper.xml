@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="planDate" property="planDate" />
 		<result column="planDay" property="planDay" />
 		<result column="planTotalDate" property="planTotalDate" />
+		<result column="overview" property="overview" />
 		<result column="startDate" property="startDate" />
 		<result column="endDate" property="endDate" />
 		<result column="descript" property="descript" />
@@ -31,12 +32,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<insert id="insertPlanFirst">
 		insert into userplan (planno,
-		userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate)
+		userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,overview)
 		values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
 		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
-		#{planTotalDate})
+		#{planTotalDate}, #{overview})
 	</insert>
-
 	<update id="finalPlan">
 		merge into userplan
 		using dual
@@ -48,7 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test='descript!=null'>
 			update set
 			planDay = #{planDay},
-			planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate =
+			planDate=#{planDate},planTotalDate =#{planTotalDate},
+			startDate =
 			#{startDate}, endDate=#{endDate}, descript=#{descript}
 			when not
 			matched then
@@ -56,7 +57,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test='descript==null'>
 			update set
 			planDay = #{planDay},
-			planDate=#{planDate},planTotalDate =#{planTotalDate}, startDate =
+			planDate=#{planDate},planTotalDate =#{planTotalDate},
+			startDate =
 			#{startDate}, endDate=#{endDate}
 			when not matched then
 		</if>
@@ -124,9 +126,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="readPlanDate" resultMap="UserPlanVO">
-		select planDate, planTotalDate
+		select planDate,
+		planTotalDate
 		from userplan
-		where planno=#{planNo} and userid=#{userId} and rownum = 1
+		where planno=#{planNo} and userid=#{userId}
+		and rownum = 1
 		order by planDate
 	</select>
+
+
+
+	<insert id="insertModifyPlanFirst">
+		<if test='descript!=null'>
+			insert into userplan (planno,
+			userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,startDate,endDate,descript,overview)
+			values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
+			#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},#{endDate},#{descript}, #{overview})
+		</if>
+		<if test='descript==null'>
+			insert into userplan (planno,
+			userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,startDate,endDate,overview)
+			values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
+			#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},#{endDate}, #{overview})
+		</if>
+	</insert>
+
+	<delete id="deleteSchedule">
+		delete from userplan
+		where userId = #{userId} and
+		planNo = #{planNo} and is_insertAfter = 'Y'
+	</delete>
 </mapper>

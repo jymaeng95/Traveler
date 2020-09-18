@@ -82,10 +82,7 @@ public class BudgetController {
 	@RequestMapping(value="budget/load/date", method=RequestMethod.GET)
 	public UserPlanVO getUserPlanDate(@RequestParam(value="planNo") int planNo, HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
-		UserPlanVO plan = new UserPlanVO();
-		plan.setPlanNo(planNo);
-		plan.setUserId(member.getUserId());
 		
-		return planService.getUserPlanDate(plan);
+		return planService.getUserPlanDate(member.getUserId(),planNo);
 	}
 }
