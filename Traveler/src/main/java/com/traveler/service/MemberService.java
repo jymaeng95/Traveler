@@ -41,5 +41,5 @@ public interface MemberService {
 
 	public MemberVO loadInfo(MemberVO member) throws Exception;
 	
-	
+	public boolean updateMemberImg(MemberVO member) throws Exception;
 }

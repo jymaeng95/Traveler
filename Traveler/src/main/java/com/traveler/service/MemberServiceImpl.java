@@ -91,5 +91,12 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mapper.deleteKakao(member) > 0 ;
 	}
+	
+	@Override
+	public boolean updateMemberImg(MemberVO member) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return mapper.updateMemberImg(member)>0;
+	}
 
 } 

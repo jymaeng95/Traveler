@@ -12,7 +12,7 @@ $(document).ready(function(){
 	var userId = $("#uid").val();
 	var planTitle = $("#p_title").text();
 	var planNo = $("#planno").val();
-	$('.right-planlist').find('ul').find('input').each(function(){
+	$('#plan-info').find('ul').find('input').each(function(){
 		allInfo.push(JSON.parse($(this).val()));
 	});
 	var firstDate = allInfo[0].planDate.split('-');
@@ -60,13 +60,64 @@ $(document).ready(function(){
 		$("#ModifyForm").submit();
 	});
 
-	$(".right-planlist").find('ul').each(function(){
-		$(this).sortable();
-		$(this).disableSelection();
+	$("#btn-plan").on("click",function(){
+		$("#btn-plan").attr("disabled",true);
+		$("#btn-planner").attr("disabled",false);
+		$('#planner-info').hide();
+		$('#plan-info').show();
 
 	});
 
-	$('.right-planlist').find('button').click(function(){
+	$("#btn-planner").on("click" , function(){
+		$("#btn-planner").attr("disabled",true);
+		$("#btn-plan").attr("disabled",false);
+		$('#planner-info').show();
+		$('#plan-info').hide();
+	});
+
+	$("input[name='plannerImg']").change(function(){
+		var form = new FormData(document.getElementById('upload-form'));
+		$.ajax({
+			url : "/upload/plan/img",
+			type: "POST",
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType: false,
+			dataType : 'json',
+			data: form,
+			success : function(data){
+				$("#img-planner").attr("src",data.planImg);
+			},
+			error : function(error) {
+				alert('이미지 전송 실패');
+			}
+		});
+	});
+		
+	$("#modify-planner").on("click",function(){
+		$.ajax({
+			url : "/plan/update/planner",
+			type : "post",
+			dataType : 'text',
+			data: {planNo : $("#planNo").val(), planTitle : $("#p_title").text(), info : $("#input-info").val()},
+			success : function(data) {
+				alert(data)
+				if(data === "success")	alert("성공적으로 업데이트 되었습니다.")
+				else alert("업데이트에 실패하였습니다.")
+			},
+			error : function(error) {
+				alert("잠시후 이용해주세요");
+			}
+			
+		});
+	});
+
+	$("#plan-info").find('ul').each(function(){
+		$(this).sortable();
+		$(this).disableSelection();
+	});
+
+	$('#plan-info').find('button').click(function(){
 		if(ex_marker != "") {
 			for(var marker of ex_marker)
 				marker.setMap(null);

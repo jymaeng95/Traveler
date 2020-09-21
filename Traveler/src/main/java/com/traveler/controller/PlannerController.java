@@ -76,8 +76,7 @@ public class PlannerController {
 		}
 
 		model.addAttribute("isModify",isModify);
-		model.addAttribute("planTitle",planner.getPlanTitle());
-		model.addAttribute("info",planner.getInfo());
+		model.addAttribute("planner",planner);
 		model.addAttribute("userId",member.getUserId());
 		model.addAttribute("planNo",planNo);
 		model.addAttribute("planList",JSONArray.fromObject(plan));
@@ -231,5 +230,16 @@ public class PlannerController {
 	public List<SpotVO> getKeywordFromTmap(SpotVO spotVO, String keyword) throws Exception{
 		log.info("T-map/controller" + spotVO + "keyword : "+keyword);
 		return spot.getKeywordFromPOI(spotVO, keyword);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/plan/update/planner", method=RequestMethod.POST)
+	public String updatePlanner(PlannerVO planner, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		if(plannerService.updatePlanner(planner,member.getUserId())) {
+			log.info("planner is updated");
+			return "success";
+		}else log.info("planner is not updated");
+		return "fail";
 	}
 }

@@ -12,4 +12,9 @@ public interface PlannerService {
 	public List<PlannerVO> getAllPlanner(String userId);
 	
 	public PlannerVO getPlanner(PlannerVO planner);
+	
+	public boolean updatePlannerImg(PlannerVO planner);
+	
+	public boolean updatePlanner(PlannerVO planner, String userId);
+	
 }

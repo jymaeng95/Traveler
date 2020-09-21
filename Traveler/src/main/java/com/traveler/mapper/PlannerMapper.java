@@ -17,4 +17,6 @@ public interface PlannerMapper {
 	
 	public int updatePlanner(PlannerVO planner);
 	
+	public int updatePlannerImg(PlannerVO planner);
+	
 }

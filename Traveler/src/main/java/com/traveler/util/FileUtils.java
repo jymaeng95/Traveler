@@ -15,11 +15,9 @@ import lombok.extern.log4j.Log4j;
 @Component("fileUtils")
 @Log4j
 public class FileUtils {
-	public Map<String,Object> getFileInfo(MultipartHttpServletRequest request,String userId) throws IllegalStateException, IOException{
+	public Map<String,Object> getFileInfo(MultipartFile file, String path,String userId) throws IllegalStateException, IOException{
 		Map<String,Object> fileInfo = new HashMap<String,Object>();
-		MultipartFile file = request.getFile("userImg");
 		
-		String path = request.getSession().getServletContext().getRealPath("/resources/upload/img/user");
 		log.info("fileutils" + path);
 		log.info("file name : "+file.getOriginalFilename());
 		

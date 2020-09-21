@@ -6,8 +6,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.traveler.domain.PlannerVO;
 import com.traveler.mapper.FileUploadMapper;
 import com.traveler.util.FileUtils;
 
@@ -37,9 +38,10 @@ public class FileUploadServiceImpl implements FileUploadService {
 	}
 	
 	@Override
-	public Map<String,Object> getFileInfo(MultipartHttpServletRequest request, String userId) throws IllegalStateException, IOException {
+	public Map<String,Object> getFileInfo(MultipartFile file, String path, String userId) throws IllegalStateException, IOException {
 		// TODO Auto-generated method stub
-		return fileUtil.getFileInfo(request, userId);
+		
+		return fileUtil.getFileInfo(file, path, userId);
 	}
 
 
@@ -66,5 +68,39 @@ public class FileUploadServiceImpl implements FileUploadService {
 	public String getUserFileName(String userId) {
 		// TODO Auto-generated method stub
 		return mapper.readUserImgName(userId);
+	}
+
+
+	@Override
+	public boolean insertPlanImg(Map<String, Object> fileInfo) {
+		// TODO Auto-generated method stub
+		return mapper.insertPlanImg(fileInfo) > 0;
+	}
+
+
+	@Override
+	public boolean deletePlanImg(PlannerVO planner) {
+		// TODO Auto-generated method stub
+		return mapper.deletePlanImg(planner) > 0;
+	}
+
+
+	@Override
+	public boolean getPlanImgCount(PlannerVO planner) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanImgCount(planner) > 0;
+	}
+
+
+	@Override
+	public String getPlanFileName(PlannerVO planner) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanImgName(planner);
+	}
+
+	@Override
+	public String getPlanImgPath(PlannerVO planner) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanImgPath(planner);
 	}
 }

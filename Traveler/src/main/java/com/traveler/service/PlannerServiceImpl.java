@@ -41,4 +41,17 @@ public class PlannerServiceImpl implements PlannerService {
 		return mapper.readPlanner(planner);
 	}
 
+	@Override
+	public boolean updatePlannerImg(PlannerVO planner) {
+		// TODO Auto-generated method stub
+		return mapper.updatePlannerImg(planner) > 0;
+	}
+
+	@Override
+	public boolean updatePlanner(PlannerVO planner, String userId) {
+		// TODO Auto-generated method stub
+		planner.setUserId(userId);
+		return mapper.updatePlanner(planner)>0;
+	}
+	
 }

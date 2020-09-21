@@ -33,4 +33,6 @@ public interface MemberMapper {
 	public int deleteKakao(MemberVO member);
 	
 	public MemberVO kakaoRead(MemberVO member);
+	
+	public int updateMemberImg(MemberVO member);
 }

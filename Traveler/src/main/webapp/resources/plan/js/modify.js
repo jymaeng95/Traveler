@@ -83,11 +83,13 @@ $(document).ready(function() {
       if(keyword_markers!=false) keyword_markers=[];
       if(ex_markers != false) deleteMarkers(ex_markers);
       $("#bookmark").attr("disabled",false);
-      $("#result").attr("dabled",true);
+      $("#result").attr("disabled",true);
       $("#recommend").attr("disabled",false);
+      $("#myplan").attr("disabled",false);
       $(".book-ul").remove();
       $("#ul-recommend").hide();
       $("#ul-bookmark").hide();
+      $("#ul-myPlan").hide();
       $("#ul-search").show();
       var keyword = $("#search-field").val();
       if(keyword == "") {
@@ -140,7 +142,7 @@ $(document).ready(function() {
       flag = 1;
       console.log(ex_markers);
       $("#bookmark").attr("disabled",true);
-      $("#result").attr("diabled",false);
+      $("#result").attr("disabled",false);
       $("#recommend").attr("disabled",false);
       $("#myplan").attr("disabled",false);
       if(ex_markers != false) deleteMarkers(ex_markers);
@@ -197,6 +199,7 @@ $(document).ready(function() {
       $("#myplan").attr("disabled",true);
       $("#bookmark").attr("disabled",false);
       $("#recommend").attr("disabled",false);
+      $("#result").attr("disabled",false);
       if(ex_markers != false) deleteMarkers(ex_markers);
       $(".book-ul").remove();
       $("#ul-myPlan").show();

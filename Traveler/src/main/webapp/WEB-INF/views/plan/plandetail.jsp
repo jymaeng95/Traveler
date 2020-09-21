@@ -22,7 +22,6 @@
 	<%@include file="../includes/sidebar.jsp"%>
 	<input type="hidden" id="uid" value="${userInfo.userId }">
 	<input type="hidden" id="planno" value="${planNo }">
-	
 	<main class="page-content">
 		<div class="container jumbotron">
 			<div class="row">
@@ -30,11 +29,15 @@
 					<div id="map_div" style="width: 90%"></div>
 				</div>
 				<div class="col-md-4 ml-auto right-planlist">
-					<div>
+					<div class="row">
 						<h3 id="p_title">
-							<c:out value="${planTitle }"></c:out>
+							<c:out value="${planner.planTitle }"></c:out>
 						</h3>
-						<hr>
+						<button type="button" id="btn-plan" style="border:0; outline:0; margin-left:50%">정보</button>
+						<button type="button" id="btn-planner" style="border:0; outline:0">플래너</button>
+					</div>
+					<hr>
+					<div id="plan-info">
 						<div>
 							<h4>Day 1</h4>
 							<hr>
@@ -84,6 +87,17 @@
 								value="최적화">최적화</button>
 						</div>
 					</div>
+					<div id="planner-info" style="display:none">
+						<div class="planner-img" style="padding-bottom:10px;">
+							<img style="width:50%;" src="${planner.planImg }" id="img-planner"></img>
+						</div>
+						<textarea name="info" id="input-info" rows="3" style="width:100%; max-height:70px;">${planner.info }</textarea>
+						<form id="upload-form" method="post" enctype="multipart/from-data" action="/upload/plan/img">
+							<input type="file" style="padding-bottom:10px; padding-top:10px;" name="plannerImg">
+							<input type="hidden" name="planNo" value="${planNo }">
+						</form>
+						<button type="button" id="modify-planner" style="border:0; outline:0">플래너 수정</button>
+					</div>
 				</div>
 				<div style="padding-top: 20px">
 					<p id="result"></p>
@@ -108,7 +122,7 @@
 		<form action="/plan/save/schedule" method="post" id="scheduleForm">
 			<input type="hidden" id="schedule-plan" name="schedule" value="">
 		</form>
-		<form action="/plan/modify" method="get" id="ModifyForm">
+		<form action="/plan/modify_create" method="get" id="ModifyForm">
 			<input type="hidden" id="planNo" name="planNo" value="${planNo }">
 		</form>
 		<div class="container datatest jumbotron">

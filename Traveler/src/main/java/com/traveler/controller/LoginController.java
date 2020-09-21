@@ -30,9 +30,6 @@ public class LoginController {
 	private KakaoAPI kakao;
 
 	private MemberService service;
-	private FileUploadService fileService;
-	
-	private final static String SERVER_FILE_PATH = "/resources/upload/img/user/";
 	
 	//īī�� �α���
 	@PostMapping("/index/index")
@@ -88,40 +85,14 @@ public class LoginController {
 		return "/login/index";
 	}
 
-
-	//	@RequestMapping(value="/login/login", method=RequestMethod.POST)
-	//	public String login(Model model,MemberVO member, RedirectAttributes rttr,HttpSession session) throws Exception {
-	//		log.info("login");
-	//		MemberVO userInfo = service.memberLogin(member);
-	//
-	//		if(userInfo != null) {
-	//			session.setAttribute("userId", userInfo.getUserId());
-	//			session.setAttribute("userPw", userInfo.getUserPw());
-	//			log.info("id : " + userInfo.getUserId()+ "pw : "+userInfo.getUserPw());
-	//			model.addAttribute("userInfo", userInfo);
-	//			model.addAttribute("userId", userInfo.getUserId());
-	//			//		model.addAttribute("nickname", nickname);
-	//			
-	//			return "redirect:/";
-	//		} else {
-	//			session.setAttribute("userId", null);
-	//			model.addAttribute("userId", null);
-	//			log.info(userInfo);
-	//			rttr.addFlashAttribute("result","fail");
-	//			return "redirect:/login/index";
-	//		}
-	//	}
-
 	@ResponseBody
 	@RequestMapping(value="/login/login",method=RequestMethod.POST)
 	public boolean login(MemberVO member, HttpSession session) throws Exception {
 		log.info("process login");
 		MemberVO userInfo = service.memberLogin(member);
-		String img = fileService.getUserFileName(member.getUserId());
 		
 		if(userInfo != null) {
-			if(img != null) 
-				userInfo.setUser_img(SERVER_FILE_PATH+img);
+	
 			session.setAttribute("userInfo", userInfo);
 			return true;
 		}else {
@@ -165,17 +136,4 @@ public class LoginController {
 		log.info("닉네임 중복 체크");
 		return service.nickCheck(member);
 	}
-
-	//�������������� ȸ������ ���� �� ���� �ʿ� 
-	//@RequestMappging(value="jsp ���� ��ġ " , method=RequestMethod.GET)
-	//public String modifyMemberInfo(MemberVO) throws Exception {
-	//	log.info("modify Member Information");
-	//	return "jsp ���� ��ġ";
-
-
-	//�������������� ȸ��Ż�� �� ���� �ʿ� 
-	//@RequestMappging(value="jsp ���� ��ġ " , method=RequestMethod.GET)
-	//public String deleteMemberInfo(MemberVO) throws Exception {
-	//	log.info("delete Member Information");
-	//	return "jsp ���� ��ġ";
 }

@@ -31,4 +31,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from userimg
 		where userid=#{userId}
 	</select>
+	
+	
+	<insert id="insertPlanImg" parameterType="hashMap">
+		insert into planner_img (userId, planno, org_filename, save_filename, full_path, file_size)
+		values (#{userId}, #{planNo}, #{org_filename},#{save_filename},#{full_path}, #{file_size})
+	</insert>
+	
+	<select id="readPlanImgPath" resultType="string">
+		select full_path 
+		from planner_img 
+		where userid = #{userId} and planno = #{planNo}
+	</select>
+	
+	<delete id="deletePlanImg">
+		delete planner_img 
+		where userid = #{userId} and planno = #{planNo}
+	</delete>
+	
+	<select id="readPlanImgCount" resultType="int">
+		select count(planno) 
+		from planner_img
+		where userid=#{userId} and planNo = #{planNo}
+	</select>
+	
+	<select id="readPlanImgName" resultType="string">
+		select save_filename
+		from planner_img
+		where userid=#{userId} and planno =#{planNo}
+	</select>
+	
 </mapper>
