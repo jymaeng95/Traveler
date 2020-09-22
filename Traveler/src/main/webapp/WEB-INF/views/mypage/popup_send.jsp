@@ -39,18 +39,22 @@ form div label, form div input {
 		 	$.ajax({
 		 		url : "/mypage/message/send",
 		 		type : "post",
-		 		dataType : "json",
+		 		dataType : "text",
 		 		data : {
 			 		"sender" : sender,
 		 			"userId" : $('#userId').val(),
-		 			"mcontent" : $('#mcontent').val()	
+		 			"mcontent" : $('#mcontent').val(),
+		 			"isacc" : '0'
 		 		},
 		 		success : function(data) {
-		 			alert("쪽지를 보냈습니다.");
-		 			window.close();
+			 		if(data == "right"){
+			 			alert("쪽지를 보냈습니다.");
+			 			window.close();
+			 		}
+			 		else alert(data);
 		 		},
 		 		error : function(error) {
-		 			alert("존재하지 않는 아이디입니다.");
+		 			alert("error");
 		 		}
 		 	});
 		  }
@@ -75,7 +79,8 @@ form div label, form div input {
     <div class="form-group">
         <label for="name">보내는 사람</label>
         <input class="form-control" type="text" name="sender" id="sender" value="${userInfo.userId }" style="display:none;"/>
-        <input class="form-control" type="text" name="userId" id="userId" />
+        <c:choose><c:when test="${rcver eq 'no'}"><input class="form-control" type="text" name="userId" id="userId"/></c:when>
+        <c:otherwise><p>${rcver }</p></c:otherwise></c:choose>
         
     </div>
     

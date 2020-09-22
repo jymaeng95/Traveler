@@ -14,6 +14,8 @@ public class MessageVO {
 	private String readstatus;	
 	private String status;
 	private String delstatus;
+	private String isacc;
+	private int bno;
 	private MemberVO memberVO;
 	private int pageNum = 1;
 	private String tabPage = "rcv_list";

@@ -47,12 +47,12 @@ $(document).ready(function(){
 	console.log(schedule);
 	$(".dx-tab").on("click",function(){
 		alert("1234");
-		var type = $(this).find(".dx-tab-content").find("span.dx-tab-text").text();
+		var type = $(this).find("span.dx-tab-text").text();
 		console.log(type);
-		if(type == "Agenda"){
+		if(type == "agenda"){
 			$(".dx-scheduler-navigator").css("visibility : visible;");
 		}else {
-			$(".dx-scheduler-navigator").css("visibility : hidden");
+			$(".dx-scheduler-navigator").css("visibility : hidden;");
 		}
 	})
 
@@ -93,7 +93,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-		
+
 	$("#modify-planner").on("click",function(){
 		$.ajax({
 			url : "/plan/update/planner",
@@ -108,7 +108,7 @@ $(document).ready(function(){
 			error : function(error) {
 				alert("잠시후 이용해주세요");
 			}
-			
+
 		});
 	});
 
@@ -148,56 +148,62 @@ $(document).ready(function(){
 	var calendarDate = allInfo[0].planDate.split('-');
 	var instance;
 
+	var date = allInfo[0].planDate.split('-');
+	var day = date[2] - (allInfo[0].planDay - 1);
 	if($("#modify-state").val() == 'Y') {
 		instance = $("#scheduler").dxScheduler({
 			dataSource: schedule,
-			views: ["week", "agenda"],
-			currentView: "week", 
-			currentDate: new Date(calendarDate[0], (calendarDate[1]-1), calendarDate[2]),
-			startDayHour: 9,
-			showAllDayPanel : false,
-			height: 600,
-			onAppointmentDeleting: function (e) {  
-				e.cancel = new $.Deferred();  
-				if(e.appointmentData.is_insertAfter == 'N') {
-					alert("adsf")
-					e.cancel.resolve(true);
-				} else {
-					e.cancel.resolve(false);
-				}
-			},
-			editing: {
-				allowDeleting:false
-			},
-			onAppointmentFormOpening: function(e) {
-				e.popup.option('showTitle', true);
-				e.popup.option('title', e.appointmentData.text ? 
-						e.appointmentData.text : 
-				'Create a new appointment');
-				const form = e.form;
-				let formItems = form.option("items");
-				if(e.appointmentData.is_insertAfter == 'N') {
-					formItems[0].items[0].visible = false;
-				} else {
-					formItems[0].items[0].visible = true;
-				}
-				form.option("items", formItems); 
-			},
-//			onAppointmentFormOpening: function(e) {
-//			if(e.targetedAppointmentData.is_insertAfter == 'Y') {
-//			e.component.option("editing.allowDeleting", true);
-//			}
-//			},
-			onAppointmentAdded: function(e){  
-				console.log(e.appointmentData);  
-			} 
+			views: [{name: "travelDay", type: "day", intervalCount: allInfo[0].planTotalDate, startDate: new Date(date[0], date[1], day)},
+				{name: "agenda", type: "agenda"}],
+				currentView: "travelDay", 
+				currentDate: new Date(calendarDate[0], (calendarDate[1]-1), calendarDate[2]),
+				startDayHour: 9,
+				showAllDayPanel : false,
+				height: 600,
+				onAppointmentDeleting: function (e) {  
+					e.cancel = new $.Deferred();  
+					if(e.appointmentData.is_insertAfter == 'N') {
+						alert("adsf")
+						e.cancel.resolve(true);
+					} else {
+						e.cancel.resolve(false);
+					}
+				},
+				editing: {
+					allowDeleting:false
+				},
+				onAppointmentFormOpening: function(e) {
+					e.popup.option('showTitle', true);
+					e.popup.option('title', e.appointmentData.text ? 
+							e.appointmentData.text : 
+								'Create a new appointment');
+					const form = e.form;
+					let formItems = form.option("items");
+					if(e.appointmentData.is_insertAfter == 'N') {
+						formItems[0].items[0].visible = false;
+					} else {
+						formItems[0].items[0].visible = true;
+					}
+					form.option("items", formItems); 
+				},
+//				onAppointmentFormOpening: function(e) {
+//				if(e.targetedAppointmentData.is_insertAfter == 'Y') {
+//				e.component.option("editing.allowDeleting", true);
+//				}
+//				},
+				onAppointmentAdded: function(e){  
+					console.log(e.appointmentData);  
+				} 
 		}).dxScheduler("instance");
 	} else {
+		console.log(calendarDate[0] + " " + (calendarDate[1]-1) + " " + calendarDate[2]);
 		instance = $("#scheduler").dxScheduler({
 			dataSource: schedule,
-			views: [{name: "travelDay", type: "day", intervalCount: 10, startDate: new Date(2020, 9, 20)},
-				{name: "agenda", type: "agenda", intervalCount: 11, startDate: new Date(2020, 9, 20)}],
+			views: [{name: "travelDay", type: "day", intervalCount: allInfo[0].planTotalDate, startDate: new Date(date[0], date[1]-1, day)},
+				{name: "agenda", type: "agenda"}],
 
+				currentView: "travelDay", 
+				currentDate: new Date(date[0], date[1]-1, day),
 				startDayHour: 9,
 				showAllDayPanel : false,
 				height: 600,
@@ -217,7 +223,7 @@ $(document).ready(function(){
 					e.popup.option('showTitle', true);
 					e.popup.option('title', e.appointmentData.text ? 
 							e.appointmentData.text : 
-					'Create a new appointment');
+								'Create a new appointment');
 					const form = e.form;
 					let formItems = form.option("items");
 					if(e.appointmentData.is_insertAfter == 'N') {
@@ -237,16 +243,16 @@ $(document).ready(function(){
 				} 
 		}).dxScheduler("instance");
 	}
-
+	
 	$("#btn-save").click(function(){
 		var s_instance = instance.getDataSource().items();
-		var totalDate = getBetweenDate(getMaxTime(s_instance), getMinTime(s_instance));
-		var lastDate = getMinTime(s_instance);
+//		var totalDate = getBetweenDate(getMaxTime(s_instance), getMinTime(s_instance));
+//		var lastDate = getMinTime(s_instance);
 		var finalData = new Array();
 		var buffer;
 
-		console.log(lastDate);
-		console.log(totalDate);
+//		console.log(lastDate);
+//		console.log(totalDate);
 		for(var i=0;i<s_instance.length;i++){
 			var flag = false;
 			buffer = {};
@@ -263,8 +269,8 @@ $(document).ready(function(){
 					else buffer.descript = "";
 					buffer.planTitle = planTitle;
 					buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate();
-					buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
-					buffer.planTotalDate = totalDate;
+					buffer.planDay = allInfo[j].planDay;
+					buffer.planTotalDate = allInfo[j].planTotalDate;
 					buffer.is_insertAfter = allInfo[j].is_insertAfter;
 					finalData.push(buffer);
 					flag = true;
@@ -273,15 +279,15 @@ $(document).ready(function(){
 			if(!flag){
 				buffer.userId = userId;
 				buffer.planNo = planNo;
-				buffer.title =	s_instance[i].text;
+				buffer.title =   s_instance[i].text;
 				var date = s_instance[i].startDate;
 				buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				date = s_instance[i].endDate;
 				buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				buffer.descript = s_instance[i].description;
 				buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate();
-				buffer.planDay = getDay(s_instance[i].startDate,lastDate,totalDate);
-				buffer.planTotalDate = totalDate;
+				buffer.planDay = s_instance[i].palnDay;
+				buffer.planTotalDate = s_instance[i].planTotalDate;
 				buffer.planTitle = planTitle;
 				buffer.is_insertAfter = 'Y';
 				finalData.push(buffer);

@@ -122,7 +122,7 @@
 		<form action="/plan/save/schedule" method="post" id="scheduleForm">
 			<input type="hidden" id="schedule-plan" name="schedule" value="">
 		</form>
-		<form action="/plan/modify_create" method="get" id="ModifyForm">
+		<form action="/plan/modify" method="get" id="ModifyForm">
 			<input type="hidden" id="planNo" name="planNo" value="${planNo }">
 		</form>
 		<div class="container datatest jumbotron">

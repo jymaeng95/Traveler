@@ -156,6 +156,7 @@ public class UserPlanServiceImpl implements UserPlanService{
 		return mapper.readPlanDate(plan);
 	}
 
+
 	@Override
 	public boolean saveUserModifyPlan(UserPlanVO plan) throws Exception {
 		log.info(plan);
@@ -172,5 +173,11 @@ public class UserPlanServiceImpl implements UserPlanService{
 		log.info(plan);
 		int resultCount = mapper.deleteSchedule(plan);
 		return resultCount > 0;
+	}
+	
+	@Override
+	public UserPlanVO getStartDate(UserPlanVO plan) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.getStartDate(plan);
 	}
 }

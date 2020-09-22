@@ -21,13 +21,17 @@ public interface MessageMapper {
 	public ArrayList<MessageVO> messagePaging2(MessageVO message);
 	public ArrayList<MessageVO> messagePaging3(MessageVO message);
 	public ArrayList<MessageVO> messagePaging4(MessageVO message);
+	public ArrayList<MessageVO> messagePaging5(MessageVO message);
+	
 	public MessageVO Read(MessageVO message);
 	
 	public int countMessage(MessageVO message);
 	public int countMessage2(MessageVO message);
 	public int countMessage3(MessageVO message);
 	public int countMessage4(MessageVO message);
-	
+	public int countMessage5(MessageVO message);
+	public int cntNoread(String userId);
+	public int cntApply(MessageVO message);
 	// Delete
 	public int messageDelete(MessageVO message);
 	

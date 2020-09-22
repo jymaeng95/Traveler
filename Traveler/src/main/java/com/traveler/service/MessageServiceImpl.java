@@ -25,7 +25,7 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public boolean addMessage(MessageVO message) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("메세지 저장  " + message);
+		log.info("硫붿꽭吏� ���옣  " + message);
 		int resultCount = mapper.messageInsert(message);
 		return resultCount > 0;
 	}
@@ -33,32 +33,32 @@ public class MessageServiceImpl implements MessageService {
 //	@Override
 //	public ArrayList<MessageVO> getUserMessage(MessageVO message) throws Exception {
 //		// TODO Auto-generated method stub
-//		log.info("받은 메세지 불러오기  :" + message);
+//		log.info("諛쏆� 硫붿꽭吏� 遺덈윭�삤湲�  :" + message);
 //		return mapper.messageRead(message);
 //	}
 
 	@Override
 	public boolean deleteMessage(MessageVO message) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("메세지 삭제  :" + message);
+		log.info("硫붿꽭吏� �궘�젣  :" + message);
 		return mapper.messageDelete(message) > 0;
 	}
 
 	@Override
 	public boolean updateMessage(MessageVO message) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("보관함 저장: " + message);
+		log.info("蹂닿��븿 ���옣: " + message);
 		return mapper.messageUpdate(message) > 0;
 	}
 	
 	@Override
 	public boolean updateMessage2(MessageVO message) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("읽음처리: " + message);
+		log.info("�씫�쓬泥섎━: " + message);
 		return mapper.messageUpdate2(message) > 0;
 	}
 	
-	//---페이징
+	//---�럹�씠吏�
 	@Override
 	public ArrayList<MessageVO> getMessagePage(MessageVO message) throws Exception {
 		// TODO Auto-generated method stub
@@ -112,6 +112,30 @@ public class MessageServiceImpl implements MessageService {
 	public MessageVO Read(MessageVO message) throws Exception {
 		// TODO Auto-generated method stub
 		return mapper.Read(message);
+	}
+
+	@Override
+	public ArrayList<MessageVO> getMessagePage5(MessageVO message) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.messagePaging5(message);
+	}
+
+	@Override
+	public int countMessage5(MessageVO message) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.countMessage5(message);
+	}
+
+	@Override
+	public int cntNoread(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.cntNoread(userId);
+	}
+
+	@Override
+	public int cntApply(MessageVO message) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.cntApply(message);
 	}
 
 }

@@ -17,4 +17,5 @@ public interface PlannerService {
 	
 	public boolean updatePlanner(PlannerVO planner, String userId);
 	
+	public int isExist(String userId);
 }

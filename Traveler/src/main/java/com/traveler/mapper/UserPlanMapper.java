@@ -26,4 +26,6 @@ public interface UserPlanMapper {
 	public int insertModifyPlanFirst(UserPlanVO plan);
 
 	public int deleteSchedule(UserPlanVO plan);
+	
+	public UserPlanVO getStartDate(UserPlanVO plan);
 }

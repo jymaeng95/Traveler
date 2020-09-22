@@ -16,6 +16,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result column="pageNum" property="pageNum"/>
 	<result column="tabPage" property="tabPage"/>
 	<result column="arcPage" property="arcPage"/>
+	<result column="isacc" property="isacc"/>
+	<result column="bno" property="bno"/>	
 	<collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
 		<id column="userId" property="userId"/>
 		<result column="userPw" property="userPw"/>
@@ -28,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!--메세지 추가 -->
 	<insert id="messageInsert">
-		insert into message (mid, sender, userId, mcontent)
-		values (tmp_seq.NEXTVAL, #{sender}, #{userId}, #{mcontent})
+		insert into message (mid, sender, userId, mcontent, isacc, bno)
+		values (tmp_seq.NEXTVAL, #{sender}, #{userId}, #{mcontent}, #{isacc}, #{bno})
 	</insert>
 	
 	<!-- paging -->
@@ -42,8 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select /*+INDEX_DESC(message MSG_PK)*/
 				rownum rn, mid, sender, message.userId, mcontent, senddate, readstatus, status
 			from message, member
-			where rownum <= #{pageNum} * 10 and message.userId = member.userId and member.userId = #{userId} and #{tabPage} = 'rcv_list'
-			)
+			where rownum <= #{pageNum} * 10 and message.userId = member.userId and member.userId = #{userId} 
+			and #{tabPage} = 'rcv_list' and isacc = '0')
 		where rn > (#{pageNum} - 1) * 10 
 		]]>
 	</select>
@@ -58,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rownum rn, mid, sender, message.userId, mcontent, senddate, readstatus, status
 			from message, member
 			where rownum <= #{pageNum} * 10 and message.sender = member.userId and member.userId = #{userId} and #{tabPage} = 'send_list'
-			)
+			and isacc = '0')
 		where rn > (#{pageNum} - 1) * 10 
 		]]>
 	</select>
@@ -73,14 +75,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rownum rn, mid, sender, message.userId, mcontent, senddate, readstatus, status
 			from message, member
 			where rownum <= #{pageNum} * 10 and message.userId = member.userId and member.userId = #{userId}
-				and #{tabPage} = 'archive' and status = 1 and #{arcPage} = 'rcv_arc'
+				and #{tabPage} = 'archive' and status = 1 and #{arcPage} = 'rcv_arc' and isacc = '0'
 			)
 		where rn > (#{pageNum} - 1) * 10 
 		]]>
 	</select>
 	
 	<!-- 보관함(보낸 쪽지) -->
-		<select id="messagePaging4" resultMap="MessageVO">
+	<select id="messagePaging4" resultMap="MessageVO">
 		<![CDATA[
 		select *
 		from
@@ -89,7 +91,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				rownum rn, mid, sender, message.userId, mcontent, senddate, readstatus, status
 			from message, member
 			where rownum <= #{pageNum} * 10 and message.sender = member.userId and member.userId = #{userId} 
-				and #{tabPage} = 'archive' and status = 1 and #{arcPage} = 'send_arc'
+				and #{tabPage} = 'archive' and status = 1 and #{arcPage} = 'send_arc' and isacc = '0'
+			)
+		where rn > (#{pageNum} - 1) * 10 
+		]]>
+	</select>
+	
+	<!-- 동행신청 -->
+	<select id="messagePaging5" resultMap="MessageVO">
+		<![CDATA[
+		select *
+		from
+			(
+			select /*+INDEX_DESC(message MSG_PK)*/
+				rownum rn, mid, sender, message.userId, mcontent, senddate, readstatus, status
+			from message, member
+			where rownum <= #{pageNum} * 10 and message.userId = member.userId and member.userId = #{userId}
+				and #{tabPage} = 'accom' and isacc = '1'
 			)
 		where rn > (#{pageNum} - 1) * 10 
 		]]>
@@ -105,24 +123,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countMessage" resultType="int">
 		select count(*)
 		from message, member
-		where message.userId = member.userId and member.userId = #{userId}
+		where message.userId = member.userId and member.userId = #{userId} and isacc = '0'
 	</select>
 		<select id="countMessage2" resultType="int">
 		select count(*)
 		from message, member
-		where message.sender = member.userId and member.userId = #{userId}
+		where message.sender = member.userId and member.userId = #{userId} and isacc = '0'
 	</select>
 	
 	<select id="countMessage3" resultType="int">
 		select count(*)
 		from message, member
-		where message.userId = member.userId and member.userId = #{userId} and status = '1' 
+		where message.userId = member.userId and member.userId = #{userId} and status = '1' and isacc = '0'
 	</select>
 	<select id="countMessage4" resultType="int">
 		select count(*)
 		from message, member
-		where message.sender = member.userId and member.userId = #{userId} and status = '1' 
+		where message.sender = member.userId and member.userId = #{userId} and status = '1' and isacc = '0'
 	</select>
+	<select id="countMessage5" resultType="int">
+		select count(*)
+		from message, member
+		where message.userId = member.userId and member.userId = #{userId} and isacc = '1' 
+	</select>	
 
 	<!-- delete -->
 	<delete id="messageDelete">
@@ -142,6 +165,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set	readstatus = #{readstatus}
 		where userId = #{userId} and mid = #{mid}
 	</update>
+	
+	<select id="cntNoread" resultType="int">
+		select count(*) from message
+		where userId = #{userId} and readstatus = '0'
+	</select>
+	
+	<select id="cntApply" resultType="int">
+		select count(*) from message
+		where sender = #{sender} and bno = #{bno}
+	</select>
+
 
 </mapper>
 

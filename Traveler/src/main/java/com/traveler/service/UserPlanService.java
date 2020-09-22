@@ -30,4 +30,6 @@ public interface UserPlanService {
 	public boolean saveUserModifyPlan(UserPlanVO plan) throws Exception;
 
 	public boolean deleteUserSchedule(UserPlanVO plan) throws Exception;
+	
+	public UserPlanVO getStartDate(UserPlanVO plan) throws Exception; 
 }

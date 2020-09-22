@@ -16,14 +16,17 @@
    <h1>쪽지</h1><hr/><br/>
 <tabtable>
   
-  <input id="tab01" class="tab ${tabPage == rcv_list ? "active":"" }" type="radio" name="tabs" <c:if test="${tabPage eq 'rcv_list'}">checked</c:if> onclick="return(false);">
-  <label for="tab01" class="tab"><a href="rcv_list" style="color: black; text-decoration: none;">받은 쪽지함</a></label>  
+  <input id="tab01" class="tab" type="radio" name="tabs" <c:if test="${tabPage eq 'rcv_list'}">checked</c:if> onclick="return(false);">
+  <label for="tab01" class="tab"><a href="/mypage/message?tabPage=rcv_list" style="color: black; text-decoration: none;">받은 쪽지함</a></label>  
   
-  <input id="tab02" class="tab ${tabPage == send_list ? "active":"" }" type="radio" name="tabs" <c:if test="${tabPage eq 'send_list'}">checked</c:if> onclick="return(false);">
-  <label for="tab02" class="tab"><a href="send_list" style="color: black; text-decoration: none;">보낸 쪽지함</a></label>
+  <input id="tab02" class="tab" type="radio" name="tabs" <c:if test="${tabPage eq 'send_list'}">checked</c:if> onclick="return(false);">
+  <label for="tab02" class="tab"><a href="/mypage/message?tabPage=send_list" style="color: black; text-decoration: none;">보낸 쪽지함</a></label>
     
-  <input id="tab03" class="tab ${tabPage == archive ? "active":"" }" type="radio" name="tabs" <c:if test="${tabPage eq 'archive'}">checked</c:if> onclick="return(false);">
-  <label for="tab03" class="tab"><a href="archive" style="color: black; text-decoration: none;">보관함</a></label>
+  <input id="tab03" class="tab" type="radio" name="tabs" <c:if test="${tabPage eq 'archive'}">checked</c:if> onclick="return(false);">
+  <label for="tab03" class="tab"><a href="/mypage/message?tabPage=archive&arcPage=rcv_arc" style="color: black; text-decoration: none;">보관함</a></label>
+  
+  <input id="tab04" class="tab" type="radio" name="tabs" <c:if test="${tabPage eq 'accom'}">checked</c:if> onclick="return(false);">
+  <label for="tab04" class="tab"><a href="/mypage/message?tabPage=accom" style="color: black; text-decoration: none;">동행신청</a></label>
   
   
 <!-- 받은 쪽지함 탭 -->
@@ -99,7 +102,6 @@
 				</div>
     	<form id='actionForm' action="/mypage/message" method='get'>
     		<input type='hidden' name='pageNum' value= '${pageMaker.pageNum }'>
-    		<input type='hidden' name='tabPage' value= '${tabPage }'>
     	</form>
     </div>
     <!-- end pagination -->
@@ -181,7 +183,6 @@
 					</ul>
 				</div>
     	<form id='actionForm' action="/mypage/message" method='get'>
-    		<input type='hidden' name='tabPage' value= '${tabPage }'>
     		<input type='hidden' name='pageNum' value= '${pageMaker2.pageNum }'>
     	</form>
     </div>
@@ -290,7 +291,6 @@
 				</div>
     	<form id='actionForm' action="/mypage/message" method='get'>
     		<input type='hidden' name='pageNum' value= '${pageMaker3.pageNum }'>
-    		<input type='hidden' name='tabPage' value= '${tabPage }'>
     	</form>
     </div></c:if>
     <c:if test="${arcPage eq 'send_arc' }">
@@ -317,9 +317,87 @@
 				</div>
     	<form id='actionForm' action="/mypage/message" method='get'>
     		<input type='hidden' name='pageNum' value= '${pageMaker4.pageNum }'>
-    		<input type='hidden' name='tabPage' value= '${tabPage }'>
     	</form>
     </div></c:if>
+    <!-- end pagination -->
+  </div>
+</div>
+  </tabsection>
+  
+  <!-- 받은 쪽지함 탭 -->
+  <tabsection id="content4">
+   <div class="container">
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2><b>동행 신청</b></h2><input id="name" name="name" style="display:none">
+        </div>
+        <div class="col-sm-6">
+          <button class="btn btn-danger" onclick="delselect()" style="float:right;"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
+        </div>
+      </div>
+    </div>
+    
+    <table class="table table-striped table-hover" style="table-layout:fixed" id="msgtable">
+      <thead>
+        <tr>
+          <th>
+            <span>
+              <input type="checkbox" id="selectAll4" onclick="selectAll();"><label for="selectAll"></label>
+            </span>
+          </th>	
+          <th>보낸 사람</th>
+          <th>내용</th>
+          <th>보낸 날짜</th>
+        </tr>
+      </thead>
+      <tbody>
+      <c:forEach items="${msg_list5}" var="list" varStatus="status">
+        <tr>
+          <td>
+              <input type="checkbox" id="options5" name="options5">
+          </td>
+          <td style="display:none">${list.mid }</td><td style="display:none">${userInfo.userId }</td>
+          <td>${list.sender}</td>
+          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="updateMsg2('${userInfo.userId}','${list.mid}','1');popup('${list.mid }', 'accom');">${list.mcontent}</td>
+          <td><p id="date${status.index }">${list.senddate }</p></td>
+          <td style="text-align: right;"><c:if test="${list.readstatus eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
+            <c:choose><c:when test="${list.status eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid}','1');" class="edit" type="button">
+            <i class="far fa-star" data-toggle="tooltip" title="Store"></i></a></c:when>
+            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid}','0');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
+            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid }"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
+          </td>
+        </tr>
+        </c:forEach>
+      </tbody>
+    </table>	
+    <!-- pagination -->
+    <div class="row text-center"
+				style="margin: 1rem auto; padding-right: 5%; padding-left: 5%">
+				<div class="col-sm-12">
+					<ul class="pagination" id="pagination-demo">
+						<c:if test="${pageMaker5.prev }">
+							<li class="paginate_button previous" style="padding-right: 5px;"><a
+								href="${pageMaker5.startPage -1 }">&laquo;</a></li>
+						</c:if>
+						<c:forEach var="num" begin="${pageMaker5.startPage }"
+							end="${pageMaker5.endPage }">
+							<li class="paginate_button ${pageMaker5.pageNum == num ? "active":"" }"
+							style="padding-right: 5px;">
+								<a href="${num }">${num} </a>
+							</li>
+						</c:forEach>
+						<c:if test="${pageMaker5.next }">
+							<li class="paginate_button next"><a
+								href="${pageMaker5.endPage +1 }">&raquo;</a></li>
+						</c:if>
+					</ul>
+				</div>
+    	<form id='actionForm' action="/mypage/message" method='get'>
+    		<input type='hidden' name='pageNum' value= '${pageMaker5.pageNum }'>
+    	</form>
+    </div>
     <!-- end pagination -->
   </div>
 </div>
@@ -335,7 +413,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">					
-          <p>쪽지를 삭제하시겠습니까?</p><h4 class="modal-title" id="myModalLabel"/>
+          <p>쪽지를 삭제하시겠습니까?</p><p id="modal-title" style="display:none;"></p>
           <p><small>다시 복원 할 수 없습니다.</small></p>
         </div>
         <div class="modal-footer">

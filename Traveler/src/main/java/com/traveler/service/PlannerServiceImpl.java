@@ -53,5 +53,10 @@ public class PlannerServiceImpl implements PlannerService {
 		planner.setUserId(userId);
 		return mapper.updatePlanner(planner)>0;
 	}
-	
+	@Override
+	public int isExist(String userId) {
+		// TODO Auto-generated method stub
+		return mapper.isExist(userId);
+	}
+
 }

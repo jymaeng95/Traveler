@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.traveler.mapper.GroupAccMapper">
+	<!-- id-column : DB컬럼명 property : 객체멤버변수 명  -->
+	<!-- result : 기본키 이외 멤버변수 지정 -->
+<resultMap id="GroupAccVO" type="com.traveler.domain.GroupAccVO">
+	<id column="bno" property="bno"/>
+	<result column="leader" property="leader"/>
+	<result column="userId" property="userId"/>
+	<collection property="AccompanyVO" ofType="com.traveler.domain.AccompanyVO">
+		<id column="bno" property="bno"/>
+		<result column="planNo" property="planNo"/>
+		<result column="numperson" property="numperson"/>
+		<result column="curperson" property="curperson"/>	
+		<result column="userId" property="userId"/>
+		<result column="title" property="title"/>
+		<result column="planDate" property="planDate"/>
+		<result column="planTotalDate" property="planTotalDate"/>
+		<result column="content" property="content"/>
+		<result column="writeDate" property="writeDate"/>
+	</collection>
+</resultMap>
+	
+	
+	<insert id="insertInGroup">
+		insert into groupacc (bno,leader,userId)
+		values (#{bno}, #{leader}, #{userId})
+	</insert>
+	
+	<select id="countcurrent" resultType="Integer">
+		select count(*) from groupacc
+		where bno = #{bno}
+	</select>
+	
+	<select id="readId" resultType="String">
+		select userId from groupacc
+		where bno = #{bno}
+	</select>
+	
+	<!-- 신청여부 -->
+	<select id="isJoin" resultType="int">
+		select count(*) from groupacc
+		where userId = #{userId} and bno = #{bno}
+	</select>
+		
+</mapper>

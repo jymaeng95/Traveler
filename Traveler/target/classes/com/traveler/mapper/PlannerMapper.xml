@@ -49,4 +49,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set planImg = #{planImg}
 		where userId = #{userId} and planNo = #{planNo}
 	</update>
+	
+	<select id="isExist" resultType="int">
+		select count(*) from planner
+		where userId = #{userId}
+	</select>
 </mapper>

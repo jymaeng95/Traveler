@@ -125,14 +125,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from userplan
 	</select>
 
-	<select id="readPlanDate" resultMap="UserPlanVO">
-		select planDate,
-		planTotalDate
-		from userplan
-		where planno=#{planNo} and userid=#{userId}
-		and rownum = 1
-		order by planDate
-	</select>
+   <select id="readPlanDate" resultMap="UserPlanVO">
+      select planDate, planDay,
+      planTotalDate
+      from userplan
+      where planno=#{planNo} and userid=#{userId}
+      and rownum = 1
+      order by planDate
+   </select>
 
 
 
@@ -158,4 +158,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where userId = #{userId} and
 		planNo = #{planNo} and is_insertAfter = 'Y'
 	</delete>
+	
+	<select id="getStartDate" resultMap="UserPlanVO">
+		select distinct planDate, planTotalDate
+		from userplan
+		where userId = #{userId} and planNo = #{planNo} and planDay = '1'
+	</select>
+	
+
 </mapper>

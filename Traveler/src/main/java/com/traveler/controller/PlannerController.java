@@ -162,11 +162,10 @@ public class PlannerController {
 				for(PlannerVO pl : plan) {
 					Map<String,Object> data = new HashMap<String,Object>();
 					dateInfo = planService.getUserPlanDate(member.getUserId(), pl.getPlanNo());
-					if(dateInfo != null) {
-						data.put("planStartDate",dateInfo.getPlanDate());
-						data.put("planEndDate",DateUtils.calcDate(dateInfo.getPlanDate(),dateInfo.getPlanTotalDate()));
-						data.put("planTotalDate",dateInfo.getPlanTotalDate());
-					}
+					String palnStartDate = DateUtils.calcStartDate(dateInfo.getPlanDate(), dateInfo.getPlanDay());
+					data.put("planStartDate",palnStartDate);
+					data.put("planEndDate",DateUtils.calcDate(palnStartDate,dateInfo.getPlanTotalDate()));
+					data.put("planTotalDate",dateInfo.getPlanTotalDate());
 					data.put("planInfo",pl);
 					planInfo.add(data);
 				}
@@ -189,6 +188,7 @@ public class PlannerController {
 		model.addAttribute("total_date", total_date);
 		model.addAttribute("planNo",plannerService.getPlanNo());
 		return "/plan/create";
+		
 	}	
 
 	@RequestMapping(value="/plan/guide", method=RequestMethod.GET)

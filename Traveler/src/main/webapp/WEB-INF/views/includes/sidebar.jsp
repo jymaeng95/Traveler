@@ -1,3 +1,29 @@
+<script>
+$(document).ready(function() {
+	$.ajax({
+		url : "/mypage/message/cntnoread",
+		type : "post",
+	 	dataType : "json",
+	 	data : {
+			"userId" : $('#userIdside').val()
+	 		},
+			success : function(data) {
+				if(data != 0) $('#cnt').text(data);
+			},
+			error : function(error) {
+				$('#cnt').text("?");
+			}
+	});
+});
+function prevent(){
+	
+	if($("#userIdside").val() == "") {
+		alert("login First")
+		location.href = "/login/index";
+	}
+	else location.href = "/accompany/index";
+}
+</script>
 <div class="page-wrapper chiller-theme toggled">
 	<a id="show-sidebar" class="btn btn-sm btn-dark" href="#"> <i
 		class="fas fa-bars"></i>
@@ -55,6 +81,9 @@
 					<!--                         <li><a href="#">Forms</a></li> -->
 					<!--                      </ul> -->
 					<!--                   </div></li> -->
+					 <li class="sidebar"><a href="#" onclick="prevent();"> <i
+	                    class="fas fa-handshake"></i> <span>Accompany</span> 
+	              </a></li>
 					<c:if test="${userInfo.userId != null }">
 						<li class="sidebar"><a href="/budget/budget"> <i
 								class="fas fa-map-marker-alt"></i> <span>Budget</span>
@@ -80,9 +109,9 @@
 		<!-- sidebar-content  -->
 		<div class="sidebar-footer">
 			<c:if test="${userInfo.userId != null }">
-				<a href="/mypage/message"> <i class="fa fa-envelope"></i> <span
-					class="badge badge-pill badge-success notification">7</span>
-				</a>
+				 <a href="/mypage/message"> <i class="fa fa-envelope"></i> <span
+               class="badge badge-pill badge-success notification" id="cnt"></span>
+         </a> 
 			</c:if>
 			<a href="#"> <i class="fa fa-cog"></i> <span class="badge-sonar"></span>
 			</a>
@@ -94,4 +123,5 @@
 			</c:if>
 			<i class="fa fa-power-off"></i> </a>
 		</div>
+		<input type="hidden" id="userIdside" value="${userInfo.userId }"/>
 	</nav>
