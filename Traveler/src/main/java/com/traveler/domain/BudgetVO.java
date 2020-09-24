@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class BudgetVO {
-	private int bno;
+	private int budget_no;
 	private int planNo;
 	private String userId;
 	private String title;

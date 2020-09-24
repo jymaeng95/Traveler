@@ -143,7 +143,7 @@ function check2(){
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
-				<form id="plan_info" method="get" action="/plan/create2">
+				<form id="plan_info" method="get" action="/plan/create">
 					<div class="modal-body">
 						<select id="selectplan" style="width:350px">
 						<c:forEach items="${p_list}" var="list" varStatus="status">

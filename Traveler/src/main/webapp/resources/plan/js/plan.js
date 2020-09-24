@@ -501,8 +501,9 @@ function addModal(position,map,marker) {
 		var stDate = new Date(parseInt(strArr.substr(0,4)), parseInt(strArr.substr(5,2))-1, parseInt(strArr.substr(8,2)));
 		stDate.setDate(stDate.getDate() + ($("#day").val() -1));
 		var month = ((stDate.getMonth()+1)<10?'0':'')+(stDate.getMonth()+1);
-		var split_date = stDate.getFullYear()+"-"+month+"-"+stDate.getDate();
-		
+		var day = (stDate.getDate()<10?'0':'')+stDate.getDate();
+		var split_date = stDate.getFullYear()+"-"+month+"-"+day;
+
 //		position.planTitle = $("#plantitle").val();
 		position.planDate = split_date;
 		position.planDay = $("#day").val();

@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.BudgetMapper">
 	<resultMap id="BudgetVO" type="com.traveler.domain.BudgetVO">
-		<id column="bno" property="bno" />
+		<id column="budget_no" property="budget_no" />
 		<id column="planNo" property="planNo" />
 		<id column="userId" property="userId" />
 		<id column="title" property="title" />
@@ -23,10 +23,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 	<insert id="insertBudget">
-		insert into budget (bno, planno,userid,
+		insert into budget (budget_no, planno,userid,
 		title,cat,income,expend,total,planDate,descript)
 		values
-		(bno.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income},
+		(budget_no.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income},
 		#{expend}, #{total}, #{planDate},#{descript})
 	</insert>
 
@@ -46,8 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		income = #{income}, expend=#{expend}, total=#{total}, descript = #{descript}, cat =#{cat}
 		when not matched then
 		insert
-		(bno,planNo,userId,title,cat,income,expend,total,descript,planDate)
-		VALUES (bno.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income}, #{expend},#{total},
+		(budget_no,planNo,userId,title,cat,income,expend,total,descript,planDate)
+		VALUES (budget_no.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income}, #{expend},#{total},
 		#{descript},#{planDate})
 	</update>
 

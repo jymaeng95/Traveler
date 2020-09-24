@@ -43,12 +43,11 @@ public class LoginController {
 		k_userInfo.setUserId(userInfo.get("id").toString());
 		k_userInfo.setNickname(userInfo.get("properties").get("nickname").toString().replaceAll("\"", ""));
 
-		if(userInfo.get("properties").get("thumbnail_image") == null) {
+		if(userInfo.get("kakao_account").get("profile").get("thumbnail_image_url") == null) {
 			k_userInfo.setUser_img("");
 		} else {
-			k_userInfo.setUser_img(userInfo.get("properties").get("thumbnail_image").toString().replaceAll("\"", ""));
+			k_userInfo.setUser_img(userInfo.get("kakao_account").get("profile").get("thumbnail_image_url").toString().replaceAll("\"", ""));
 		}
-
 		MemberVO member = service.kakaoLogin(k_userInfo);
 		log.info("member for kakao login : " + member);
 		//移댁뭅�삤濡� �븳踰덉씠�씪�룄 濡쒓렇�씤 �뻽�쑝硫� �븞�븯寃� �븿
@@ -58,9 +57,18 @@ public class LoginController {
 			member = service.kakaoLogin(k_userInfo);
 			log.info("member in register for kakao : "+member);
 		}
+		
+		if(!member.getUser_img().equals(k_userInfo.getUser_img())) {
+			member.setUser_img(k_userInfo.getUser_img());
+			if(service.updateMemberImg(member)) log.info("kakao account latest img is updated");
+			else log.info("kakao account latest img is not updated");
+				
+		}
 		model.addAttribute("k_userInfo", member);
 		model.addAttribute("id", member.getUserId());
-
+		log.info("카카오 최신 이미지"+k_userInfo.getUser_img());
+		log.info("member 이미지"+member.getUser_img());
+		
 		if (k_userInfo.getUserId() != null) {
 			session.setAttribute("access_Token", access_Token);
 			session.setAttribute("userInfo", member);

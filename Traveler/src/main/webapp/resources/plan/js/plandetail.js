@@ -176,7 +176,7 @@ $(document).ready(function(){
 					e.popup.option('showTitle', true);
 					e.popup.option('title', e.appointmentData.text ? 
 							e.appointmentData.text : 
-								'Create a new appointment');
+					'Create a new appointment');
 					const form = e.form;
 					let formItems = form.option("items");
 					if(e.appointmentData.is_insertAfter == 'N') {
@@ -223,7 +223,7 @@ $(document).ready(function(){
 					e.popup.option('showTitle', true);
 					e.popup.option('title', e.appointmentData.text ? 
 							e.appointmentData.text : 
-								'Create a new appointment');
+					'Create a new appointment');
 					const form = e.form;
 					let formItems = form.option("items");
 					if(e.appointmentData.is_insertAfter == 'N') {
@@ -243,7 +243,7 @@ $(document).ready(function(){
 				} 
 		}).dxScheduler("instance");
 	}
-	
+
 	$("#btn-save").click(function(){
 		var s_instance = instance.getDataSource().items();
 //		var totalDate = getBetweenDate(getMaxTime(s_instance), getMinTime(s_instance));
@@ -260,15 +260,15 @@ $(document).ready(function(){
 				if(allInfo[j].title == s_instance[i].text){
 					buffer.userId = userId;
 					buffer.planNo = planNo;
-					buffer.title = allInfo[j].title;
+					buffer.title = allInfo[j].title;          //(date.getDate()<10?'0':'')+date.getDate()
 					var date = s_instance[i].startDate;
-					buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+					buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					date = s_instance[i].endDate;
-					buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+					buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 					if(s_instance[i].description != "") buffer.descript = s_instance[i].description;
 					else buffer.descript = "";
 					buffer.planTitle = planTitle;
-					buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate();
+					buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate();
 					buffer.planDay = allInfo[j].planDay;
 					buffer.planTotalDate = allInfo[j].planTotalDate;
 					buffer.is_insertAfter = allInfo[j].is_insertAfter;
@@ -281,11 +281,11 @@ $(document).ready(function(){
 				buffer.planNo = planNo;
 				buffer.title =   s_instance[i].text;
 				var date = s_instance[i].startDate;
-				buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+				buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				date = s_instance[i].endDate;
-				buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+				buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
 				buffer.descript = s_instance[i].description;
-				buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+date.getDate();
+				buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate();
 				buffer.planDay = s_instance[i].palnDay;
 				buffer.planTotalDate = s_instance[i].planTotalDate;
 				buffer.planTitle = planTitle;

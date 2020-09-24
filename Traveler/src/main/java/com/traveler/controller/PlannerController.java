@@ -162,10 +162,12 @@ public class PlannerController {
 				for(PlannerVO pl : plan) {
 					Map<String,Object> data = new HashMap<String,Object>();
 					dateInfo = planService.getUserPlanDate(member.getUserId(), pl.getPlanNo());
-					String palnStartDate = DateUtils.calcStartDate(dateInfo.getPlanDate(), dateInfo.getPlanDay());
-					data.put("planStartDate",palnStartDate);
-					data.put("planEndDate",DateUtils.calcDate(palnStartDate,dateInfo.getPlanTotalDate()));
-					data.put("planTotalDate",dateInfo.getPlanTotalDate());
+					if(dateInfo != null) {
+						String palnStartDate = DateUtils.calcStartDate(dateInfo.getPlanDate(), dateInfo.getPlanDay());
+						data.put("planStartDate",palnStartDate);
+						data.put("planEndDate",DateUtils.calcDate(palnStartDate,dateInfo.getPlanTotalDate()));
+						data.put("planTotalDate",dateInfo.getPlanTotalDate());
+					}
 					data.put("planInfo",pl);
 					planInfo.add(data);
 				}
@@ -188,7 +190,7 @@ public class PlannerController {
 		model.addAttribute("total_date", total_date);
 		model.addAttribute("planNo",plannerService.getPlanNo());
 		return "/plan/create";
-		
+
 	}	
 
 	@RequestMapping(value="/plan/guide", method=RequestMethod.GET)
@@ -231,7 +233,7 @@ public class PlannerController {
 		log.info("T-map/controller" + spotVO + "keyword : "+keyword);
 		return spot.getKeywordFromPOI(spotVO, keyword);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/plan/update/planner", method=RequestMethod.POST)
 	public String updatePlanner(PlannerVO planner, HttpSession session) {
