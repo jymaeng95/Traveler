@@ -190,6 +190,10 @@ $(document).on("click",".add-modal-close", function(e){
 	clearAddModal();
 });
 
+$(document).on("mouseover","trabs-each",function(){
+	
+});
+
 //각각 영역 클릭시 상세정보 입력 모달 
 $(document).on("click",".trans-each",function(){
 	var modalData;
