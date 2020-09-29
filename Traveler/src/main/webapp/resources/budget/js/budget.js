@@ -115,7 +115,7 @@ $(document).ready(function() {
 	var firstDate = planData.firstDate.split("-");
 	var startDate = new Date(firstDate[0], (firstDate[1]-1), firstDate[2]);
 	var totalDate= planData.totalDate;
-
+	console.log(data);
 	$("#add-date").flatpickr({
 		minDate: startDate,
 		maxDate: startDate.fp_incr(totalDate-1)
@@ -190,8 +190,11 @@ $(document).on("click",".add-modal-close", function(e){
 	clearAddModal();
 });
 
-$(document).on("mouseover","trabs-each",function(){
-	
+$(document).on("mouseenter",".trans-each",function(){
+	$(this).append("<span>***</span>");
+});
+$(document).on("mouseleave",".trans-each",function(){
+	$(this).find("span").last().remove();
 });
 
 //각각 영역 클릭시 상세정보 입력 모달 
@@ -425,25 +428,47 @@ function getUserBudget(planNo){
 		type : "get",
 		data : {"planNo" : planNo},
 		success : function(data) {
-			$.each(data,function(i,item){
-				var jsondata = {}
-				jsondata.title = data[i].title;
-				jsondata.planDate = data[i].planDate;
-				if(data[i].descript !="")
-					jsondata.descript = data[i].descript;
-				else 
+			$.each(data,function(){
+				var jsondata = new Object();
+//				jsondata.title = data[i].title;
+				jsondata.title = data.budget.title;
+//				jsondata.planDate = data[i].planDate;
+				jsondata.planDate = data.budget.planDate;
+//				if(data[i].descript !="")
+//					jsondata.descript = data[i].descript;
+//				else 
+//					jsondata.descript = "정보";
+//				
+				if(data.budget.desciprt!="")
+					jsondata.descript = data.budget.descript;
+				else
 					jsondata.descript = "정보";
-				if(data[i].cat!="")
-					jsondata.cat = data[i].cat;
+				
+//				if(data[i].cat!="")
+//					jsondata.cat = data[i].cat;
+//				else 
+//					jsondata.cat = "카테고리";
+//				
+				if(data.budget.cat != "")
+					jsondata.cat = data.budget.cat;
 				else 
 					jsondata.cat = "카테고리";
-				if(data[i].income > 0){
-					jsondata.income = data[i].income;
+				
+				if (data.budget.income > 0){
+					jsondata.income = data.budget.income;
 					jsondata.expend = 0;
-				}else {
+				} else {
 					jsondata.income = 0;
-					jsondata.expend = data[i].expend;
+					jsondata.expend = data.budget.expend;
 				}
+//				if(data[i].income > 0){
+//					jsondata.income = data[i].income;
+//					jsondata.expend = 0;
+//				}else {
+//					jsondata.income = 0;
+//					jsondata.expend = data[i].expend;
+//				}
+				jsondata.fee = data.fee;
 				result.push(jsondata); 
 			});
 		},

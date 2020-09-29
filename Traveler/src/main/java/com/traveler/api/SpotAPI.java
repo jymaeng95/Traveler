@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,12 +29,12 @@ import lombok.extern.log4j.Log4j;
 @Service
 public class SpotAPI {
 	//	final String serviceKey ="SHUTUe8Ya9tRYNvxndPl0GuDMGD%2F8T4d2LFqklaI9yoGzpnlZPEmo3uUsQ6BGhsVr%2F8vQZFAhkPg%2Fc4kGh1%2Big%3D%3D";
-		final String serviceKey ="WPuoTd67PSQd4jXck%2FRkGCLmjVLTCkJWVcBKcZk36xiTy6meeE%2FuWi4OKVduoXWijK8jCUvaYXhYHnqSEkWlPw%3D%3D";
+	final String serviceKey ="WPuoTd67PSQd4jXck%2FRkGCLmjVLTCkJWVcBKcZk36xiTy6meeE%2FuWi4OKVduoXWijK8jCUvaYXhYHnqSEkWlPw%3D%3D";
 	//	final String serviceKey ="gr8r1Nu%2FamiYcpoKwNRrDhgCWT8T3dJPxG1%2F2MuEzrCiSq0m4%2B8%2BUqf5LqJpVfIBWrgndZHrRpZy27PUCT21rQ%3D%3D";
 	//	final String serviceKey ="iv8Bz7xZDYyuYRnhmBekQj5GV732OijidErVpJets0Bw9rMM6FEWPF3t4Ow%2FIJ091nOnUnXFq%2FFjas8TzW13pA%3D%3D";
-	
-		final String TMAP_KEY = "l7xx15e7f0ab6ce4456f9a97564f50cf5e2f";
-		// tag���� ������ �������� �޼ҵ�
+
+	final String TMAP_KEY = "l7xx15e7f0ab6ce4456f9a97564f50cf5e2f";
+	// tag���� ������ �������� �޼ҵ�
 	public static String getTagValue(String tag, Element eElement) {
 		try {
 			NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
@@ -149,7 +150,7 @@ public class SpotAPI {
 				+ "&addrinfoYN=Y"
 				+ "&mapinfoYN=Y"
 				+ "&overviewYN=Y&";
-				
+
 
 		DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
@@ -173,12 +174,66 @@ public class SpotAPI {
 				information.add(getTagValue("addr1", element));
 				information.add(getTagValue("mapy", element));
 				information.add(getTagValue("mapx",element));
-				
+
 			}
 		}
-		
+
 		return information;
 	}
+
+	public String getFeeInfo(String contentId, String contentTypeId) throws Exception {
+		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?"
+				+ "serviceKey="+serviceKey
+				+ "&numOfRows=1"
+				+ "&pageNo=1"
+				+ "&MobileOS=ETC"
+				+ "&MobileApp=AppTest"
+				+ "&contentId="+contentId
+				+ "&contentTypeId="+contentTypeId
+				+ "&";
+
+		DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
+		Document doc = dBuilder.parse(url);
+		// root tag 
+		doc.getDocumentElement().normalize();
+		System.out.println("�� element :" + doc.getDocumentElement().getNodeName());
+
+		// �Ľ��� tag
+		NodeList nList = doc.getElementsByTagName("item");
+		System.out.println("getFeeInfo : "+nList.getLength() );
+		switch(contentTypeId) {
+		case "14":
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					return getTagValue("usefee",element);
+				}
+			}
+			break;
+		case "15":
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					return getTagValue("usetimefestival",element);
+				}
+			}
+			break;
+		case "28":
+			for(int i=0;i<nList.getLength();i++) {
+				Node node = nList.item(i);
+				if(node.getNodeType()==Node.ELEMENT_NODE) {
+					Element element = (Element) node;
+					return getTagValue("usefeeleports",element);
+				}
+			}
+			break;
+		}
+		return "";
+	}
+
 	//소개 기반 정보 (상세정보가져오기)
 	public List<String> getIntroduceInfo(String contentId,String contentTypeId,List<String> information) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailIntro?"
@@ -200,7 +255,7 @@ public class SpotAPI {
 
 		// �Ľ��� tag
 		NodeList nList = doc.getElementsByTagName("item");
-		
+
 		switch(contentTypeId) {
 		case "12" :
 			for(int i=0;i<nList.getLength();i++) {
@@ -298,13 +353,13 @@ public class SpotAPI {
 		}
 		return information;
 	}
-	
+
 	//서브 이미지 가져오기 
 	public List<String> getDiffImages(String contentId, String contentTypeId, String numOfRow) throws Exception{
 		String imageYN;
 		if(contentTypeId.equals("39")) imageYN = "N";
 		else imageYN = "Y";
-		
+
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailImage?"
 				+ "serviceKey="+serviceKey
 				+ "&numOfRows="+numOfRow
@@ -314,7 +369,7 @@ public class SpotAPI {
 				+ "&contentId="+contentId
 				+ "&imageYN="+imageYN
 				+ "&subImageYN=Y&";
-		
+
 		DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
 		Document doc = dBuilder.parse(url);
@@ -322,11 +377,11 @@ public class SpotAPI {
 		// root tag 
 		doc.getDocumentElement().normalize();
 		System.out.println("�̹�������  :" + doc.getDocumentElement().getNodeName());
-		
+
 		// �Ľ��� tag
 		NodeList nList = doc.getElementsByTagName("item");
 		List<String> img_src = new ArrayList<String>();
-		
+
 		for(int i=0;i<nList.getLength();i++) {
 			Node node = nList.item(i);
 			if(node.getNodeType()==Node.ELEMENT_NODE) {
@@ -336,7 +391,7 @@ public class SpotAPI {
 		}
 		return img_src;
 	}
-	
+
 	// 토탈 카운트
 	public int getTotalCount(String contentTypeId, String sigunguCode) throws Exception {
 		String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
@@ -374,14 +429,14 @@ public class SpotAPI {
 
 		return contentIdList.get(0);
 	}
-	
-	
+
+
 	//spot 불러오기!
 	public List<SpotVO> getInformation (SpotVO spotVO, int totalCount) throws Exception {
 		ArrayList<String> contentIdList= getContentIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId(),spotVO.getNumOfRow());
 		ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
 		List<SpotVO> information = new ArrayList<SpotVO>();
-		
+
 		for(int i=0; i<spotInfo.size();i++) {
 			SpotVO oneSpot = new SpotVO();
 			for(int j=0;j<spotInfo.get(i).getLength();j++) {
@@ -408,14 +463,14 @@ public class SpotAPI {
 		}
 		return information;
 	}
-	
+
 	public List<String> getEachInformation(SpotVO spotVO) throws Exception {
 		List<String> information = new ArrayList<String>();
 		information = getCommonInfo(spotVO.getContentId(), spotVO.getContentTypeId(), information);
 		information = getIntroduceInfo(spotVO.getContentId(), spotVO.getContentTypeId(), information);
-		
+
 		log.info(information);
-		
+
 		return information;
 	}
 	public List<SpotVO> getKeywordInformation(SpotVO spotVO, String keyword) throws Exception{
@@ -435,7 +490,7 @@ public class SpotAPI {
 				+ "&cat2="
 				+ "&cat3="
 				+ "&keyword="+encodeKeyword;
-		
+
 		//keyword UTF-8 Encoding 필요
 		DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
@@ -457,7 +512,7 @@ public class SpotAPI {
 			}
 		}
 		System.out.println(contentIdList.size());
-		
+
 		String totalCount ="";
 		nList = doc.getElementsByTagName("totalCount");
 		Node count_node = nList.item(0);
@@ -467,7 +522,7 @@ public class SpotAPI {
 		}
 		System.out.println(totalCount);
 		ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
-		
+
 		List<SpotVO> information = new ArrayList<SpotVO>();
 		for(int i=0; i<spotInfo.size();i++) {
 			SpotVO oneSpot = new SpotVO();
@@ -510,7 +565,7 @@ public class SpotAPI {
 		URL url = new URL(requestUrl);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
-		
+
 		int responseCode = con.getResponseCode();
 		System.out.println("RESPONSE CODE : "+responseCode);
 
@@ -522,12 +577,12 @@ public class SpotAPI {
 			response.append(inputLine);
 		}
 		in.close();
-		
+
 		List<SpotVO> information = fromJsonToSpotInfo(response.toString());
-//		System.out.println("결과  : "+response.toString());
+		//		System.out.println("결과  : "+response.toString());
 		return information;
 	}
-	
+
 	public List<SpotVO> fromJsonToSpotInfo(String jsonData) {
 		JSONObject jObject = new JSONObject(jsonData);
 		JSONObject searchInfoObj = jObject.getJSONObject("searchPoiInfo");

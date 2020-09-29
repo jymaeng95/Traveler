@@ -1,5 +1,7 @@
 package com.traveler.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.traveler.api.SpotAPI;
 import com.traveler.domain.BudgetVO;
 import com.traveler.domain.MemberVO;
 import com.traveler.domain.PlannerVO;
@@ -33,6 +36,7 @@ public class BudgetController {
 	private PlannerService plannerService;
 	private UserPlanService planService;
 	private BudgetService budgetService;
+	private SpotAPI spot;
 	
 	@RequestMapping(value="/budget/budget", method=RequestMethod.GET)
 	public String budget(Model model,HttpSession session) {
@@ -46,17 +50,34 @@ public class BudgetController {
 	
 	@ResponseBody
 	@RequestMapping(value="budget/load/userplan",method=RequestMethod.GET)
-	public List<BudgetVO> getUserPlan(@RequestParam(value="planNo") int planNo, HttpSession session ) throws Exception{
+	public List<Map<String,Object>> getUserPlan(@RequestParam(value="planNo") int planNo, HttpSession session ) throws Exception{
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
+		Map<String,Object> map = new HashMap<>();
 		List<BudgetVO> budget = budgetService.getUserBudgetFromPlanNo(planNo, member.getUserId());
+		List<UserPlanVO> schedule = planService.getUserScheduleFromPlanNo(planNo, member.getUserId());
+		List<Map<String,Object>> result = new ArrayList<>();
 		log.info(budget.size());
-		if(budget.size() < 1 ) {
-			List<UserPlanVO> schedule = planService.getUserScheduleFromPlanNo(planNo, member.getUserId());
+		if(budget.size() < 1 ) 
 			budget = budgetService.getUserBudgetFromSchedule(schedule);
+		log.info(budget.size());
+		
+		for(BudgetVO bg : budget) {
+			map.put("budget",bg);
+			for(UserPlanVO sch : schedule) {
+				if(bg.getTitle().equals(sch.getTitle())) {
+					if(sch.getContentId() != null || sch.getContentTypeId() !=null) 
+						map.put("fee",spot.getFeeInfo(sch.getContentId(), sch.getContentTypeId()));
+					else
+						map.put("fee","");
+				}
+			}
+			result.add(map);
 		}
 		
-		log.info(budget);
-		return budget;
+		//14(usefee) 15(usetimefestival) 28(usefeeleports)
+		
+		log.info(result);
+		return result;
 	}
 
 	@ResponseBody
