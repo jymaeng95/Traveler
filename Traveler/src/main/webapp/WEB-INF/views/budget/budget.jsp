@@ -91,6 +91,7 @@
 							value="교통">교통 <input type="radio" name="cat" value="기타">기타
 					</div>
 					<div style="padding: 10px;">
+						<h6 id="fee"></h6>
 						<input type="text" name="price" id="price" placeholder="ex) 3000"
 							onkeypress="onlyNumber();" required>
 					</div>

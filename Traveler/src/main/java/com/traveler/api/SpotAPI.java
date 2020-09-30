@@ -436,7 +436,7 @@ public class SpotAPI {
 		ArrayList<String> contentIdList= getContentIdList(spotVO.getPageNo(),spotVO.getSigunguCode(),spotVO.getContentTypeId(),spotVO.getNumOfRow());
 		ArrayList<NodeList> spotInfo = getSpotInfo(contentIdList);
 		List<SpotVO> information = new ArrayList<SpotVO>();
-
+		System.out.println("getInformation : "+spotInfo.size());
 		for(int i=0; i<spotInfo.size();i++) {
 			SpotVO oneSpot = new SpotVO();
 			for(int j=0;j<spotInfo.get(i).getLength();j++) {

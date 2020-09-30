@@ -28,6 +28,7 @@ function startAppend(data) {
 					'</h5></div>\
 					</div>\
 					<div class="trans-price">\
+					<h6 class="fee-info" style="display:none">'+data[i].fee+'</h6>\
 					<h4 class="trans-price income" style="color:rgb(113, 207, 66)">'+data[i].income+'\\\
 					</h4>\
 					</div>\
@@ -48,6 +49,7 @@ function startAppend(data) {
 					'</h5></div>\
 					</div>\
 					<div class="trans-price">\
+					<h6 class="fee-info" style="display:none">'+data[i].fee+'</h6>\
 					<h4 class="trans-price expend" style="color:#ff3232">'+data[i].expend+'\\\
 					</h4>\
 					</div>\
@@ -68,6 +70,7 @@ function startAppend(data) {
 					'</h5></div>\
 					</div>\
 					<div class="trans-price">\
+					<h6 class="fee-info" style="display:none">'+data[i].fee+'</h6>\
 					<h4 class="trans-price">0\\\
 					</h4>\
 					</div>\
@@ -204,6 +207,7 @@ $(document).on("click",".trans-each",function(){
 	var descript = $(this).find('h5.trans-descript').text();
 	var cat = $(this).find('h5.trans-cat').text();
 	var price = $(this).find('h4.trans-price').text().split("\\");
+	var feeInfo = $(this).find('h6.fee-info').text();
 	if(cat != "카테고리") {
 		switch(cat){
 		case "관광" : $("input[value='관광']").attr("checked",true); break;
@@ -216,6 +220,8 @@ $(document).on("click",".trans-each",function(){
 	$("#title").text(title);
 	$("#info").val(descript);
 	$("#price").val(price[0]);
+	if(feeInfo != "")
+		$("#fee").html(feeInfo);
 	$(".modal").show();
 });
 
@@ -428,47 +434,32 @@ function getUserBudget(planNo){
 		type : "get",
 		data : {"planNo" : planNo},
 		success : function(data) {
-			$.each(data,function(){
+			$.each(data,function(i){
 				var jsondata = new Object();
-//				jsondata.title = data[i].title;
-				jsondata.title = data.budget.title;
-//				jsondata.planDate = data[i].planDate;
-				jsondata.planDate = data.budget.planDate;
-//				if(data[i].descript !="")
-//					jsondata.descript = data[i].descript;
-//				else 
-//					jsondata.descript = "정보";
-//				
-				if(data.budget.desciprt!="")
-					jsondata.descript = data.budget.descript;
+				jsondata.title = data[i].budget.title;
+				jsondata.planDate = data[i].budget.planDate;
+				if(data[i].budget.descript!="")
+					jsondata.descript = data[i].budget.descript;
 				else
 					jsondata.descript = "정보";
 				
-//				if(data[i].cat!="")
-//					jsondata.cat = data[i].cat;
-//				else 
-//					jsondata.cat = "카테고리";
-//				
-				if(data.budget.cat != "")
-					jsondata.cat = data.budget.cat;
+				if(data[i].budget.cat != "")
+					jsondata.cat = data[i].budget.cat;
 				else 
 					jsondata.cat = "카테고리";
 				
-				if (data.budget.income > 0){
-					jsondata.income = data.budget.income;
+				if (data[i].budget.income > 0){
+					jsondata.income = data[i].budget.income;
 					jsondata.expend = 0;
 				} else {
 					jsondata.income = 0;
-					jsondata.expend = data.budget.expend;
+					jsondata.expend = data[i].budget.expend;
 				}
-//				if(data[i].income > 0){
-//					jsondata.income = data[i].income;
-//					jsondata.expend = 0;
-//				}else {
-//					jsondata.income = 0;
-//					jsondata.expend = data[i].expend;
-//				}
-				jsondata.fee = data.fee;
+				
+				if(data[i].fee != "" )
+					jsondata.fee = data[i].fee;
+				else 
+					jsondata.fee="";
 				result.push(jsondata); 
 			});
 		},
