@@ -59,4 +59,10 @@ public class PlannerServiceImpl implements PlannerService {
 		return mapper.isExist(userId);
 	}
 
+	@Override
+	public PlannerVO getAllPlannerFromPlanNo(int planNo) {
+		// TODO Auto-generated method stub
+		return mapper.readAllPlannerFromPlanNo(planNo);
+	}
+
 }

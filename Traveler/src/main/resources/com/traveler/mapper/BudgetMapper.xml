@@ -14,6 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="total" property="total" />
 		<result column="planDate" property="planDate" />
 		<result column="descript" property="descript" />
+		<result column="is_public" property="is_public" />
+		<result column="reg_date" property="reg_date"/>
 		<collection property="plannerVO"
 			ofType="com.traveler.domain.PlannerVO">
 			<id column="planNo" property="planNo" />
@@ -24,10 +26,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<insert id="insertBudget">
 		insert into budget (budget_no, planno,userid,
-		title,cat,income,expend,total,planDate,descript)
+		title,cat,income,expend,total,planDate,descript,is_public)
 		values
 		(budget_no.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income},
-		#{expend}, #{total}, #{planDate},#{descript})
+		#{expend}, #{total}, #{planDate},#{descript},#{is_public})
 	</insert>
 
 	<select id="readBudget" resultMap="BudgetVO">
@@ -43,12 +45,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userId=#{userId} and title=#{title} and planDate=#{planDate})
 		when matched then
 		update set
-		income = #{income}, expend=#{expend}, total=#{total}, descript = #{descript}, cat =#{cat}
+		income = #{income}, expend=#{expend}, total=#{total}, descript = #{descript}, cat =#{cat}, is_public = #{is_public}
 		when not matched then
 		insert
-		(budget_no,planNo,userId,title,cat,income,expend,total,descript,planDate)
+		(budget_no,planNo,userId,title,cat,income,expend,total,descript,planDate,is_public)
 		VALUES (budget_no.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income}, #{expend},#{total},
-		#{descript},#{planDate})
+		#{descript},#{planDate},#{is_public})
 	</update>
-
+	
+	<select id="readAllMemberPlanNoIsPublicYes" resultMap="BudgetVO">
+		select planno, reg_date from budget
+		where is_public = 'Y'
+		group by planno, reg_date
+		order by planno asc
+	</select>
 </mapper>

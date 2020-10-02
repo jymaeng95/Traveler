@@ -51,6 +51,7 @@ public class BudgetServiceImpl implements BudgetService{
 			onePlan.setExpend(0);
 			onePlan.setTotal(0);
 			onePlan.setPlanDate(schedule.get(i).getPlanDate());
+			onePlan.setIs_public("N");
 			if(schedule.get(i).getDescript()==null)
 				onePlan.setDescript("");
 			else
@@ -66,6 +67,7 @@ public class BudgetServiceImpl implements BudgetService{
 		
 		int planNo = Integer.parseInt(data.get("planNo").toString());
 		int total = Integer.parseInt(data.get("total").toString());
+		String is_public = data.get("is_public").toString();
 		List<Map> trans = (List<Map>) data.get("transactions");
 		for(int i=0;i<trans.size();i++) {
 			Map<String,Object> oneTrans = trans.get(i);
@@ -85,10 +87,18 @@ public class BudgetServiceImpl implements BudgetService{
 				oneBudget.setDescript("");
 			else
 				oneBudget.setDescript(oneTrans.get("descript").toString());
+			oneBudget.setIs_public(is_public);
 			budget.add(oneBudget);
 		}
 		
 		return budget;
+	}
+
+	@Override
+	public List<BudgetVO> getAllMemberPlanNoIsPublicYes() {
+		// TODO Auto-generated method stub
+		
+		return mapper.readAllMemberPlanNoIsPublicYes();
 	}
 	
 }

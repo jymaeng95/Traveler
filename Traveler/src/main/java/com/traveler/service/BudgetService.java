@@ -16,4 +16,6 @@ public interface BudgetService {
 	public List<BudgetVO> getUserBudgetFromSchedule(List<UserPlanVO> schedule);
 	
 	public List<BudgetVO> convertMapIntoBudget(Map<String,Object> data,String userId) throws ParseException;
+	
+	public List<BudgetVO> getAllMemberPlanNoIsPublicYes();
 }

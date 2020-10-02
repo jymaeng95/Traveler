@@ -85,7 +85,7 @@ function prevent(){
 	                    class="fas fa-handshake"></i> <span>Accompany</span> 
 	              </a></li>
 					<c:if test="${userInfo.userId != null }">
-						<li class="sidebar"><a href="/budget/budget"> <i
+						<li class="sidebar"><a href="/budget/index"> <i
 								class="fas fa-map-marker-alt"></i> <span>Budget</span>
 						</a></li>
 						<li class="sidebar-dropdown active"><a href="#"> <i

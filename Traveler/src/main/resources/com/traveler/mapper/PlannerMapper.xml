@@ -54,4 +54,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from planner
 		where userId = #{userId}
 	</select>
+	
+	<select id="readAllPlannerFromPlanNo" resultMap="PlannerVO">
+		select * from planner 
+		where planno = #{planNo}
+	</select>
 </mapper>

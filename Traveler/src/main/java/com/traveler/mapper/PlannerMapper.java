@@ -19,5 +19,7 @@ public interface PlannerMapper {
 	
 	public int updatePlannerImg(PlannerVO planner);
 	
+	public PlannerVO readAllPlannerFromPlanNo(int planNo);
+	
 	public int isExist(String userId);
 }

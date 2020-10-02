@@ -12,6 +12,11 @@ var load = function(data) {
 
 //append trans data
 function startAppend(data) {
+	if(data[0].is_public == "Y")
+		$("#radio-y").prop("checked",true);
+	else 
+		$("#radio-n").prop("checked",true);
+		
 	for (var i = 0; i < data.length; i++) {
 		if(data[i].income > 0){
 			$(".trans-list").append(
@@ -222,6 +227,8 @@ $(document).on("click",".trans-each",function(){
 	$("#price").val(price[0]);
 	if(feeInfo != "")
 		$("#fee").html(feeInfo);
+	else 
+		$("#fee").html("");
 	$(".modal").show();
 });
 
@@ -340,7 +347,8 @@ $(document).on("click","#add-expend",function(){
 			'<div class="trans-each">\
 			<div class="trans-details">\
 			<span class="action"></span>\
-			<h3 class="trans-title">' +
+			<h3 class="trans-titl">\
+			<h4 class="trans-price ee">' +
 			title+
 			'</h3><div class="row">\
 			<h5 class="trans-descript">' +
@@ -349,8 +357,7 @@ $(document).on("click","#add-expend",function(){
 			<h5 class="trans-planDate">'+planDate+
 			'</h5></div>\
 			</div>\
-			<div class="trans-price">\
-			<h4 class="trans-price expend" style="color:#ff3232;">'+price+"\\"+'\
+			<div class="trans-price expend" style="color:#ff3232;">'+price+"\\"+'\
 			</h4>\
 			</div>\
 			</div><hr>'
@@ -460,12 +467,13 @@ function getUserBudget(planNo){
 					jsondata.fee = data[i].fee;
 				else 
 					jsondata.fee="";
+				jsondata.is_public = data[i].budget.is_public;
 				result.push(jsondata); 
 			});
 		},
 		error : function(error){
 			alert("생성할 예산이 존재하지 않습니다.");
-			location.href = "/";
+			location.href = "/budget/index";
 		}
 	});
 
@@ -510,6 +518,7 @@ function setBudgetData(planNo){
 	});
 	budget.planNo = planNo;
 	budget.total = calcBalance();
+	budget.is_public = $('input[name="is_public"]:checked').val();
 	budget.transactions = transactions;
 
 	return budget;

@@ -14,5 +14,7 @@ public class BudgetVO {
 	private int total;
 	private String planDate;
 	private String descript;
+	private String is_public;
+	private String reg_date;
 	private PlannerVO plannerVO;
 }

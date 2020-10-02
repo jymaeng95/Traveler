@@ -10,4 +10,6 @@ public interface BudgetMapper {
 	public int insertAndUpdateBudget(BudgetVO budget);
 	
 	public int deleteBudget(BudgetVO budget);
+	
+	public List<BudgetVO> readAllMemberPlanNoIsPublicYes();
 }

@@ -37,14 +37,28 @@ public class BudgetController {
 	private UserPlanService planService;
 	private BudgetService budgetService;
 	private SpotAPI spot;
-
+	 
+	@RequestMapping(value="/budget/index", method=RequestMethod.GET)
+	public String index(Model model, HttpSession session) {
+		List<PlannerVO> planner = new ArrayList<>();
+		List<BudgetVO> allBudget = budgetService.getAllMemberPlanNoIsPublicYes();
+		log.info("budget/index budget: "+allBudget);
+		for(BudgetVO bg : allBudget) 
+			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
+		model.addAttribute("allBudget",allBudget);
+		model.addAttribute("allPlan", planner);
+		log.info("budget/index planner: "+planner);
+		return "/budget/index";
+	}
+	
 	@RequestMapping(value="/budget/budget", method=RequestMethod.GET)
 	public String budget(Model model,HttpSession session) {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		List<PlannerVO> planner = plannerService.getAllPlanner(member.getUserId());
-
+		log.info(planner.size());
+		
 		model.addAttribute("allPlan",planner);
-
+		
 		return "/budget/budget";
 	}
 
@@ -78,7 +92,6 @@ public class BudgetController {
 			result.add(map);
 		}
 		//14(usefee) 15(usetimefestival) 28(usefeeleports)
-
 		log.info(result);
 		return result;
 	}
