@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="planDate" property="planDate" />
 		<result column="descript" property="descript" />
 		<result column="is_public" property="is_public" />
-		<result column="reg_date" property="reg_date"/>
+		<result column="reg_date" property="reg_date" />
 		<collection property="plannerVO"
 			ofType="com.traveler.domain.PlannerVO">
 			<id column="planNo" property="planNo" />
@@ -43,20 +43,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		using dual
 		on (planNo=#{planNo} and
 		userId=#{userId} and title=#{title} and planDate=#{planDate})
-		when matched then
+		when
+		matched then
 		update set
-		income = #{income}, expend=#{expend}, total=#{total}, descript = #{descript}, cat =#{cat}, is_public = #{is_public}
+		income = #{income}, expend=#{expend},
+		total=#{total}, descript = #{descript}, cat =#{cat}, is_public =
+		#{is_public}
 		when not matched then
 		insert
 		(budget_no,planNo,userId,title,cat,income,expend,total,descript,planDate,is_public)
-		VALUES (budget_no.nextval, #{planNo},#{userId},#{title}, #{cat}, #{income}, #{expend},#{total},
+		VALUES (budget_no.nextval, #{planNo},#{userId},#{title}, #{cat},
+		#{income}, #{expend},#{total},
 		#{descript},#{planDate},#{is_public})
 	</update>
-	
+
 	<select id="readAllMemberPlanNoIsPublicYes" resultMap="BudgetVO">
-		select planno, reg_date from budget
+		select
+		planno, reg_date from budget
 		where is_public = 'Y'
-		group by planno, reg_date
+		group by planno,
+		reg_date
 		order by planno asc
 	</select>
+
+	<select id="readIsPublicBudget" resultMap="BudgetVO">
+		select planno, total ,sum(income), sum(expend)
+		from budget
+		where is_public='Y'
+		group by planno, total
+		order by planno asc
+	</select>
+	
+
 </mapper>

@@ -12,4 +12,6 @@ public interface BudgetMapper {
 	public int deleteBudget(BudgetVO budget);
 	
 	public List<BudgetVO> readAllMemberPlanNoIsPublicYes();
+	
+	public List<BudgetVO> readIsPublicBudget();
 }

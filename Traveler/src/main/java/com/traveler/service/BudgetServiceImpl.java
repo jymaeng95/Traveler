@@ -100,5 +100,11 @@ public class BudgetServiceImpl implements BudgetService{
 		
 		return mapper.readAllMemberPlanNoIsPublicYes();
 	}
+
+	@Override
+	public List<BudgetVO> getIsPublicBudget() {
+		// TODO Auto-generated method stub
+		return mapper.readIsPublicBudget();
+	}
 	
 }

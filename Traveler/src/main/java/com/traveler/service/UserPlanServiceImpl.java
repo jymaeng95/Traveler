@@ -180,4 +180,12 @@ public class UserPlanServiceImpl implements UserPlanService{
 		// TODO Auto-generated method stub
 		return mapper.getStartDate(plan);
 	}
+
+	@Override
+	public UserPlanVO getPlanDate(int planNo) throws Exception {
+		// TODO Auto-generated method stub
+		UserPlanVO plan = new UserPlanVO();
+		plan.setPlanNo(planNo);
+		return mapper.readStartDate(plan);
+	}
 }

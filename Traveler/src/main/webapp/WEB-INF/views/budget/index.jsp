@@ -11,6 +11,7 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <%@ include file="../includes/sidebar_setting.jsp"%>
+<script src="/resources/budget/js/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
@@ -21,7 +22,15 @@
 		<section class="notice">
 			<div class="page-title">
 				<div class="container">
-					<a href="#"><h3>모집 게시판</h3></a>
+					<c:if test="${countUserPlan eq 0 }">
+						<a href="/plan/plan"><h6 style="text-align: center;">
+								생성할 예산이 존재하지 않습니다.<br> 새로운 계획 만들러 가기!
+							</h6></a>
+						<h3 id="index-title" style="margin-top: 5%;">다른 회원들의 예산</h3>
+					</c:if>
+					<c:if test="${countUserPlan ne 0 }">
+						<h3>다른 회원들의 예산</h3>
+					</c:if>
 				</div>
 			</div>
 
@@ -61,6 +70,7 @@
 								<th scope="col" class="th-num">번호</th>
 								<th scope="col" class="th-title">작성자</th>
 								<th scope="col" class="th-uid">여행 제목</th>
+								<th scope="col" class="th-day">여행 일수</th>
 								<th scope="col" class="th-date">여행 일자</th>
 							</tr>
 						</thead>
@@ -69,15 +79,32 @@
 								<tr>
 									<td><c:out value="${list.planNo }"></c:out></td>
 									<td><c:out value="${list.userId }"></c:out></td>
-									<th class="plan-title"><a href="#!"><c:out value="${list.planTitle }"></c:out></a></th>
-									<td id="reg_date"><c:out value="${allBudget[status.index].reg_date }"></c:out></td>
+									<th class="plan-title"><a href="#!"><c:out
+												value="${list.planTitle }"></c:out></a></th>
+									<td id="planTotalDay"><c:out
+											value="${allSchedule[status.index].planTotalDate}일간 여행"></c:out></td>
+									<td id="planDate"><c:out
+											value="${allSchedule[status.index].planDate}"></c:out></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
-					<c:if test="${count eq 0 }">
-						<p style="text-align: center; margin-top: 30px;">검색 결과가 없습니다.</p>
+					<c:if test="${countUserPlan ne 0 }">
+						<button type="button" class="btn btn-dark" id="btn-mybudget"
+							style="float: right; margin-top: 2%;"
+							onclick="location.href='/budget/budget'">내 예산 생성하기</button>
 					</c:if>
+					<button type="button" class="btn btn-dark" id="btn-graph" style="float:right; margin-top:2%;"></button>
+				</div>
+			</div>
+			<div id="budget-stastic" style="display:none;">
+				<div class="container jumbotron ">
+
+					<div class="row">
+						<div id="piechart" style="width: 50%; height:500px;"></div>
+						<div id="columnchart_material" style="width: 50%; height: 500px;"
+							class="ml-auto"></div>
+					</div>
 				</div>
 			</div>
 		</section>

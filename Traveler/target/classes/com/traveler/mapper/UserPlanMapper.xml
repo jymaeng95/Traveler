@@ -165,5 +165,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where userId = #{userId} and planNo = #{planNo} and planDay = '1'
 	</select>
 	
-
+	<select id="readStartDate" resultMap="UserPlanVO">
+		select distinct planDate, planTotalDate
+		from userplan
+		where planNo = #{planNo} and planDay = '1'
+	</select>
 </mapper>

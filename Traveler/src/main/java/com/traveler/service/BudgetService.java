@@ -18,4 +18,6 @@ public interface BudgetService {
 	public List<BudgetVO> convertMapIntoBudget(Map<String,Object> data,String userId) throws ParseException;
 	
 	public List<BudgetVO> getAllMemberPlanNoIsPublicYes();
+	
+	public List<BudgetVO> getIsPublicBudget();
 }

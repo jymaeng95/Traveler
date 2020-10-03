@@ -143,7 +143,7 @@ $(document).on("click","#btn-save",function(){
 		contentType : "application/json; charset=UTF-8",
 		success : function(data) {
 			alert("저장 완료!");
-			location.reload(true);
+			location.href="/budget/index";
 		},
 		error : function(error){
 			alert("저장 실패 ");

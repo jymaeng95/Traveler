@@ -39,14 +39,21 @@ public class BudgetController {
 	private SpotAPI spot;
 	 
 	@RequestMapping(value="/budget/index", method=RequestMethod.GET)
-	public String index(Model model, HttpSession session) {
+	public String index(Model model, HttpSession session) throws Exception {
+		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		List<PlannerVO> planner = new ArrayList<>();
+		List<UserPlanVO> schedule = new ArrayList<>();
 		List<BudgetVO> allBudget = budgetService.getAllMemberPlanNoIsPublicYes();
+		
 		log.info("budget/index budget: "+allBudget);
-		for(BudgetVO bg : allBudget) 
+		for(BudgetVO bg : allBudget) {
 			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
-		model.addAttribute("allBudget",allBudget);
+			schedule.add(planService.getPlanDate(bg.getPlanNo()));
+		}
+		
+		model.addAttribute("allSchedule",schedule);
 		model.addAttribute("allPlan", planner);
+		model.addAttribute("countUserPlan",plannerService.isExist(member.getUserId()));
 		log.info("budget/index planner: "+planner);
 		return "/budget/index";
 	}
@@ -63,7 +70,7 @@ public class BudgetController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="budget/load/userplan",method=RequestMethod.GET)
+	@RequestMapping(value="/budget/load/userplan",method=RequestMethod.GET)
 	public List<Map<String,Object>> getUserPlan(@RequestParam(value="planNo") int planNo, HttpSession session ) throws Exception{
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		Map<String,Object> map;
@@ -97,7 +104,7 @@ public class BudgetController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="budget/save/budget",method=RequestMethod.POST)
+	@RequestMapping(value="/budget/save/budget",method=RequestMethod.POST)
 	public String saveBudget(@RequestBody Map<String,Object> trans, HttpSession session) throws ParseException {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		log.info("planNo : "+trans.get("planNo"));
@@ -116,10 +123,16 @@ public class BudgetController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="budget/load/date", method=RequestMethod.GET)
+	@RequestMapping(value="/budget/load/date", method=RequestMethod.GET)
 	public UserPlanVO getUserPlanDate(@RequestParam(value="planNo") int planNo, HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 
 		return planService.getUserPlanDate(member.getUserId(),planNo);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/budget/index/graph" ,method=RequestMethod.GET)
+	public List<BudgetVO> getAllBudget() {
+		return budgetService.getIsPublicBudget();
 	}
 }

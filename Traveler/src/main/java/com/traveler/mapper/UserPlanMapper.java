@@ -28,4 +28,6 @@ public interface UserPlanMapper {
 	public int deleteSchedule(UserPlanVO plan);
 	
 	public UserPlanVO getStartDate(UserPlanVO plan);
+	
+	public UserPlanVO readStartDate(UserPlanVO plan);
 }
