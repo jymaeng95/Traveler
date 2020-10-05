@@ -102,9 +102,15 @@ public class BudgetServiceImpl implements BudgetService{
 	}
 
 	@Override
-	public List<BudgetVO> getIsPublicBudget() {
+	public List<Map<String,Object>> getIsPublicBudget() {
 		// TODO Auto-generated method stub
 		return mapper.readIsPublicBudget();
+	}
+
+	@Override
+	public List<Map<String, Object>> getIsPublicCat() {
+		// TODO Auto-generated method stub
+		return mapper.readIsPublicCat();
 	}
 	
 }

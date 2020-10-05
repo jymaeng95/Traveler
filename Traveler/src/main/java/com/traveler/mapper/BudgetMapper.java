@@ -1,6 +1,7 @@
 package com.traveler.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.traveler.domain.BudgetVO;
 
@@ -13,5 +14,7 @@ public interface BudgetMapper {
 	
 	public List<BudgetVO> readAllMemberPlanNoIsPublicYes();
 	
-	public List<BudgetVO> readIsPublicBudget();
+	public List<Map<String,Object>> readIsPublicBudget();
+	
+	public List<Map<String,Object>> readIsPublicCat();
 }

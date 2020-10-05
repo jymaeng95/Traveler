@@ -132,7 +132,13 @@ public class BudgetController {
 	
 	@ResponseBody
 	@RequestMapping(value="/budget/index/graph" ,method=RequestMethod.GET)
-	public List<BudgetVO> getAllBudget() {
-		return budgetService.getIsPublicBudget();
+	public Map<String,Object> getAllBudget() {
+		List<Map<String,Object>> budgetMap = budgetService.getIsPublicBudget();
+		List<Map<String,Object>> catMap = budgetService.getIsPublicCat();
+		
+		Map<String,Object> returnData = new HashMap<>();
+		returnData.put("catData", catMap);
+		returnData.put("budgetData", budgetMap);
+		return returnData;
 	}
 }

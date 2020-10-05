@@ -19,5 +19,7 @@ public interface BudgetService {
 	
 	public List<BudgetVO> getAllMemberPlanNoIsPublicYes();
 	
-	public List<BudgetVO> getIsPublicBudget();
+	public List<Map<String,Object>> getIsPublicBudget();
+
+	public List<Map<String,Object>> getIsPublicCat();
 }

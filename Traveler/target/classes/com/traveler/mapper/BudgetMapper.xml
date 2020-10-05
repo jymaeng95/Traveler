@@ -66,13 +66,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by planno asc
 	</select>
 
-	<select id="readIsPublicBudget" resultMap="BudgetVO">
-		select planno, total ,sum(income), sum(expend)
+	<select id="readIsPublicBudget" resultType="Map">
+		select min(x) as
+		min_inc ,max(x) as max_inc, avg(x) as avg_inc, min(y) as min_exp,
+		max(y) as max_exp, avg(y) as avg_exp, min(z) as min_total, max(z) as
+		max_total, avg(z) as avg_total
+		from (
+		select planno, total as z,
+		sum(expend) as x, sum(income) as y
 		from budget
 		where is_public='Y'
-		group by planno, total
-		order by planno asc
+		group
+		by planno, total
+		order by planno, total asc
+		)
 	</select>
-	
+	<select id="readIsPublicCat" resultType="Map">
+		select cat, count(cat) as count_cat
+		from budget
+		where is_public ='Y'
+		group by cat
+		order by cat
+	</select>
 
 </mapper>
