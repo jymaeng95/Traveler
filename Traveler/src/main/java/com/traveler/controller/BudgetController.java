@@ -37,36 +37,56 @@ public class BudgetController {
 	private UserPlanService planService;
 	private BudgetService budgetService;
 	private SpotAPI spot;
-	 
+
 	@RequestMapping(value="/budget/index", method=RequestMethod.GET)
 	public String index(Model model, HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		List<PlannerVO> planner = new ArrayList<>();
 		List<UserPlanVO> schedule = new ArrayList<>();
 		List<BudgetVO> allBudget = budgetService.getAllMemberPlanNoIsPublicYes();
-		
+
 		log.info("budget/index budget: "+allBudget);
 		for(BudgetVO bg : allBudget) {
 			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
 			schedule.add(planService.getPlanDate(bg.getPlanNo()));
 		}
-		
+
 		model.addAttribute("allSchedule",schedule);
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("countUserPlan",plannerService.isExist(member.getUserId()));
 		log.info("budget/index planner: "+planner);
 		return "/budget/index";
 	}
-	
+
 	@RequestMapping(value="/budget/budget", method=RequestMethod.GET)
 	public String budget(Model model,HttpSession session) {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		List<PlannerVO> planner = plannerService.getAllPlanner(member.getUserId());
 		log.info(planner.size());
-		
+
 		model.addAttribute("allPlan",planner);
-		
+
 		return "/budget/budget";
+	}
+
+	@RequestMapping(value="/budget/recommend", method=RequestMethod.GET)
+	public String recommendBudget(Model model, @RequestParam(value="planTotalDate") String planTotalDate,HttpSession session) {
+		List<UserPlanVO> schedule = planService.getPlanNoEqualTotalDate(planTotalDate);
+		List<PlannerVO> planner = new ArrayList<>();
+		if(schedule != null) {
+			for(UserPlanVO sch : schedule) {
+				String isPublic = budgetService.getIsPublicFromPlanNo(sch.getPlanNo());
+				if(isPublic!= null && isPublic.equals("Y")) {
+					planner.add(plannerService.getAllPlannerFromPlanNo(sch.getPlanNo()));
+					
+				}
+			}
+		}
+		log.info(planner);
+		model.addAttribute("allPlan", planner);
+		model.addAttribute("planTotalDate",planTotalDate);
+		
+		return "/budget/recommend";
 	}
 
 	@ResponseBody
@@ -129,13 +149,13 @@ public class BudgetController {
 
 		return planService.getUserPlanDate(member.getUserId(),planNo);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value="/budget/index/graph" ,method=RequestMethod.GET)
 	public Map<String,Object> getAllBudget() {
 		List<Map<String,Object>> budgetMap = budgetService.getIsPublicBudget();
 		List<Map<String,Object>> catMap = budgetService.getIsPublicCat();
-		
+
 		Map<String,Object> returnData = new HashMap<>();
 		returnData.put("catData", catMap);
 		returnData.put("budgetData", budgetMap);

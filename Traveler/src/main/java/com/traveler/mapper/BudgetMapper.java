@@ -17,4 +17,6 @@ public interface BudgetMapper {
 	public List<Map<String,Object>> readIsPublicBudget();
 	
 	public List<Map<String,Object>> readIsPublicCat();
+
+	public String isPublicFromPlanNo(int planNo);
 }

@@ -16,7 +16,7 @@ function startAppend(data) {
 		$("#radio-y").prop("checked",true);
 	else 
 		$("#radio-n").prop("checked",true);
-		
+
 	for (var i = 0; i < data.length; i++) {
 		if(data[i].income > 0){
 			$(".trans-list").append(
@@ -129,6 +129,21 @@ $(document).ready(function() {
 		maxDate: startDate.fp_incr(totalDate-1)
 	});
 	load(data) ;
+
+	$(document).on("click",'#btn-recommend',function(){
+		var form = document.createElement("form");
+		form.setAttribute("method", "GET");  //Post 방식
+		form.setAttribute("action", "/budget/recommend"); //요청 보낼 주소
+
+		var hiddenField = document.createElement("input");
+		hiddenField.setAttribute("type", "hidden");
+		hiddenField.setAttribute("name", "planTotalDate");
+		hiddenField.setAttribute("value", totalDate);
+		form.appendChild(hiddenField);
+
+		document.body.appendChild(form);
+		form.submit();
+	})
 });
 
 $(document).on("click","#btn-save",function(){
@@ -172,7 +187,7 @@ $(document).on("click","#btn-graph",function(){
 				title: '카테고리 별 지출/수입 현황',
 				chartArea:{left:'20px', width:'100%',height:'85%'},
 				colors : ['#5b6777','#f15628','#ffc81b','#1ca392','#57b4c1'],
-				
+
 		};
 
 		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -196,13 +211,6 @@ $(document).on("click", ".modal-close", function(e) {
 $(document).on("click",".add-modal-close", function(e){
 	$(".add-budget-modal").hide();
 	clearAddModal();
-});
-
-$(document).on("mouseenter",".trans-each",function(){
-	$(this).append("<span>***</span>");
-});
-$(document).on("mouseleave",".trans-each",function(){
-	$(this).find("span").last().remove();
 });
 
 //각각 영역 클릭시 상세정보 입력 모달 
@@ -251,6 +259,21 @@ $(document).on("click", ".cc", function(e) {
 		maxDate: startDate.fp_incr(totalDate-1)
 	});
 	load(data);
+	
+	$(document).on("click",'#btn-recommend',function(){
+		var form = document.createElement("form");
+		form.setAttribute("method", "GET");  //Post 방식
+		form.setAttribute("action", "/budget/recommend"); //요청 보낼 주소
+
+		var hiddenField = document.createElement("input");
+		hiddenField.setAttribute("type", "hidden");
+		hiddenField.setAttribute("name", "planTotalDate");
+		hiddenField.setAttribute("value", totalDate);
+		form.appendChild(hiddenField);
+
+		document.body.appendChild(form);
+		form.submit();
+	})
 });
 
 //모달에서 수입 버튼 클릭 시 
@@ -449,12 +472,12 @@ function getUserBudget(planNo){
 					jsondata.descript = data[i].budget.descript;
 				else
 					jsondata.descript = "정보";
-				
+
 				if(data[i].budget.cat != "")
 					jsondata.cat = data[i].budget.cat;
 				else 
 					jsondata.cat = "카테고리";
-				
+
 				if (data[i].budget.income > 0){
 					jsondata.income = data[i].budget.income;
 					jsondata.expend = 0;
@@ -462,7 +485,7 @@ function getUserBudget(planNo){
 					jsondata.income = 0;
 					jsondata.expend = data[i].budget.expend;
 				}
-				
+
 				if(data[i].fee != "" )
 					jsondata.fee = data[i].fee;
 				else 

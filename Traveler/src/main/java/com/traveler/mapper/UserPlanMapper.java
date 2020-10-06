@@ -2,6 +2,7 @@ package com.traveler.mapper;
 
 import java.util.List;
 
+import com.traveler.domain.PlannerVO;
 import com.traveler.domain.UserPlanVO;
 
 public interface UserPlanMapper {
@@ -30,4 +31,6 @@ public interface UserPlanMapper {
 	public UserPlanVO getStartDate(UserPlanVO plan);
 	
 	public UserPlanVO readStartDate(UserPlanVO plan);
+	
+	public List<UserPlanVO> readPlanNoEqualTotalDate(String planTotalDate);
 }

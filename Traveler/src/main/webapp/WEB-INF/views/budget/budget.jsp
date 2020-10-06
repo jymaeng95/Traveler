@@ -72,7 +72,7 @@
 						<button type="button" id="btn-save" class="btn btn-primary">저장</button>
 						<button type="button" id="btn-calc" class="btn btn-primary">계산</button>
 						<button type="button" id="btn-trans" class="btn btn-primary">예산</button>
-						<button type="button" id="btn-graph" class="btn btn-primary">그래프</button>
+						<button type="button" id="btn-recommend" class="btn btn-primary">예산 추천</button>
 					</div>
 				</div>
 				</content>

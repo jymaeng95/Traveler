@@ -18,14 +18,14 @@ $(document).on("click","#btn-graph",function(){
 		type:"get",
 		dataType:"json",
 		success : function(data){
-				google.charts.load('current', {'packages':['corechart']});
-				google.charts.setOnLoadCallback(drawCategoryChart);
-				
-				google.charts.load('current', {'packages':['bar']});
-				google.charts.setOnLoadCallback(drawBudgetChart);
-				function drawCategoryChart() {
-					console.log(data.catData);
-					var dataChart = google.visualization.arrayToDataTable([
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawCategoryChart);
+			
+			google.charts.load('current', {'packages':['bar']});
+			google.charts.setOnLoadCallback(drawBudgetChart);
+			function drawCategoryChart() {
+				console.log(data.catData);
+				var dataChart = google.visualization.arrayToDataTable([
 					['Category', 'Count'],
 					[data.catData[0].CAT,data.catData[0].COUNT_CAT],
 					[data.catData[1].CAT,data.catData[1].COUNT_CAT],

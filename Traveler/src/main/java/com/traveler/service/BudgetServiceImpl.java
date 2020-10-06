@@ -112,5 +112,11 @@ public class BudgetServiceImpl implements BudgetService{
 		// TODO Auto-generated method stub
 		return mapper.readIsPublicCat();
 	}
+
+	@Override
+	public String getIsPublicFromPlanNo(int planNo) {
+		// TODO Auto-generated method stub
+		return mapper.isPublicFromPlanNo(planNo);
+	}
 	
 }

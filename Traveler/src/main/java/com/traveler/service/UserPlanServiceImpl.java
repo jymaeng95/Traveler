@@ -188,4 +188,10 @@ public class UserPlanServiceImpl implements UserPlanService{
 		plan.setPlanNo(planNo);
 		return mapper.readStartDate(plan);
 	}
+
+	@Override
+	public List<UserPlanVO> getPlanNoEqualTotalDate(String planTotalDate) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanNoEqualTotalDate(planTotalDate);
+	}
 }

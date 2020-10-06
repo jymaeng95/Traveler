@@ -170,4 +170,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from userplan
 		where planNo = #{planNo} and planDay = '1'
 	</select>
+	
+	<select id="readPlanNoEqualTotalDate" resultMap="UserPlanVO">
+		select planno
+		from userplan 
+		where plantotaldate = #{planTotalDate}
+		group by planno
+		order by planno
+	</select>
 </mapper>

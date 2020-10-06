@@ -40,7 +40,7 @@
         </div>
         <div class="col-sm-6">
           <button class="btn btn-success" onclick="sendpop()"><i class="fas fa-plus"></i><span>쪽지 보내기</span></button>
-          <button class="btn btn-danger" onclick="delselect()"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
+          <button class="btn btn-danger" onclick="delselect('rcv')"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
         </div>
       </div>
     </div>
@@ -64,15 +64,16 @@
           <td>
               <input type="checkbox" id="options" name="options">
           </td>
-          <td style="display:none">${list.mid }</td><td style="display:none">${userInfo.userId }</td>
-          <td>${list.sender}</td>
-          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="updateMsg2('${userInfo.userId}','${list.mid}','1');popup('${list.mid }', 'rcv');">${list.mcontent}</td>
-          <td><p id="date${status.index }">${list.senddate }</p></td>
-          <td style="text-align: right;"><c:if test="${list.readstatus eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
-            <c:choose><c:when test="${list.status eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid}','1');" class="edit" type="button">
+          <td style="display:none">${list.mid_rcv }</td><td style="display:none">${userInfo.userId }</td>
+          <td>${list.sender_rcv}</td>
+          <td class="mcontent" onclick="updateMsg2('${userInfo.userId}','${list.mid_rcv}','1');popup('${list.mid_rcv}', 'rcv');"><a href="#">${list.mcontent_rcv}</a></td>
+          <td><p id="date${status.index }">${list.senddate_rcv }</p></td>
+          <td style="text-align: right;"><c:if test="${list.readstatus_rcv eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
+            <c:choose><c:when test="${list.status_rcv eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid_rcv}','1','rcv');" class="edit" type="button">
             <i class="far fa-star" data-toggle="tooltip" title="Store"></i></a></c:when>
-            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid}','0');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
-            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid }"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
+            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid_rcv}','0','rcv');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
+            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid_rcv}" data-type="rcv" data-id="${userInfo.userId }">
+            <i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
           </td>
         </tr>
         </c:forEach>
@@ -109,8 +110,7 @@
 </div>
   </tabsection>
   
-  
-    <!-- 보낸 쪽지함 -->
+   <!-- 보낸 쪽지함 -->
   <tabsection id="content2">
 <div class="container">
   <div class="table-wrapper">
@@ -121,7 +121,7 @@
         </div>
         <div class="col-sm-6">
           <button class="btn btn-success" onclick="sendpop()"><i class="fas fa-plus"></i><span>쪽지 보내기</span></button>
-          <button class="btn btn-danger" onclick="delselect()"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
+          <button class="btn btn-danger" onclick="delselect('send')"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
         </div>
       </div>
     </div>
@@ -145,15 +145,16 @@
           <td>
               <input type="checkbox" id="options1" name="options1">
           </td>
-          <td style="display:none">${list.mid }</td>
-          <td>${list.userId}<input id="parentId" value="${list.userId}" style="display:none"></td>
-          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="popup('${list.mid}', 'send');">${list.mcontent}</td>
-          <td><p id="date${status.index }">${list.senddate }</p></td>
-          <td style="text-align: right;"><c:if test="${list.readstatus eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
-            <c:choose><c:when test="${list.status eq '0'}"><a onclick="updateMsg('${list.userId}','${list.mid}','1');" class="edit" type="button">
+          <td style="display:none">${list.mid_send }</td>
+          <td>${list.targetId_send}<input id="parentId" value="${list.targetId_send}" style="display:none"></td>
+          <td class="mcontent" onclick="popup('${list.mid_send}', 'send');"><a href="#">${list.mcontent_send}</a></td>
+          <td><p id="date${status.index }">${list.senddate_send }</p></td>
+          <td style="text-align: right;"><c:if test="${list.readstatus_send eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
+            <c:choose><c:when test="${list.status_send eq '0'}"><a onclick="updateMsg('${list.targetId_send}','${list.mid_send}','1','send');" class="edit" type="button">
             <i class="far fa-star" data-toggle="tooltip" title="Store"></i></a></c:when>
-            <c:otherwise><a onclick="updateMsg('${list.userId}','${list.mid}','0');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
-            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid }"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
+            <c:otherwise><a onclick="updateMsg('${list.targetId_send}','${list.mid_send}','0','send');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
+            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid_send }" data-type="send" data-id="${list.targetId_send }">
+            <i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
           </td>
         </tr>
         </c:forEach>
@@ -192,9 +193,9 @@
    </div>
    
  </tabsection>
-    
-    <!-- 보관함 -->
-  <tabsection id="content3">
+ 
+ 
+   <tabsection id="content3">
 <div class="container">
   <div class="table-wrapper">
     <div class="table-title">
@@ -204,7 +205,7 @@
         </div>
         <div class="col-sm-6">
           <button class="btn btn-success" onclick="sendpop()" style="float:right;"><i class="fas fa-plus"></i><span>쪽지 보내기</span></button>
-          <button class="btn btn-danger" onclick="delselect()" style="float:right;"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
+          <button class="btn btn-danger" onclick="delselect('${arcPage})')" style="float:right;"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
           <select id="valarchive" style="float:right; margin-top:5px; margin-right:5px;">
           	<option value="rcv_arc" class="archive_select ${archive == rcv_arc ? "active":"" }"
           	 <c:if test="${arcPage eq 'rcv_arc'}">selected</c:if>>받은 쪽지</option>
@@ -230,37 +231,41 @@
         </tr>
       </thead>
       <tbody>
+      <!-- 받은쪽지 -->
       <c:forEach items="${msg_list3}" var="list" varStatus="status">
         <tr>
           <td>
               <input type="checkbox" id="options4" name="options4">
           </td>
-          <td style="display:none">${list.mid }</td><td style="display:none">${userInfo.userId }</td>
-          <td>${list.sender}</td>
-          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="updateMsg2('${userInfo.userId}','${list.mid}','1');popup('${list.mid }', 'rcv');">${list.mcontent}</td>
-          <td><p id="date${status.index }">${list.senddate }</p></td>
-          <td style="text-align: right;"><c:if test="${list.readstatus eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
-            <c:choose><c:when test="${list.status eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid}','1');" class="edit" type="button">
+          <td style="display:none">${list.mid_rcv }</td><td style="display:none">${userInfo.userId }</td>
+          <td>${list.sender_rcv}</td>
+          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="updateMsg2('${userInfo.userId}','${list.mid_rcv}','1');popup('${list.mid_rcv }', 'rcv');">${list.mcontent_rcv}</td>
+          <td><p id="date${status.index }">${list.senddate_rcv }</p></td>
+          <td style="text-align: right;"><c:if test="${list.readstatus_rcv eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
+            <c:choose><c:when test="${list.status_rcv eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid_rcv}','1','rcv');" class="edit" type="button">
             <i class="far fa-star" data-toggle="tooltip" title="Store"></i></a></c:when>
-            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid}','0');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
-            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid }"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
+            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid_rcv}','0','rcv');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
+            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid_rcv }" data-type="rcv" data-id="${userInfo.userId }">
+            <i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
           </td>
         </tr>
         </c:forEach>
+        <!-- 보낸쪽지 -->
         <c:forEach items="${msg_list4}" var="list" varStatus="status">
         <tr>
           <td>
               <input type="checkbox" id="options4" name="options4">
           </td>
-          <td style="display:none">${list.mid }</td>
-          <td>${list.userId}</td>
-          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;"  onclick="popup('${list.mid}', 'send');">${list.mcontent}</td>
-          <td><p id="date${status.index }">${list.senddate }</p></td>
-          <td style="text-align: right;"><c:if test="${list.readstatus eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
-            <c:choose><c:when test="${list.status eq '0'}"><a onclick="updateMsg('${list.userId}','${list.mid}','1');" class="edit" type="button">
+          <td style="display:none">${list.mid_send }</td>
+          <td>${list.targetId_send}</td>
+          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;"  onclick="popup('${list.mid_send}', 'send');">${list.mcontent_send}</td>
+          <td><p id="date${status.index }">${list.senddate_send }</p></td>
+          <td style="text-align: right;"><c:if test="${list.readstatus_send eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
+            <c:choose><c:when test="${list.status_send eq '0'}"><a onclick="updateMsg('${list.targetId_send}','${list.mid_send}','1','send');" class="edit" type="button">
             <i class="far fa-star" data-toggle="tooltip" title="Store"></i></a></c:when>
-            <c:otherwise><a onclick="updateMsg('${list.userId}','${list.mid}','0');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
-            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid }"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
+            <c:otherwise><a onclick="updateMsg('${list.targetId_send}','${list.mid_send}','0','send');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
+            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid_send }" data-type="send" data-id="${list.targetId_send }">
+            <i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
           </td>
         </tr>
         </c:forEach>
@@ -324,7 +329,7 @@
 </div>
   </tabsection>
   
-  <!-- 받은 쪽지함 탭 -->
+  <!-- 동핸신청 탭 -->
   <tabsection id="content4">
    <div class="container">
   <div class="table-wrapper">
@@ -334,7 +339,8 @@
           <h2><b>동행 신청</b></h2><input id="name" name="name" style="display:none">
         </div>
         <div class="col-sm-6">
-          <button class="btn btn-danger" onclick="delselect()" style="float:right;"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
+          <button class="btn btn-success" onclick="sendpop()" style="float:right;"><i class="fas fa-plus"></i><span>쪽지 보내기</span></button>
+          <button class="btn btn-danger" onclick="delselect('rcv')" style="float:right;"><i class="fas fa-trash-alt"></i><span>선택 삭제</span></button>
         </div>
       </div>
     </div>
@@ -358,15 +364,16 @@
           <td>
               <input type="checkbox" id="options5" name="options5">
           </td>
-          <td style="display:none">${list.mid }</td><td style="display:none">${userInfo.userId }</td>
-          <td>${list.sender}</td>
-          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="updateMsg2('${userInfo.userId}','${list.mid}','1');popup('${list.mid }', 'accom');">${list.mcontent}</td>
-          <td><p id="date${status.index }">${list.senddate }</p></td>
-          <td style="text-align: right;"><c:if test="${list.readstatus eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
-            <c:choose><c:when test="${list.status eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid}','1');" class="edit" type="button">
+          <td style="display:none">${list.mid_rcv }</td><td style="display:none">${userInfo.userId }</td>
+          <td>${list.sender_rcv}</td>
+          <td style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;" onclick="updateMsg2('${userInfo.userId}','${list.mid_rcv}','1');popup('${list.mid_rcv }', 'accom');">${list.mcontent_rcv}</td>
+          <td><p id="date${status.index }">${list.senddate_rcv }</p></td>
+          <td style="text-align: right;"><c:if test="${list.readstatus_rcv eq '1'}"><i class="fas fa-check-circle" title="read"></i></c:if>
+            <c:choose><c:when test="${list.status_rcv eq '0'}"><a onclick="updateMsg('${userInfo.userId}','${list.mid_rcv}','1','rcv');" class="edit" type="button">
             <i class="far fa-star" data-toggle="tooltip" title="Store"></i></a></c:when>
-            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid}','0');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
-            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid }"><i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
+            <c:otherwise><a onclick="updateMsg('${userInfo.userId}','${list.mid_rcv}','0','rcv');" class="edit" type="button"><i class="fas fa-star" data-toggle="tooltip" title="Store"></i></a></c:otherwise></c:choose>
+            <a href="#deleteModal" class="delete" data-toggle="modal" data-title="${list.mid_rcv }" data-type="rcv" data-id="${userInfo.userId }">
+            <i class="fas fa-trash-alt" data-toggle="tooltip" title="Delete"></i></a>
           </td>
         </tr>
         </c:forEach>
@@ -402,7 +409,8 @@
   </div>
 </div>
   </tabsection>
-
+  
+ 
  <!-- 삭제 모달 -->
 <div id="deleteModal" class="modal fade">
   <div class="modal-dialog">
@@ -414,6 +422,7 @@
         </div>
         <div class="modal-body">					
           <p>쪽지를 삭제하시겠습니까?</p><p id="modal-title" style="display:none;"></p>
+          <input type="hidden" id="modal_type"/><input type="hidden" id="modal_id"/>
           <p><small>다시 복원 할 수 없습니다.</small></p>
         </div>
         <div class="modal-footer">
@@ -427,6 +436,5 @@
  
 </tabtable>
    </main>
-   <script src="/resources/index/js/holder.js"></script>
   </body>
 </html>

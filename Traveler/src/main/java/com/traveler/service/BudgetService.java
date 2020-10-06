@@ -22,4 +22,6 @@ public interface BudgetService {
 	public List<Map<String,Object>> getIsPublicBudget();
 
 	public List<Map<String,Object>> getIsPublicCat();
+	
+	public String getIsPublicFromPlanNo(int planNo);
 }

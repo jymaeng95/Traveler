@@ -64,52 +64,51 @@ function updateGrp(contentId, leader, userId) {
 <body>
    <c:choose><c:when test="${readType eq 'rcv'}"><h4>받은 쪽지</h4><hr/>
    <div>
-        <label>보낸 사람   <c:out value="${msg.sender }"/></label>
-        <p id="sender" style="display:none;">${msg.sender }</p>
+        <label>보낸 사람   <c:out value="${msg.sender_rcv }"/></label>
+        <p id="sender" style="display:none;">${msg.sender_rcv }</p>
         <p id="userId" style="display:none;">${userInfo.userId }</p>
     </div>
     <div>
-        <label>받은 시간   <c:out value="${msg.senddate }"/></label>
+        <label>받은 시간   <c:out value="${msg.senddate_rcv }"/></label>
     </div>
     <div class="form-group">
        <label for="message">내용</label>
-       <textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent }" disabled></textarea>
+       <textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent_rcv }" disabled></textarea>
     </div>
-   <input type="submit" value="답장하기" class="btn btn-primary btn-block" onclick="popup(${msg.sender})"/>
+   <input type="submit" value="답장하기" class="btn btn-primary btn-block" onclick="popup('${msg.sender_rcv}')"/>
     </c:when>
     
     
     
     <c:when test="${readType eq 'accom'}"><h4>받은 쪽지</h4><hr/>
    <div>
-        <label>보낸 사람   <c:out value="${msg.sender }"/></label>
-        <p id="sender" style="display:none;">${msg.sender }</p>
+        <label>보낸 사람   <c:out value="${msg.sender_rcv }"/></label>
+        <p id="sender" style="display:none;">${msg.sender_rcv }</p>
         <p id="userId" style="display:none;">${userInfo.userId }</p>
     </div>
     <div>
-        <label>받은 시간   <c:out value="${msg.senddate }"/></label>
+        <label>받은 시간   <c:out value="${msg.senddate_rcv }"/></label>
     </div>
     <div class="form-group">
        <label for="message">내용</label>
-       <textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent }" disabled></textarea>
+       <textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent_rcv }" disabled></textarea>
     </div>
-   <p id="contentId" style="display:none;">${msg.bno }</p>
-    <input type="submit" value="수락하기" class="btn btn-primary btn-block" onclick="updateGrp('${msg.bno}', '${userInfo.userId }', '${msg.sender }');"/>
+   <p id="contentId" style="display:none;">${msg.bno_rcv }</p>
+    <input type="submit" value="수락하기" class="btn btn-primary btn-block" onclick="updateGrp('${msg.bno_rcv}', '${userInfo.userId }', '${msg.sender_rcv }');"/>
     </c:when>
     
     
-     
     <c:otherwise>
     <h4>보낸 쪽지</h4><hr/>
    <div>
-        <label>받는 사람   <c:out value="${msg.userId }"/></label>
+        <label>받는 사람   <c:out value="${msg.targetId_send }"/></label>
     </div>
     <div>
-        <label>보낸 시간   <c:out value="${msg.senddate }"/></label>
+        <label>보낸 시간   <c:out value="${msg.senddate_send }"/></label>
     </div>
     <div class="form-group">
        <label for="message">내용</label>
-       <textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent }" disabled></textarea>
+       <textarea class="form-control" name="content" id="content" rows="15" cols="30" placeholder="${msg.mcontent_send }" disabled></textarea>
     </div>
     </c:otherwise></c:choose>
 </body>

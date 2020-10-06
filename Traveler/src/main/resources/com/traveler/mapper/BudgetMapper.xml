@@ -81,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by planno, total asc
 		)
 	</select>
+	
 	<select id="readIsPublicCat" resultType="Map">
 		select cat, count(cat) as count_cat
 		from budget
@@ -89,4 +90,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by cat
 	</select>
 
+	<select id="isPublicFromPlanNo" resultType="string">
+		select distinct(is_public)
+		from budget
+		where planNo = #{planNo}
+	</select>
 </mapper>

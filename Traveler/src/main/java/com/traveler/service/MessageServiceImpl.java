@@ -1,3 +1,4 @@
+
 package com.traveler.service;
 
 import java.util.ArrayList;
@@ -6,8 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.traveler.domain.MemberVO;
-import com.traveler.domain.MessageVO;
 import com.traveler.domain.PageVO;
+import com.traveler.domain.ReceiveMsgVO;
+import com.traveler.domain.SendMsgVO;
 import com.traveler.mapper.MemberMapper;
 import com.traveler.mapper.MessageMapper;
 
@@ -23,107 +25,129 @@ public class MessageServiceImpl implements MessageService {
 	private MemberMapper m_mapper;
 	
 	@Override
-	public boolean addMessage(MessageVO message) throws Exception {
+	public boolean addMessage(SendMsgVO sendmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("硫붿꽭吏� ���옣  " + message);
-		int resultCount = mapper.messageInsert(message);
+		log.info("insert sendmsg");
+		int resultCount = mapper.messageInsert(sendmsg);
 		return resultCount > 0;
 	}
 
-//	@Override
-//	public ArrayList<MessageVO> getUserMessage(MessageVO message) throws Exception {
-//		// TODO Auto-generated method stub
-//		log.info("諛쏆� 硫붿꽭吏� 遺덈윭�삤湲�  :" + message);
-//		return mapper.messageRead(message);
-//	}
-
 	@Override
-	public boolean deleteMessage(MessageVO message) throws Exception {
+	public boolean addMessage2(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("硫붿꽭吏� �궘�젣  :" + message);
-		return mapper.messageDelete(message) > 0;
+		log.info("insert rcvmsg");
+		int resultCount = mapper.messageInsert2(rcvmsg);
+		return resultCount > 0;
 	}
 
 	@Override
-	public boolean updateMessage(MessageVO message) throws Exception {
+	public boolean deleteMessage(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("蹂닿��븿 ���옣: " + message);
-		return mapper.messageUpdate(message) > 0;
+		log.info("delete msg");
+		return mapper.messageDelete(rcvmsg) > 0;
 	}
 	
 	@Override
-	public boolean updateMessage2(MessageVO message) throws Exception {
+	public boolean deleteSendMessage(SendMsgVO sendmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("�씫�쓬泥섎━: " + message);
-		return mapper.messageUpdate2(message) > 0;
+		log.info("delete sendmsg");
+		return mapper.sendmessageDelete(sendmsg) > 0;
+	}
+
+
+	@Override
+	public boolean updateMessage(ReceiveMsgVO rcvmsg) throws Exception {
+		// TODO Auto-generated method stub
+		log.info("update msg");
+		return mapper.messageUpdate(rcvmsg) > 0;
+	}
+	
+	@Override
+	public boolean updateMessage2(ReceiveMsgVO rcvmsg) throws Exception {
+		// TODO Auto-generated method stub
+		log.info("update");
+		return mapper.messageUpdate2(rcvmsg) > 0;
+	}
+	
+	@Override
+	public boolean sendupdateMessage(SendMsgVO sendmsg) throws Exception {
+		// TODO Auto-generated method stub
+		log.info("update msg");
+		return mapper.sendmessageUpdate(sendmsg) > 0;
 	}
 	
 	//---�럹�씠吏�
 	@Override
-	public ArrayList<MessageVO> getMessagePage(MessageVO message) throws Exception {
+	public ArrayList<ReceiveMsgVO> getMessagePage(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("get rcv_list : " + message);
-		return mapper.messagePaging(message);
+		log.info("get rcv_list : ");
+		return mapper.messagePaging(rcvmsg);
 	}
 
 	@Override
-	public int countMessage(MessageVO message) {
+	public int countMessage(ReceiveMsgVO rcvmsg) {
 		// TODO Auto-generated method stub
-		return mapper.countMessage(message);
+		return mapper.countMessage(rcvmsg);
 	}
 	@Override
-	public int countMessage2(MessageVO message) {
+	public int countMessage2(SendMsgVO sendmsg) {
 		// TODO Auto-generated method stub
-		return mapper.countMessage2(message);
+		return mapper.countMessage2(sendmsg);
 	}
 	@Override
-	public int countMessage3(MessageVO message) {
+	public int countMessage3(ReceiveMsgVO rcvmsg) {
 		// TODO Auto-generated method stub
-		return mapper.countMessage3(message);
+		return mapper.countMessage3(rcvmsg);
 	}
 	@Override
-	public int countMessage4(MessageVO message) {
+	public int countMessage4(SendMsgVO sendmsg) {
 		// TODO Auto-generated method stub
-		return mapper.countMessage4(message);
-	}
-
-	@Override
-	public ArrayList<MessageVO> getMessagePage2(MessageVO message) throws Exception {
-		// TODO Auto-generated method stub
-		log.info("get send_list : " + message);
-		return mapper.messagePaging2(message);
+		return mapper.countMessage4(sendmsg);
 	}
 
 	@Override
-	public ArrayList<MessageVO> getMessagePage3(MessageVO message) throws Exception {
+	public ArrayList<SendMsgVO> getMessagePage2(SendMsgVO sendmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("get rcv_list archive : " + message);
-		return mapper.messagePaging3(message);
+		log.info("get send_list : ");
+		return mapper.messagePaging2(sendmsg);
 	}
 
 	@Override
-	public ArrayList<MessageVO> getMessagePage4(MessageVO message) throws Exception {
+	public ArrayList<ReceiveMsgVO> getMessagePage3(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("get send_list archive : " + message);
-		return mapper.messagePaging4(message);
+		log.info("get rcv_list archive : ");
+		return mapper.messagePaging3(rcvmsg);
 	}
 
 	@Override
-	public MessageVO Read(MessageVO message) throws Exception {
+	public ArrayList<SendMsgVO> getMessagePage4(SendMsgVO sendmsg) throws Exception {
 		// TODO Auto-generated method stub
-		return mapper.Read(message);
+		log.info("get send_list archive : ");
+		return mapper.messagePaging4(sendmsg);
 	}
 
 	@Override
-	public ArrayList<MessageVO> getMessagePage5(MessageVO message) throws Exception {
+	public ReceiveMsgVO Read(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		return mapper.messagePaging5(message);
+		return mapper.Read(rcvmsg);
+	}
+	
+	@Override
+	public SendMsgVO ReadSendmsg(SendMsgVO sendmsg) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.ReadSendmsg(sendmsg);
 	}
 
 	@Override
-	public int countMessage5(MessageVO message) throws Exception {
+	public ArrayList<ReceiveMsgVO> getMessagePage5(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		return mapper.countMessage5(message);
+		return mapper.messagePaging5(rcvmsg);
+	}
+
+	@Override
+	public int countMessage5(ReceiveMsgVO rcvmsg) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.countMessage5(rcvmsg);
 	}
 
 	@Override
@@ -133,9 +157,9 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public int cntApply(MessageVO message) throws Exception {
+	public int cntApply(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
-		return mapper.cntApply(message);
+		return mapper.cntApply(rcvmsg);
 	}
 
 }
