@@ -42,6 +42,7 @@
 						<table class="board-table">
 							<thead>
 								<tr>
+									<th scope="col" class="th-rec">추천 구분</th>
 									<th scope="col" class="th-num">번호</th>
 									<th scope="col" class="th-title">작성자</th>
 									<th scope="col" class="th-uid">여행 제목</th>
@@ -49,16 +50,28 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${allPlan}" var="list" varStatus="status">
-									<tr>
-										<td class="recommend-planno"><c:out value="${list.planNo }"></c:out></td>
-										<td class="recommend-userid"><c:out value="${list.userId }"></c:out></td>
-										<th class="recommend-plantitle"><a href="#!"><c:out
-													value="${list.planTitle }"></c:out></a></th>
-										<td class="recommend-totaldate"><c:out
-												value="${planTotalDate}일간 여행"></c:out></td>
-									</tr>
-								</c:forEach>
+								<tr>
+									<td class="recommend-standard">총계 최대</td>
+									<td class="recommend-planno"><c:out
+											value="${maxPlan.planNo }"></c:out></td>
+									<td class="recommend-userid"><c:out
+											value="${maxPlan.userId }"></c:out></td>
+									<th class="recommend-plantitle"><a href="#!"><c:out
+												value="${maxPlan.planTitle }"></c:out></a></th>
+									<td class="recommend-totaldate"><c:out
+											value="${planTotalDate}일간 여행"></c:out></td>
+								</tr>
+								<tr>
+									<td class="recommend-standard">총계 최소</td>
+									<td class="recommend-planno"><c:out
+											value="${minPlan.planNo }"></c:out></td>
+									<td class="recommend-userid"><c:out
+											value="${minPlan.userId }"></c:out></td>
+									<th class="recommend-plantitle"><a href="#!"><c:out
+												value="${minPlan.planTitle }"></c:out></a></th>
+									<td class="recommend-totaldate"><c:out
+											value="${planTotalDate}일간 여행"></c:out></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -84,7 +97,8 @@
 									<td class="userid"><c:out value="${list.userId }"></c:out></td>
 									<th class="plan-title"><a href="#!"><c:out
 												value="${list.planTitle }"></c:out></a></th>
-									<td class="planTotalDay"><c:out value="${planTotalDate}일간 여행"></c:out></td>
+									<td class="planTotalDay"><c:out
+											value="${planTotalDate}일간 여행"></c:out></td>
 								</tr>
 							</c:forEach>
 						</tbody>

@@ -117,12 +117,13 @@ $(document).ready(function() {
 	var planNo = $(".cc:eq(0)").find('input').val();
 	$("#planNo").val(planNo);
 	var title = $(".cc:eq(0)").find('div.cc-num').text();
-	$("#planTitle").text(title);
 	var data = getUserBudget(planNo);
 	var planData = getUserPlanDate(planNo);
 	var firstDate = planData.firstDate.split("-");
 	var startDate = new Date(firstDate[0], (firstDate[1]-1), firstDate[2]);
 	var totalDate= planData.totalDate;
+	$("#planTitle").text(title+"("+totalDate+"일의 여행)");
+	$("#planTotalDate").val(totalDate);
 	console.log(data);
 	$("#add-date").flatpickr({
 		minDate: startDate,
@@ -130,25 +131,13 @@ $(document).ready(function() {
 	});
 	load(data) ;
 
-	$(document).on("click",'#btn-recommend',function(){
-		var form = document.createElement("form");
-		form.setAttribute("method", "GET");  //Post 방식
-		form.setAttribute("action", "/budget/recommend"); //요청 보낼 주소
-
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "planTotalDate");
-		hiddenField.setAttribute("value", totalDate);
-		form.appendChild(hiddenField);
-
-		document.body.appendChild(form);
-		form.submit();
-	})
 });
 
 $(document).on("click","#btn-save",function(){
 	var planNo = $("#planNo").val();
-	var budget = setBudgetData(planNo);
+	var planTotalDate = $('#planTotalDate').val();
+	var budget = setBudgetData(planNo,planTotalDate);
+	console.log(planTotalDate);
 	console.log(budget);
 	$.ajax({
 		url : "/budget/save/budget",
@@ -248,34 +237,37 @@ $(document).on("click", ".cc", function(e) {
 	var planNo = $(this).find('input').val();
 	$("#planNo").val(planNo);
 	var title = $(this).find('div.cc-num').text();
-	$("#planTitle").text(title);
 	var data = getUserBudget(planNo);
 	var planData = getUserPlanDate(planNo);
 	var firstDate = planData.firstDate.split("-");
 	var startDate = new Date(firstDate[0], (firstDate[1]-1), firstDate[2]);
 	var totalDate= planData.totalDate;
+	$("#planTitle").text(title+"("+totalDate+"일의 여행)");
+	$("#planTotalDate").val(totalDate);
 	$("#add-date").flatpickr({
 		minDate: startDate,
 		maxDate: startDate.fp_incr(totalDate-1)
 	});
 	load(data);
 	
-	$(document).on("click",'#btn-recommend',function(){
-		var form = document.createElement("form");
-		form.setAttribute("method", "GET");  //Post 방식
-		form.setAttribute("action", "/budget/recommend"); //요청 보낼 주소
-
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type", "hidden");
-		hiddenField.setAttribute("name", "planTotalDate");
-		hiddenField.setAttribute("value", totalDate);
-		form.appendChild(hiddenField);
-
-		document.body.appendChild(form);
-		form.submit();
-	})
+	
 });
 
+$(document).on("click",'#btn-recommend',function(){
+	var totalDate = $("#planTotalDate").val();
+	var form = document.createElement("form");
+	form.setAttribute("method", "GET");  //Post 방식
+	form.setAttribute("action", "/budget/recommend"); //요청 보낼 주소
+
+	var hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", "planTotalDate");
+	hiddenField.setAttribute("value", totalDate);
+	form.appendChild(hiddenField);
+
+	document.body.appendChild(form);
+	form.submit();
+})
 //모달에서 수입 버튼 클릭 시 
 $(document).on("click","#income",function(){
 	if(!checkModal()){
@@ -370,8 +362,7 @@ $(document).on("click","#add-expend",function(){
 			'<div class="trans-each">\
 			<div class="trans-details">\
 			<span class="action"></span>\
-			<h3 class="trans-titl">\
-			<h4 class="trans-price ee">' +
+			<h3 class="trans-title">' +
 			title+
 			'</h3><div class="row">\
 			<h5 class="trans-descript">' +
@@ -514,7 +505,7 @@ function detachAddBtn(){
 	)
 }
 
-function setBudgetData(planNo){
+function setBudgetData(planNo,planTotalDate){
 	var transactions = new Array();
 	var trans;
 	var budget = new Object();
@@ -537,8 +528,10 @@ function setBudgetData(planNo){
 		}
 		trans.descript = $(this).find('h5.trans-descript').text();
 		trans.planDate = $(this).find('h5.trans-planDate').text();
+	
 		transactions.push(trans);
 	});
+	budget.planTotalDate = planTotalDate;
 	budget.planNo = planNo;
 	budget.total = calcBalance();
 	budget.is_public = $('input[name="is_public"]:checked').val();

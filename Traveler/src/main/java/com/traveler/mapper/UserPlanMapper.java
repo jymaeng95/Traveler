@@ -32,5 +32,5 @@ public interface UserPlanMapper {
 	
 	public UserPlanVO readStartDate(UserPlanVO plan);
 	
-	public List<UserPlanVO> readPlanNoEqualTotalDate(String planTotalDate);
+	
 }

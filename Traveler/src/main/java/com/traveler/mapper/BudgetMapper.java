@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.traveler.domain.BudgetVO;
+import com.traveler.domain.UserPlanVO;
 
 public interface BudgetMapper {
 	public List<BudgetVO> readBudget(BudgetVO budget);
@@ -17,6 +18,10 @@ public interface BudgetMapper {
 	public List<Map<String,Object>> readIsPublicBudget();
 	
 	public List<Map<String,Object>> readIsPublicCat();
-
-	public String isPublicFromPlanNo(int planNo);
+	
+	public List<BudgetVO> readPlanNoEqualTotalDate(String planTotalDate);
+	
+	public int readPlanNoRecommendMaxTotal(String planTotalDate);
+	
+	public int readPlanNoRecommendMinTotal(String planTotalDate);
 }

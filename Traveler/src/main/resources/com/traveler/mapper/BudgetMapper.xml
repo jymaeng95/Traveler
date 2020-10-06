@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="expend" property="expend" />
 		<result column="total" property="total" />
 		<result column="planDate" property="planDate" />
+		<result column="planTotalDate" property="planTotalDate" />
 		<result column="descript" property="descript" />
 		<result column="is_public" property="is_public" />
 		<result column="reg_date" property="reg_date" />
@@ -26,10 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<insert id="insertBudget">
 		insert into budget (budget_no, planno,userid,
-		title,cat,income,expend,total,planDate,descript,is_public)
+		title,cat,income,expend,total,planDate,planTotalDate,descript,is_public)
 		values
-		(budget_no.nextval,#{planNo}, #{userId}, #{title}, #{cat}, #{income},
-		#{expend}, #{total}, #{planDate},#{descript},#{is_public})
+		(budget_no.nextval,#{planNo}, #{userId}, #{title}, #{cat},
+		#{income},
+		#{expend}, #{total}, #{planDate},#{planTotalDate},
+		#{descript},#{is_public})
 	</insert>
 
 	<select id="readBudget" resultMap="BudgetVO">
@@ -48,13 +51,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update set
 		income = #{income}, expend=#{expend},
 		total=#{total}, descript = #{descript}, cat =#{cat}, is_public =
-		#{is_public}
+		#{is_public}, planTotalDate = #{planTotalDate}
 		when not matched then
 		insert
-		(budget_no,planNo,userId,title,cat,income,expend,total,descript,planDate,is_public)
+		(budget_no,planNo,userId,title,cat,income,expend,total,descript,planDate,planTotalDate,is_public)
 		VALUES (budget_no.nextval, #{planNo},#{userId},#{title}, #{cat},
 		#{income}, #{expend},#{total},
-		#{descript},#{planDate},#{is_public})
+		#{descript},#{planDate},#{planTotalDate}, #{is_public})
 	</update>
 
 	<select id="readAllMemberPlanNoIsPublicYes" resultMap="BudgetVO">
@@ -68,8 +71,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="readIsPublicBudget" resultType="Map">
 		select min(x) as
-		min_inc ,max(x) as max_inc, avg(x) as avg_inc, min(y) as min_exp,
-		max(y) as max_exp, avg(y) as avg_exp, min(z) as min_total, max(z) as
+		min_exp ,max(x) as max_exp, avg(x) as avg_exp, min(y) as min_inc,
+		max(y) as max_inc, avg(y) as avg_inc, min(z) as min_total, max(z) as
 		max_total, avg(z) as avg_total
 		from (
 		select planno, total as z,
@@ -81,18 +84,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by planno, total asc
 		)
 	</select>
-	
+
 	<select id="readIsPublicCat" resultType="Map">
-		select cat, count(cat) as count_cat
+		select cat, count(cat)
+		as count_cat
 		from budget
 		where is_public ='Y'
 		group by cat
 		order by cat
 	</select>
 
-	<select id="isPublicFromPlanNo" resultType="string">
-		select distinct(is_public)
+	<select id="readPlanNoEqualTotalDate" resultMap="BudgetVO">
+		select planno
 		from budget
-		where planNo = #{planNo}
+		where plantotaldate = #{planTotalDate} and is_public='Y'
+		group by planno
+		order by planno
+	</select>
+
+	<select id="readPlanNoRecommendMaxTotal" resultType="int">
+		select distinct(planno)
+		from budget
+		where total = (
+			select max(total)
+			from budget
+			where is_public='Y' and planTotalDate=#{planTotalDate}
+		)
+	</select>
+	
+	<select id="readPlanNoRecommendMinTotal" resultType="int">
+		select distinct(planno)
+		from budget
+		where total = (
+			select min(total)
+			from budget
+			where is_public='Y' and planTotalDate=#{planTotalDate}
+		)
 	</select>
 </mapper>

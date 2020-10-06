@@ -71,21 +71,22 @@ public class BudgetController {
 
 	@RequestMapping(value="/budget/recommend", method=RequestMethod.GET)
 	public String recommendBudget(Model model, @RequestParam(value="planTotalDate") String planTotalDate,HttpSession session) {
-		List<UserPlanVO> schedule = planService.getPlanNoEqualTotalDate(planTotalDate);
+		List<BudgetVO> budget = budgetService.getPlanNoEqualTotalDate(planTotalDate);
 		List<PlannerVO> planner = new ArrayList<>();
-		if(schedule != null) {
-			for(UserPlanVO sch : schedule) {
-				String isPublic = budgetService.getIsPublicFromPlanNo(sch.getPlanNo());
-				if(isPublic!= null && isPublic.equals("Y")) {
-					planner.add(plannerService.getAllPlannerFromPlanNo(sch.getPlanNo()));
-					
-				}
-			}
-		}
+		for(BudgetVO bg : budget) 
+			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
+
 		log.info(planner);
+		PlannerVO maxPlan= plannerService.getAllPlannerFromPlanNo(budgetService.getPlanNoRecommendMaxTotal(planTotalDate));
+		PlannerVO minPlan= plannerService.getAllPlannerFromPlanNo(budgetService.getPlanNoRecommendMinTotal(planTotalDate));
+		if (maxPlan != null) 
+			model.addAttribute("maxPlan",maxPlan);
+		if (minPlan != null) 
+			model.addAttribute("minPlan",minPlan);
+		
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("planTotalDate",planTotalDate);
-		
+
 		return "/budget/recommend";
 	}
 
@@ -129,6 +130,7 @@ public class BudgetController {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		log.info("planNo : "+trans.get("planNo"));
 		log.info("total : "+trans.get("total"));
+		log.info("totalDate : "+trans.get("planTotalDate"));
 		log.info("transactions : "+trans.get("transactions"));
 
 		List<BudgetVO> budget = budgetService.convertMapIntoBudget(trans, member.getUserId());

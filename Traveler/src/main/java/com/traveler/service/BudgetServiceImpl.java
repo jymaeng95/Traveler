@@ -51,6 +51,7 @@ public class BudgetServiceImpl implements BudgetService{
 			onePlan.setExpend(0);
 			onePlan.setTotal(0);
 			onePlan.setPlanDate(schedule.get(i).getPlanDate());
+			onePlan.setPlanTotalDate(schedule.get(i).getPlanTotalDate());
 			onePlan.setIs_public("N");
 			if(schedule.get(i).getDescript()==null)
 				onePlan.setDescript("");
@@ -68,6 +69,7 @@ public class BudgetServiceImpl implements BudgetService{
 		int planNo = Integer.parseInt(data.get("planNo").toString());
 		int total = Integer.parseInt(data.get("total").toString());
 		String is_public = data.get("is_public").toString();
+		String planTotalDate = data.get("planTotalDate").toString();
 		List<Map> trans = (List<Map>) data.get("transactions");
 		for(int i=0;i<trans.size();i++) {
 			Map<String,Object> oneTrans = trans.get(i);
@@ -83,6 +85,7 @@ public class BudgetServiceImpl implements BudgetService{
 			oneBudget.setExpend(Integer.parseInt(oneTrans.get("expend").toString()));
 			oneBudget.setTotal(total);
 			oneBudget.setPlanDate(oneTrans.get("planDate").toString());
+			oneBudget.setPlanTotalDate(planTotalDate);
 			if(oneTrans.get("descript")==null)
 				oneBudget.setDescript("");
 			else
@@ -114,9 +117,21 @@ public class BudgetServiceImpl implements BudgetService{
 	}
 
 	@Override
-	public String getIsPublicFromPlanNo(int planNo) {
+	public List<BudgetVO> getPlanNoEqualTotalDate(String planTotalDate) {
 		// TODO Auto-generated method stub
-		return mapper.isPublicFromPlanNo(planNo);
+		return mapper.readPlanNoEqualTotalDate(planTotalDate);
+	}
+
+	@Override
+	public int getPlanNoRecommendMaxTotal(String planTotalDate) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanNoRecommendMaxTotal(planTotalDate);
+	}
+
+	@Override
+	public int getPlanNoRecommendMinTotal(String planTotalDate) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanNoRecommendMinTotal(planTotalDate);
 	}
 	
 }

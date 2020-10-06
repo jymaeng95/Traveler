@@ -23,5 +23,9 @@ public interface BudgetService {
 
 	public List<Map<String,Object>> getIsPublicCat();
 	
-	public String getIsPublicFromPlanNo(int planNo);
+	public List<BudgetVO> getPlanNoEqualTotalDate(String planTotalDate);
+	
+	public int getPlanNoRecommendMaxTotal(String planTotalDate);
+	
+	public int getPlanNoRecommendMinTotal(String planTotalDate);
 }

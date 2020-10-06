@@ -18,23 +18,22 @@ $(document).on("click","#btn-graph",function(){
 		type:"get",
 		dataType:"json",
 		success : function(data){
-				google.charts.load('current', {'packages':['corechart']});
-				google.charts.setOnLoadCallback(drawCategoryChart);
-				
-				google.charts.load('current', {'packages':['bar']});
-				google.charts.setOnLoadCallback(drawBudgetChart);
-				function drawCategoryChart() {
-					console.log(data.catData);
-					var dataChart = google.visualization.arrayToDataTable([
-					['Category', 'Count'],
-					[data.catData[0].CAT,data.catData[0].COUNT_CAT],
-					[data.catData[1].CAT,data.catData[1].COUNT_CAT],
-					[data.catData[2].CAT,data.catData[2].COUNT_CAT],
-					[data.catData[3].CAT,data.catData[3].COUNT_CAT],
-					[data.catData[4].CAT,data.catData[4].COUNT_CAT],
-					[data.catData[5].CAT,data.catData[5].COUNT_CAT]
-					]);
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawCategoryChart);
 
+			google.charts.load('current', {'packages':['bar']});
+			google.charts.setOnLoadCallback(drawBudgetChart);
+			function drawCategoryChart() {
+				console.log(data.catData);
+
+				var dataChart = new google.visualization.DataTable();
+				dataChart.addColumn('string','Category');
+				dataChart.addColumn('number','Count');
+				dataChart.addRows(data.catData.length);
+				for(var i=0;i<data.catData.length;i++){
+					dataChart.setCell(i,0,data.catData[i].CAT)
+					dataChart.setCell(i,1,data.catData[i].COUNT_CAT);
+				}
 				var options = {
 						title: '카테고리 별 비율',
 						chartArea:{left:20,top:30, width:'100%',height:'100%'},
@@ -45,7 +44,7 @@ $(document).on("click","#btn-graph",function(){
 
 				chart.draw(dataChart, options);
 			}
-			
+
 			function drawBudgetChart() {
 				console.log(data.budgetData)
 				var dataChart = google.visualization.arrayToDataTable([
@@ -64,7 +63,7 @@ $(document).on("click","#btn-graph",function(){
 						vAxis: {
 							scaleType: 'mirrorLog',
 							format:'decimal'
-							},
+						},
 						colors:['#facb7a','#78b6fa','#fa5fd3'],
 				};
 

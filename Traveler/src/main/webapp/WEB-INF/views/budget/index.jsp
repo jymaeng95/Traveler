@@ -95,7 +95,8 @@
 							onclick="location.href='/budget/budget'">내 예산 생성하기</button>
 					</c:if>
 					<button type="button" class="btn btn-dark" id="btn-graph"
-						style="float: right; margin-top: 2%; margin-right:2%;">예산 추이 보기</button>
+						style="float: right; margin-top: 2%; margin-right: 2%;">예산
+						추이 보기</button>
 				</div>
 			</div>
 			<div id="budget-stastic" style="display: none;">
@@ -106,9 +107,14 @@
 							class="ml-auto"></div>
 						<div id="cat-chart" style="width: 50%; height: 500px;"></div>
 					</div>
-					<button type="button" id="btn-back-budget" class="btn btn-dark" style="float:right;">돌아가기</button>
-					<button type="button" class="btn btn-dark" id="btn-mybudget"
-							style="float: right; margin-right:2%;" onclick="location.href='/budget/budget'">내 예산 생성하기</button>
+
+					<button type="button" id="btn-back-budget" class="btn btn-dark"
+						style="float: right;">돌아가기</button>
+					<c:if test="${countUserPlan ne 0 }">
+						<button type="button" class="btn btn-dark" id="btn-mybudget"
+							style="float: right; margin-right: 2%;"
+							onclick="location.href='/budget/budget'">내 예산 생성하기</button>
+					</c:if>
 				</div>
 			</div>
 		</section>

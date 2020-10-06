@@ -35,5 +35,5 @@ public interface UserPlanService {
 
 	public UserPlanVO getPlanDate(int planNo) throws Exception; 
 	
-	public List<UserPlanVO> getPlanNoEqualTotalDate(String planTotalDate);
+
 }

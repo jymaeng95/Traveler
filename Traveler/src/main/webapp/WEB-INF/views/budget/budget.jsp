@@ -49,6 +49,7 @@
 				<content class="right-trans">
 				<h1 id="planTitle"></h1>
 				<input type="hidden" name="planNo" id="planNo">
+				<input type="hidden" name="planTotalDate" id="planTotalDate">
 				<div class="trans-list">
 						<div class="trans trans-type">
 							<div class="trans-details">
