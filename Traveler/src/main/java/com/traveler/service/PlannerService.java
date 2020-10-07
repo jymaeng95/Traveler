@@ -20,4 +20,6 @@ public interface PlannerService {
 	public PlannerVO getAllPlannerFromPlanNo(int planNo);
 	
 	public int isExist(String userId);
+	
+	public boolean deletePlanner(String userId, int planNo);
 }

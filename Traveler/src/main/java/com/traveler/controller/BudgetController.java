@@ -77,13 +77,27 @@ public class BudgetController {
 			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
 
 		log.info(planner);
-		PlannerVO maxPlan= plannerService.getAllPlannerFromPlanNo(budgetService.getPlanNoRecommendMaxTotal(planTotalDate));
-		PlannerVO minPlan= plannerService.getAllPlannerFromPlanNo(budgetService.getPlanNoRecommendMinTotal(planTotalDate));
-		if (maxPlan != null) 
-			model.addAttribute("maxPlan",maxPlan);
-		if (minPlan != null) 
-			model.addAttribute("minPlan",minPlan);
-		
+		//null리턴 경우 
+		BudgetVO maxBudget = budgetService.getPlanNoRecommendMaxTotal(planTotalDate);
+		BudgetVO minBudget = budgetService.getPlanNoRecommendMinTotal(planTotalDate);
+		if(planner.size() > 1) {
+			if(maxBudget != null) {
+				PlannerVO maxPlan = plannerService.getAllPlannerFromPlanNo(maxBudget.getPlanNo());
+				model.addAttribute("maxBudget",maxBudget);
+				model.addAttribute("maxPlan",maxPlan);
+			}
+			if(minBudget != null) {
+				PlannerVO minPlan= plannerService.getAllPlannerFromPlanNo(minBudget.getPlanNo());
+				model.addAttribute("minBudget",minBudget);
+				model.addAttribute("minPlan",minPlan);
+			}
+		} else if(planner.size() == 1) {
+			if(maxBudget != null) {
+				PlannerVO maxPlan = plannerService.getAllPlannerFromPlanNo(maxBudget.getPlanNo());
+				model.addAttribute("maxBudget",maxBudget);
+				model.addAttribute("maxPlan",maxPlan);
+			}
+		}
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("planTotalDate",planTotalDate);
 
@@ -162,5 +176,23 @@ public class BudgetController {
 		returnData.put("catData", catMap);
 		returnData.put("budgetData", budgetMap);
 		return returnData;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/budget/recommend/graph" ,method=RequestMethod.GET)
+	public Map<String,Object> getRecommendGraph(@RequestParam(value="planTotalDate") String planTotalDate) {
+		List<Map<String,Object>> budgetMap = budgetService.getIsPublicBudgetFromTotalDate(planTotalDate);
+		List<Map<String,Object>> catMap = budgetService.getIsPublicCatFromTotalDate(planTotalDate);
+
+		Map<String,Object> returnData = new HashMap<>();
+		returnData.put("catData", catMap);
+		returnData.put("budgetData", budgetMap);
+		return returnData;
+	}
+	
+	@RequestMapping(value="/budget/read", method=RequestMethod.GET)
+	public String readPlanNoBudget(@RequestParam(value="planNo")int planNo) {
+		
+		return "/budget/read";
 	}
 }

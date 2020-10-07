@@ -49,7 +49,7 @@ $(document).on("click","#btn-graph",function(){
 				console.log(data.budgetData)
 				var dataChart = google.visualization.arrayToDataTable([
 					['내용', '수입', '지출', '총계',],
-					['평균', data.budgetData[0].AVG_INC,data.budgetData[0].AVG_EXP,data.budgetData[0].AVG_TOTAL],
+					['평균', Math.round(data.budgetData[0].AVG_INC),Math.round(data.budgetData[0].AVG_EXP),Math.round(data.budgetData[0].AVG_TOTAL)],
 					['최대', data.budgetData[0].MAX_INC,data.budgetData[0].MAX_EXP,data.budgetData[0].MAX_TOTAL],
 					['최소', data.budgetData[0].MIN_INC,data.budgetData[0].MIN_EXP,data.budgetData[0].MIN_TOTAL],
 					]);

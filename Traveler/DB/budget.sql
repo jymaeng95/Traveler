@@ -18,12 +18,18 @@ create table budget (
     total number,
     descript varchar2(1000),
     plandate varchar2(20),
+    planTotalDate varchar2(30),
     is_public char(1) default 'N',
     reg_date VARCHAR2(30) default to_char(sysdate,'yyyy-mm-dd'),
     PRIMARY KEY(BUDGET_NO,PLANNO,USERID,title),
     CONSTRAINT PLANNER_FK FOREIGN KEY(PLANNO,USERID)
     REFERENCES PLANNER(PLANNO,USERID) ON DELETE CASCADE
     );
+    
+ INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (BNO.NEXTVAL, 1,'1358223290','휴애리자연생활공원','관광',1000,0,5000);    
+ INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (bno.NEXTVAL, 1,'1358223290','테스트','테스트',2000,0,5000);    
+ INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (bno.NEXTVAL, 1,'1358223290','BUDGET ONLY','관광',2000,0,5000);    
+ 
  --------쿼리 테스트 --------------
  
  select *
@@ -47,7 +53,7 @@ from budget
  
 select cat, count(cat)
 from budget
-where is_public ='Y'
+where is_public ='Y' 
 group by cat
 order by cat;
  
@@ -60,4 +66,29 @@ from (
     order by planno, total asc
     );
 
+
+select distinct(is_public)
+from budget
+where planno = '22';
+
+select * 
+from budget
+where is_public='Y' and planno = '1';
+
+select planno
+from budget 
+where is_public='Y' and planTotalDate='1';
+
+select distinct(planno), reg_date, total
+from budget
+where total = (
+    select max(total) from budget
+    where is_public='Y' and planTotalDate='1' 
+    ) and rownum = 1
+    order by reg_date, planno desc;
     
+    	select planno
+		from budget 
+		where plantotaldate = '1' and is_public='Y'
+		group by planno
+		order by planno;

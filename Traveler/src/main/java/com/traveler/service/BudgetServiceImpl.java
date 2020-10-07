@@ -123,15 +123,27 @@ public class BudgetServiceImpl implements BudgetService{
 	}
 
 	@Override
-	public int getPlanNoRecommendMaxTotal(String planTotalDate) {
+	public BudgetVO getPlanNoRecommendMaxTotal(String planTotalDate) {
 		// TODO Auto-generated method stub
 		return mapper.readPlanNoRecommendMaxTotal(planTotalDate);
 	}
 
 	@Override
-	public int getPlanNoRecommendMinTotal(String planTotalDate) {
+	public BudgetVO getPlanNoRecommendMinTotal(String planTotalDate) {
 		// TODO Auto-generated method stub
 		return mapper.readPlanNoRecommendMinTotal(planTotalDate);
+	}
+
+	@Override
+	public List<Map<String, Object>> getIsPublicBudgetFromTotalDate(String planTotalDate) {
+		// TODO Auto-generated method stub
+		return mapper.readIsPublicBudgetFromTotalDate(planTotalDate);
+	}
+
+	@Override
+	public List<Map<String, Object>> getIsPublicCatFromTotalDate(String planTotalDate) {
+		// TODO Auto-generated method stub
+		return mapper.readIsPublicCatFromTotalDate(planTotalDate);
 	}
 	
 }

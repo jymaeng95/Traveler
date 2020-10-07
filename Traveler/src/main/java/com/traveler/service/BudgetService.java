@@ -25,7 +25,11 @@ public interface BudgetService {
 	
 	public List<BudgetVO> getPlanNoEqualTotalDate(String planTotalDate);
 	
-	public int getPlanNoRecommendMaxTotal(String planTotalDate);
+	public BudgetVO getPlanNoRecommendMaxTotal(String planTotalDate);
 	
-	public int getPlanNoRecommendMinTotal(String planTotalDate);
+	public BudgetVO getPlanNoRecommendMinTotal(String planTotalDate);
+	
+	public List<Map<String,Object>> getIsPublicBudgetFromTotalDate(String planTotalDate);
+
+	public List<Map<String,Object>> getIsPublicCatFromTotalDate(String planTotalDate);
 }

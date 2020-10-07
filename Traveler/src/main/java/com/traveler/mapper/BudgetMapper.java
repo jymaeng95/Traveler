@@ -21,7 +21,11 @@ public interface BudgetMapper {
 	
 	public List<BudgetVO> readPlanNoEqualTotalDate(String planTotalDate);
 	
-	public int readPlanNoRecommendMaxTotal(String planTotalDate);
+	public BudgetVO readPlanNoRecommendMaxTotal(String planTotalDate);
 	
-	public int readPlanNoRecommendMinTotal(String planTotalDate);
+	public BudgetVO readPlanNoRecommendMinTotal(String planTotalDate);
+	
+	public List<Map<String,Object>> readIsPublicBudgetFromTotalDate(String planTotalDate);
+	
+	public List<Map<String,Object>> readIsPublicCatFromTotalDate(String planTotalDate);
 }

@@ -74,6 +74,12 @@
 								<th scope="col" class="th-date">여행 일자</th>
 							</tr>
 						</thead>
+						<c:if test="${allPlan eq null }">
+							<tr>
+								<td colspan="5" class="none">아직 공개된 예산이 없습니다.</td>
+							</tr>
+						</c:if>
+						<c:if test="${allPlan ne null }">
 						<tbody>
 							<c:forEach items="${allPlan}" var="list" varStatus="status">
 								<tr>
@@ -88,6 +94,7 @@
 								</tr>
 							</c:forEach>
 						</tbody>
+						</c:if>
 					</table>
 					<c:if test="${countUserPlan ne 0 }">
 						<button type="button" class="btn btn-dark" id="btn-mybudget"

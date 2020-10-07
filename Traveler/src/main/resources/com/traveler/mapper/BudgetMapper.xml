@@ -94,6 +94,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by cat
 	</select>
 
+	<select id="readIsPublicBudgetFromTotalDate" resultType="Map">
+		select min(x) as
+		min_exp ,max(x) as max_exp, avg(x) as avg_exp, min(y) as min_inc,
+		max(y) as max_inc, avg(y) as avg_inc, min(z) as min_total, max(z) as
+		max_total, avg(z) as avg_total
+		from (
+		select planno, total as z,
+		sum(expend) as x, sum(income) as y
+		from budget
+		where is_public='Y' and planTotalDate = #{planTotalDate}
+		group
+		by planno, total
+		order by planno, total asc
+		)
+	</select>
+
+	<select id="readIsPublicCatFromTotalDate" resultType="Map">
+		select cat, count(cat)
+		as count_cat
+		from budget
+		where is_public ='Y' and planTotalDate=#{planTotalDate}
+		group by cat
+		order by cat
+	</select>
+
 	<select id="readPlanNoEqualTotalDate" resultMap="BudgetVO">
 		select planno
 		from budget
@@ -102,23 +127,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by planno
 	</select>
 
-	<select id="readPlanNoRecommendMaxTotal" resultType="int">
-		select distinct(planno)
+	<select id="readPlanNoRecommendMaxTotal" resultMap="BudgetVO">
+		select
+		distinct(planno) as planNo, reg_date, total
 		from budget
 		where total = (
-			select max(total)
-			from budget
-			where is_public='Y' and planTotalDate=#{planTotalDate}
-		)
+		select max(total)
+		from budget
+		where is_public='Y' and planTotalDate=#{planTotalDate}
+		)and rownum = 1
+		order by reg_date, planno desc
 	</select>
-	
-	<select id="readPlanNoRecommendMinTotal" resultType="int">
-		select distinct(planno)
+
+	<select id="readPlanNoRecommendMinTotal" resultMap="BudgetVO">
+		select
+		distinct(planno) as planNo, reg_date, total
 		from budget
 		where total = (
-			select min(total)
-			from budget
-			where is_public='Y' and planTotalDate=#{planTotalDate}
-		)
+		select min(total)
+		from budget
+		where is_public='Y' and planTotalDate=#{planTotalDate}
+		) and rownum = 1
+		order by reg_date, planno desc
 	</select>
 </mapper>

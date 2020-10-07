@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class PlannerServiceImpl implements PlannerService {
-	
+
 	private PlannerMapper mapper;
 	@Override
 	public boolean savePlanner(PlannerVO planner) {
@@ -65,4 +65,11 @@ public class PlannerServiceImpl implements PlannerService {
 		return mapper.readAllPlannerFromPlanNo(planNo);
 	}
 
+	@Override
+	public boolean deletePlanner(String userId, int planNo) {
+		PlannerVO planner = new PlannerVO();
+		planner.setUserId(userId);
+		planner.setPlanNo(planNo);
+		return mapper.deletePlanner(planner) > 0;
+	}
 }
