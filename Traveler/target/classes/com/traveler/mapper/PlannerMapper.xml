@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	<select id="readAllPlanner" resultMap="PlannerVO">
 		select * from planner
-		where userId = #{userId} 
+		where userId = #{userId}
 		order by planno asc
 	</select>
 
@@ -50,7 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<delete id="deletePlanner">
 		delete planner
-		where userId = #{userId} and planNo = #{planNo}
+		where userId = #{userId} and planNo =
+		#{planNo}
 	</delete>
 
 	<update id="updatePlannerImg">
@@ -70,4 +71,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		planner
 		where planno = #{planNo}
 	</select>
+
+	
 </mapper>

@@ -13,6 +13,8 @@ public interface BudgetService {
 	
 	public List<BudgetVO> getUserBudgetFromPlanNo(int planNo, String userId);
 	
+	public List<BudgetVO> getUserBudgetFromPlanNo(int planNo);
+	
 	public List<BudgetVO> getUserBudgetFromSchedule(List<UserPlanVO> schedule);
 	
 	public List<BudgetVO> convertMapIntoBudget(Map<String,Object> data,String userId) throws ParseException;

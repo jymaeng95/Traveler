@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.traveler.api.SpotAPI;
 import com.traveler.domain.BudgetVO;
 import com.traveler.domain.MemberVO;
+import com.traveler.domain.PageVO;
 import com.traveler.domain.PlannerVO;
 import com.traveler.domain.UserPlanVO;
 import com.traveler.service.BudgetService;
@@ -39,7 +40,7 @@ public class BudgetController {
 	private SpotAPI spot;
 
 	@RequestMapping(value="/budget/index", method=RequestMethod.GET)
-	public String index(Model model, HttpSession session) throws Exception {
+	public String index(Model model, HttpSession session,@RequestParam(value="pageNum", defaultValue = "1")String pageNo) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		List<PlannerVO> planner = new ArrayList<>();
 		List<UserPlanVO> schedule = new ArrayList<>();
@@ -50,7 +51,7 @@ public class BudgetController {
 			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
 			schedule.add(planService.getPlanDate(bg.getPlanNo()));
 		}
-
+		model.addAttribute("pageMaker",new PageVO(pageNo,planner.size(),7));
 		model.addAttribute("allSchedule",schedule);
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("countUserPlan",plannerService.isExist(member.getUserId()));
@@ -98,6 +99,7 @@ public class BudgetController {
 				model.addAttribute("maxPlan",maxPlan);
 			}
 		}
+		model.addAttribute("rcmPlanSize",planner.size());
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("planTotalDate",planTotalDate);
 
@@ -191,8 +193,17 @@ public class BudgetController {
 	}
 	
 	@RequestMapping(value="/budget/read", method=RequestMethod.GET)
-	public String readPlanNoBudget(@RequestParam(value="planNo")int planNo) {
+	public String readPlanNoBudget(Model model, @RequestParam(value="planNo") int planNo, @RequestParam(value="recommend", defaultValue="일반") String recommend) {
+		List<BudgetVO> budget = budgetService.getUserBudgetFromPlanNo(planNo);
+		PlannerVO planner = plannerService.getAllPlannerFromPlanNo(planNo);
 		
+		log.info("BUDGET from /budget/read : "+ budget);
+		log.info("PLANNER from /budget/read : "+ planner);
+		
+		model.addAttribute("budget",budget);
+		model.addAttribute("planner",planner);
+		model.addAttribute("planTotalDate",budget.get(0).getPlanTotalDate());
+		model.addAttribute("recommend", recommend);
 		return "/budget/read";
 	}
 }

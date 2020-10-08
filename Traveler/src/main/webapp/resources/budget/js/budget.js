@@ -155,41 +155,6 @@ $(document).on("click","#btn-save",function(){
 	});
 });
 
-$(document).on("click","#btn-graph",function(){
-	$(".trans-list").attr("style","display:none;");
-	$(".trans-graph").attr("style","display:block;");
-	google.charts.load('current', {'packages':['corechart']});
-	google.charts.setOnLoadCallback(drawChart);
-	var catData = getCatInfo();
-	//{"unknown" : catData[0], "sight" : catData[1], "hotel" : catData[2],
-//	"food" : catData[3], "transport" : catData[4], "etc" : catData[5]};
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-			['Category', 'Count'],
-			['관광', catData.sight],
-			['숙박', catData.hotel],
-			['교통', catData.transport],
-			['식비', catData.food],
-			['기타', catData.etc]
-			]);
-		var options = {
-				title: '카테고리 별 지출/수입 현황',
-				chartArea:{left:'20px', width:'100%',height:'85%'},
-				colors : ['#5b6777','#f15628','#ffc81b','#1ca392','#57b4c1'],
-
-		};
-
-		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-		chart.draw(data, options);
-	}
-});
-
-$(document).on("click","#btn-trans",function(){
-	$(".trans-graph").attr("style","display:none");
-	$(".trans-list").attr("style","display:block");
-});
-
 //close modal
 $(document).on("click", ".modal-close", function(e) {
 	$(".modal").hide();
@@ -249,8 +214,8 @@ $(document).on("click", ".cc", function(e) {
 		maxDate: startDate.fp_incr(totalDate-1)
 	});
 	load(data);
-	
-	
+
+
 });
 
 $(document).on("click",'#btn-recommend',function(){
@@ -392,25 +357,6 @@ $(document).on("click","#btn-calc",function(){
 	$("#balance").text("총계 : "+calcBalance()+"원");
 });
 
-function getCatInfo(){
-	//정보(미정) 관광, 숙박 식비 교통 기타 
-	var catCount = [0,0,0,0,0]
-	$(".trans-cat").each(function(){
-		cat = $(this).text();
-		switch(cat){
-		case "관광" : catCount[0]++; break;
-		case "숙박" : catCount[1]++; break;
-		case "식비" : catCount[2]++; break;
-		case "교통" : catCount[3]++; break;
-		case "기타" : catCount[4]++; break;
-		}
-	});
-	var catData = {"sight" : catCount[0], "hotel" : catCount[1],
-			"food" : catCount[2], "transport" : catCount[3], "etc" : catCount[4]};
-	console.log(catData);
-	return catData;
-}
-
 function calcBalance(){
 	var sum = 0;
 	var income = 0;
@@ -528,7 +474,7 @@ function setBudgetData(planNo,planTotalDate){
 		}
 		trans.descript = $(this).find('h5.trans-descript').text();
 		trans.planDate = $(this).find('h5.trans-planDate').text();
-	
+
 		transactions.push(trans);
 	});
 	budget.planTotalDate = planTotalDate;

@@ -150,4 +150,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) and rownum = 1
 		order by reg_date, planno desc
 	</select>
+	
+	<select id="readBudgetFromPlanNo" resultMap="BudgetVO">
+		select * from budget where planNo = #{planNo}
+	</select>
 </mapper>

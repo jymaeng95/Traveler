@@ -145,5 +145,13 @@ public class BudgetServiceImpl implements BudgetService{
 		// TODO Auto-generated method stub
 		return mapper.readIsPublicCatFromTotalDate(planTotalDate);
 	}
+
+	@Override
+	public List<BudgetVO> getUserBudgetFromPlanNo(int planNo) {
+		// TODO Auto-generated method stub
+		BudgetVO budget = new BudgetVO();
+		budget.setPlanNo(planNo);
+		return mapper.readBudgetFromPlanNo(budget);
+	}
 	
 }

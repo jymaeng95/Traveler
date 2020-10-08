@@ -21,17 +21,9 @@
 		<section class="notice">
 			<div class="page-title">
 				<div class="container">
-					<%-- <c:if test="${countUserPlan eq 0 }">
-						<a href="/plan/plan"><h6 style="text-align: center;">
-								생성할 예산이 존재하지 않습니다.<br> 새로운 계획 만들러 가기!
-							</h6></a>
-						<h3 id="index-title" style="margin-top: 5%;">다른 회원들의 예산</h3>
-					</c:if>
-					<c:if test="${countUserPlan ne 0 }">
-						<h3>다른 회원들의 예산</h3>
-					</c:if> --%>
-
-					<h3 id="index-title" style="margin-top: 5%;">다른 x일간의 여행 예산</h3>
+					<h3 id="index-title" style="margin-top: 5%;">
+						Traveler가 추천하는 예산
+					</h3>
 				</div>
 			</div>
 
@@ -53,35 +45,40 @@
 							</thead>
 							<tbody>
 								<c:if test="${maxPlan ne null }">
-									<tr>
-										<td class="recommend-standard">총계 최대</td>
+									<tr class="plan-recommend">
+										<c:if test="${rcmPlanSize > 1}">
+											<td class="recommend-standard">총계 최대</td>
+										</c:if>
+										<c:if test="${rcmPlanSize eq 1}">
+											<td class="recommend-standard">총계 기반</td>
+										</c:if>
 										<td class="recommend-planno"><c:out
 												value="${maxPlan.planNo }"></c:out></td>
 										<td class="recommend-userid"><c:out
 												value="${maxPlan.userId }"></c:out></td>
-										<th class="recommend-plantitle"><a href="#!"><c:out
-													value="${maxPlan.planTitle }"></c:out></a></th>
+										<td class="recommend-plantitle"><c:out
+												value="${maxPlan.planTitle }"></c:out></td>
 										<td class="recommend-totaldate"><c:out
-												value="${planTotalDate}일간 여행"></c:out></td> 
+												value="${planTotalDate}일간 여행"></c:out></td>
 										<td class="recommend-total"><c:out
-												value="${maxBudget.total}"></c:out></td> 
+												value="${maxBudget.total}"></c:out></td>
 										<td class="recommend-regdate"><c:out
-												value="${maxBudget.reg_date}"></c:out></td> 
+												value="${maxBudget.reg_date}"></c:out></td>
 									</tr>
 								</c:if>
 								<c:if test="${minPlan ne null }">
-									<tr>
+									<tr class="plan-recommend">
 										<td class="recommend-standard">총계 최소</td>
 										<td class="recommend-planno"><c:out
 												value="${minPlan.planNo }"></c:out></td>
 										<td class="recommend-userid"><c:out
 												value="${minPlan.userId }"></c:out></td>
-										<th class="recommend-plantitle"><a href="#!"><c:out
-													value="${minPlan.planTitle }"></c:out></a></th>
+										<td class="recommend-plantitle">><c:out
+												value="${minPlan.planTitle }"></c:out></td>
 										<td class="recommend-totaldate"><c:out
 												value="${planTotalDate}일간 여행"></c:out></td>
 										<td class="recommend-total"><c:out
-												value="${minBudget.total}"></c:out></td> 
+												value="${minBudget.total}"></c:out></td>
 										<td class="recommend-regdate"><c:out
 												value="${minBudget.reg_date}"></c:out></td>
 									</tr>
@@ -98,6 +95,12 @@
 			</div>
 
 			<!-- board list area -->
+			<div class="container">
+				<h3 id="index-title" style="margin-top: 5%;">
+					<c:out value="${planTotalDate }일간의 여행 예산"></c:out>
+				</h3>
+			</div>
+
 			<div id="board-list">
 				<div class="container">
 					<table class="board-table">
@@ -117,11 +120,10 @@
 						<c:if test="${allPlan ne null }">
 							<tbody>
 								<c:forEach items="${allPlan}" var="list" varStatus="status">
-									<tr>
-										<td class="planno"><c:out value="${list.planNo }"></c:out></td>
+									<tr class="plan-each">
+										<td class="planNo"><c:out value="${list.planNo }"></c:out></td>
 										<td class="userid"><c:out value="${list.userId }"></c:out></td>
-										<th class="plan-title"><a href="#!"><c:out
-													value="${list.planTitle }"></c:out></a></th>
+										<td class="plan-title"><c:out value="${list.planTitle }"></c:out></td>
 										<td class="planTotalDay"><c:out
 												value="${planTotalDate}일간 여행"></c:out></td>
 									</tr>
@@ -132,7 +134,8 @@
 					<button type="button" class="btn btn-dark" id="btn-mybudget"
 						style="float: right; margin-top: 2%;" onclick="history.go(-1)">돌아가기</button>
 					<button type="button" class="btn btn-dark" id="btn-graph"
-						style="float: right; margin-top: 2%; margin-right: 2%;" value="${ planTotalDate}">
+						style="float: right; margin-top: 2%; margin-right: 2%;"
+						value="${ planTotalDate}">
 						<c:out value="${planTotalDate }일간 예산 그래프"></c:out>
 					</button>
 				</div>
@@ -147,7 +150,7 @@
 					</div>
 					<button type="button" id="btn-back-budget" class="btn btn-dark"
 						style="float: right;">돌아가기</button>
-					
+
 				</div>
 			</div>
 		</section>

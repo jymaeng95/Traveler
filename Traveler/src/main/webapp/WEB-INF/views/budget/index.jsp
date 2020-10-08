@@ -82,11 +82,11 @@
 						<c:if test="${allPlan ne null }">
 						<tbody>
 							<c:forEach items="${allPlan}" var="list" varStatus="status">
-								<tr>
-									<td><c:out value="${list.planNo }"></c:out></td>
-									<td><c:out value="${list.userId }"></c:out></td>
-									<th class="plan-title"><a href="#!"><c:out
-												value="${list.planTitle }"></c:out></a></th>
+								<tr class="plan-each">
+									<td class="planNo"><c:out value="${list.planNo }"></c:out></td>
+									<td class="userId"><c:out value="${list.userId }"></c:out></td>
+									<td class="plan-title"><c:out
+												value="${list.planTitle }"></c:out></th>
 									<td id="planTotalDay"><c:out
 											value="${allSchedule[status.index].planTotalDate}일간 여행"></c:out></td>
 									<td id="planDate"><c:out
@@ -125,6 +125,31 @@
 				</div>
 			</div>
 		</section>
+		<!-- PAGING -->
+		<%--  <div class="text-center" style="margin:-40px 0 0 540px;">
+					<div class="col-sm-12">
+						<ul class="pagination" id="pagination-demo">
+							<c:if test="${pageMaker.prev }">
+								<li class="paginate_button previous" style="padding-right: 5px;"><a
+									href="${pageMaker.startPage -1 }">&laquo;</a></li>
+							</c:if>
+							<c:forEach var="num" begin="${pageMaker.startPage }"
+								end="${pageMaker.endPage }">
+								<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"
+								style="padding-right: 5px;">
+									<a href="${num }">${num} </a>
+								</li>
+							</c:forEach>
+							<c:if test="${pageMaker.next }">
+								<li class="paginate_button next"><a
+									href="${pageMaker.endPage +1 }">&raquo;</a></li>
+							</c:if>
+						</ul>
+					</div>
+	    	<form id='actionForm' action="/budget/index" method='get'>
+	    		<input type='hidden' name='pageNum' value= '${pageMaker.pageNum }'>
+	    	
+	    	</form> --%>
 	</main>
 </body>
 </html>

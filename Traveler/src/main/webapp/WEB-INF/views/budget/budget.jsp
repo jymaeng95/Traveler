@@ -70,10 +70,9 @@
 						<input type="radio" name="is_public" value="Y" id="radio-y"/>공개
 						<input type="radio" name="is_public" value="N" id="radio-n" checked/>비공개
 						</div>
-						<button type="button" id="btn-save" class="btn btn-primary">저장</button>
-						<button type="button" id="btn-calc" class="btn btn-primary">계산</button>
-						<button type="button" id="btn-trans" class="btn btn-primary">예산</button>
-						<button type="button" id="btn-recommend" class="btn btn-primary">예산 추천</button>
+						<button type="button" id="btn-save" class="btn btn-dark">저장</button>
+						<button type="button" id="btn-calc" class="btn btn-dark">계산</button>
+						<button type="button" id="btn-recommend" class="btn btn-dark">예산 추천</button>
 					</div>
 				</div>
 				</content>

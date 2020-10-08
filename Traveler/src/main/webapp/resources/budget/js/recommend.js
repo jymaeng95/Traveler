@@ -1,6 +1,46 @@
 $(document).ready(function(){
+	$(".plan-each").on("click",function(){
+		var planNo = $(this).find(".planNo").text();
 
+		var form = document.createElement("form");
+		form.setAttribute("method", "GET");  //Post 방식
+		form.setAttribute("action", "/budget/read"); //요청 보낼 주소
 
+		var hiddenField = document.createElement("input");
+		hiddenField.setAttribute("type", "hidden");
+		hiddenField.setAttribute("name", "planNo");
+		hiddenField.setAttribute("value", planNo);
+		form.appendChild(hiddenField);
+
+		document.body.appendChild(form);
+		console.log(planNo);
+		form.submit();
+	});
+	
+	$(".plan-recommend").on("click",function(){
+		var planNo = $(this).find(".recommend-planno").text();
+		var type = $(this).find(".recommend-standard").text();
+		var form = document.createElement("form");
+		form.setAttribute("method", "GET");  //Post 방식
+		form.setAttribute("action", "/budget/read"); //요청 보낼 주소
+
+		var planNoField = document.createElement("input");
+		planNoField.setAttribute("type", "hidden");
+		planNoField.setAttribute("name", "planNo");
+		planNoField.setAttribute("value", planNo);
+		
+		form.appendChild(planNoField);
+
+		var typeField = document.createElement("input");
+		typeField.setAttribute("type", "hidden");
+		typeField.setAttribute("name", "recommend");
+		typeField.setAttribute("value", type);		
+		form.appendChild(typeField);
+		
+		document.body.appendChild(form);
+		console.log(planNo);
+		form.submit();
+	});
 });
 $(document).on("click","#btn-back-budget",function(){
 	$("#board-list").attr("style","display:block;");
