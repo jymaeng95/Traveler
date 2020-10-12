@@ -21,7 +21,7 @@ public interface BudgetMapper {
 	
 	public List<Map<String,Object>> readIsPublicCat();
 	
-	public List<BudgetVO> readPlanNoEqualTotalDate(String planTotalDate);
+	public List<BudgetVO> readPlanNoEqualTotalDate(Map<String,Object> data);
 	
 	public BudgetVO readPlanNoRecommendMaxTotal(String planTotalDate);
 	
@@ -30,4 +30,10 @@ public interface BudgetMapper {
 	public List<Map<String,Object>> readIsPublicBudgetFromTotalDate(String planTotalDate);
 	
 	public List<Map<String,Object>> readIsPublicCatFromTotalDate(String planTotalDate);
+	
+	public List<BudgetVO> budgetIndexPaging(String pageNum);
+	
+	public int countBudgetIsPublic();
+	
+	public int countBudgetFromTotalDate(String planTotalDate);
 }

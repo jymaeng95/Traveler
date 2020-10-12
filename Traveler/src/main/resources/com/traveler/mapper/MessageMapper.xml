@@ -3,219 +3,219 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.MessageMapper">
-	<!-- id-column : DB컬럼명 property : 객체멤버변수 명  -->
-	<!-- result : 기본키 이외 멤버변수 지정 -->
+   <!-- id-column : DB컬럼명 property : 객체멤버변수 명  -->
+   <!-- result : 기본키 이외 멤버변수 지정 -->
 <resultMap id="SendMsgVO" type="com.traveler.domain.SendMsgVO">
-	<id column="mid_send" property="mid_send"/>
-	<result column="sender_send" property="sender_send"/>
-	<result column="targetId_send" property="targetId_send"/>
-	<result column="mcontent_send" property="mcontent_send"/>
-	<result column="senddate_send" property="senddate_send"/>
-	<result column="readstatus_send" property="readstatus_send"/>
-	<result column="status_send" property="status_send"/>
-	<result column="pageNum" property="pageNum"/>
-	<result column="tabPage" property="tabPage"/>
-	<result column="arcPage" property="arcPage"/>
-	<result column="bno_send" property="bno_send"/>	
-	<collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
-		<id column="userId" property="userId"/>
-		<result column="userPw" property="userPw"/>
-		<result column="email" property="email"/>
-		<result column="nickname" property="nickname"/>
-		<result column="is_kakao" property="is_kakao"/>
-	</collection>
+   <id column="mid_send" property="mid_send"/>
+   <result column="sender_send" property="sender_send"/>
+   <result column="targetId_send" property="targetId_send"/>
+   <result column="mcontent_send" property="mcontent_send"/>
+   <result column="senddate_send" property="senddate_send"/>
+   <result column="readstatus_send" property="readstatus_send"/>
+   <result column="status_send" property="status_send"/>
+   <result column="pageNum" property="pageNum"/>
+   <result column="tabPage" property="tabPage"/>
+   <result column="arcPage" property="arcPage"/>
+   <result column="bno_send" property="bno_send"/>   
+   <collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
+      <id column="userId" property="userId"/>
+      <result column="userPw" property="userPw"/>
+      <result column="email" property="email"/>
+      <result column="nickname" property="nickname"/>
+      <result column="is_kakao" property="is_kakao"/>
+   </collection>
 </resultMap>
 <resultMap id="ReceiveMsgVO" type="com.traveler.domain.ReceiveMsgVO">
-	<id column="mid_rcv" property="mid_rcv"/>
-	<result column="sender_rcv" property="sender_rcv"/>
-	<result column="targetId_rcv" property="targetId_rcv"/>
-	<result column="mcontent_rcv" property="mcontent_rcv"/>
-	<result column="senddate_rcv" property="senddate_rcv"/>
-	<result column="readstatus_rcv" property="readstatus_rcv"/>
-	<result column="status_rcv" property="status_rcv"/>
-	<result column="pageNum" property="pageNum"/>
-	<result column="tabPage" property="tabPage"/>
-	<result column="arcPage" property="arcPage"/>
-	<result column="bno_rcv" property="bno_rcv"/>	
-	<collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
-		<id column="userId" property="userId"/>
-		<result column="userPw" property="userPw"/>
-		<result column="email" property="email"/>
-		<result column="nickname" property="nickname"/>
-		<result column="is_kakao" property="is_kakao"/>
-	</collection>
+   <id column="mid_rcv" property="mid_rcv"/>
+   <result column="sender_rcv" property="sender_rcv"/>
+   <result column="targetId_rcv" property="targetId_rcv"/>
+   <result column="mcontent_rcv" property="mcontent_rcv"/>
+   <result column="senddate_rcv" property="senddate_rcv"/>
+   <result column="readstatus_rcv" property="readstatus_rcv"/>
+   <result column="status_rcv" property="status_rcv"/>
+   <result column="pageNum" property="pageNum"/>
+   <result column="tabPage" property="tabPage"/>
+   <result column="arcPage" property="arcPage"/>
+   <result column="bno_rcv" property="bno_rcv"/>   
+   <collection  property="memberVO" ofType="com.traveler.domain.MemberVO">
+      <id column="userId" property="userId"/>
+      <result column="userPw" property="userPw"/>
+      <result column="email" property="email"/>
+      <result column="nickname" property="nickname"/>
+      <result column="is_kakao" property="is_kakao"/>
+   </collection>
 </resultMap>
-	
-	<!--메세지 추가 -->
-	<insert id="messageInsert">
-		insert into msg_send (mid_send, sender_send, targetId_send, mcontent_send, bno_send) 
-		values (mid_send.NEXTVAL, #{sender_send}, #{targetId_send}, #{mcontent_send}, #{bno_send})
-	</insert>
-	<insert id="messageInsert2">
-		insert into msg_rcv (mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, bno_rcv) 
-		values (mid_rcv.NEXTVAL, #{sender_rcv}, #{targetId_rcv}, #{mcontent_rcv}, #{bno_rcv})
-	</insert>
-	
-	<!-- paging -->
-	<!-- 받은 쪽지함 불러오기 -->
-	<select id="messagePaging" resultMap="ReceiveMsgVO">
-		<![CDATA[
-		select *
-		from
-			(
-			select /*+INDEX_DESC(msg_rcv mid_rcv)*/
-				rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
-			from msg_rcv, member
-			where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv} 
-			and #{tabPage} = 'rcv_list' and bno_rcv = '0'
-			)
-		where rn > (#{pageNum} - 1) * 10
-		]]>
-	</select>
-	
-	<!-- 보낸쪽지함 불러오기 -->
-	<select id="messagePaging2" resultMap="SendMsgVO">
-		<![CDATA[
-		select *
-		from
-			(
-			select /*+INDEX_DESC(msg_send mid_send)*/
-				rownum rn, mid_send, sender_send, targetId_send, mcontent_send, senddate_send, readstatus_send, status_send
-			from msg_send, member
-			where rownum <= #{pageNum} * 10 and sender_send = #{targetId_send} and #{tabPage} = 'send_list'
-			and bno_send = '0')
-		where rn > (#{pageNum} - 1) * 10 
-		]]>
-	</select>
-	
-	<!-- 보관함(받은 쪽지) -->
-	<select id="messagePaging3" resultMap="ReceiveMsgVO">
-		<![CDATA[
-		select *
-		from
-			(
-			select /*+INDEX_DESC(msg_rcv mid_rcv)*/
-				rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
-			from msg_rcv, member
-			where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv}
-				and #{tabPage} = 'archive' and status_rcv = 1 and #{arcPage} = 'rcv_arc' and bno_rcv = '0'
-			)
-		where rn > (#{pageNum} - 1) * 10 
-		]]>
-	</select>
-	
-	<!-- 보관함(보낸 쪽지) -->
-	<select id="messagePaging4" resultMap="SendMsgVO">
-		<![CDATA[
-		select *
-		from
-			(
-			select /*+INDEX_DESC(msg_send mid_send)*/
-				rownum rn, mid_send, sender_send, targetId_send, mcontent_send, senddate_send, readstatus_send, status_send
-			from msg_send, member
-			where rownum <= #{pageNum} * 10 and sender_send = #{targetId_send} 
-				and #{tabPage} = 'archive' and status_send = 1 and #{arcPage} = 'send_arc' and bno_send = '0'
-			)
-		where rn > (#{pageNum} - 1) * 10 
-		]]>
-	</select>
-	
-	<!-- 동행신청 -->
-	<select id="messagePaging5" resultMap="ReceiveMsgVO">
-		<![CDATA[
-		select *
-		from
-			(
-			select /*+INDEX_DESC(msg_rcv mid_rcv)*/
-				rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
-			from msg_rcv, member
-			where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv}
-				and #{tabPage} = 'accom' and bno_rcv != '0'
-			)
-		where rn > (#{pageNum} - 1) * 10 
-		]]>
-	</select>
-	
-	<select id="Read" resultMap="ReceiveMsgVO">
-		select *
-		from msg_rcv
-		where mid_rcv = #{mid_rcv} and targetId_rcv = #{targetId_rcv}
-	</select>
-	
-	<select id="ReadSendmsg" resultMap="SendMsgVO">
-		select *
-		from msg_send
-		where mid_send = #{mid_send} and sender_send = #{sender_send}
-	</select>
-	
-	
-	<select id="countMessage" resultType="int">
-		select count(*)
-		from msg_rcv
-		where targetId_rcv = #{targetId_rcv} and bno_rcv = '0'
-	</select>
-		<select id="countMessage2" resultType="int">
-		select count(*)
-		from msg_send
-		where sender_send = #{targetId_send} and bno_send = '0'
-	</select>
-	
-	<select id="countMessage3" resultType="int">
-		select count(*)
-		from msg_rcv, member
-		where targetId_rcv = #{targetId_rcv} and status_rcv = '1' and bno_rcv = '0'
-	</select>
-	<select id="countMessage4" resultType="int">
-		select count(*)
-		from msg_send, member
-		where sender_send = #{targetId_send} and status_send = '1' and bno_send = '0'
-	</select>
-	<select id="countMessage5" resultType="int">
-		select count(*)
-		from msg_rcv, member
-		where targetId_rcv = #{targetId_rcv} and bno_rcv != '0' 
-	</select>	
+   
+   <!--메세지 추가 -->
+   <insert id="messageInsert">
+      insert into msg_send (mid_send, sender_send, targetId_send, mcontent_send, bno_send) 
+      values (mid_send.NEXTVAL, #{sender_send}, #{targetId_send}, #{mcontent_send}, #{bno_send})
+   </insert>
+   <insert id="messageInsert2">
+      insert into msg_rcv (mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, bno_rcv) 
+      values (mid_rcv.NEXTVAL, #{sender_rcv}, #{targetId_rcv}, #{mcontent_rcv}, #{bno_rcv})
+   </insert>
+   
+   <!-- paging -->
+   <!-- 받은 쪽지함 불러오기 -->
+   <select id="messagePaging" resultMap="ReceiveMsgVO">
+      <![CDATA[
+      select *
+      from
+         (
+         select /*+INDEX_DESC(msg_rcv mid_rcv)*/
+            rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
+         from msg_rcv, member
+         where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv} 
+         and #{tabPage} = 'rcv_list' and bno_rcv = '0'
+         )
+      where rn > (#{pageNum} - 1) * 10
+      ]]>
+   </select>
+   
+   <!-- 보낸쪽지함 불러오기 -->
+   <select id="messagePaging2" resultMap="SendMsgVO">
+      <![CDATA[
+      select *
+      from
+         (
+         select /*+INDEX_DESC(msg_send mid_send)*/
+            rownum rn, mid_send, sender_send, targetId_send, mcontent_send, senddate_send, readstatus_send, status_send
+         from msg_send, member
+         where rownum <= #{pageNum} * 10 and sender_send = #{targetId_send} and #{tabPage} = 'send_list'
+         and bno_send = '0')
+      where rn > (#{pageNum} - 1) * 10 
+      ]]>
+   </select>
+   
+   <!-- 보관함(받은 쪽지) -->
+   <select id="messagePaging3" resultMap="ReceiveMsgVO">
+      <![CDATA[
+      select *
+      from
+         (
+         select /*+INDEX_DESC(msg_rcv mid_rcv)*/
+            rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
+         from msg_rcv, member
+         where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv}
+            and #{tabPage} = 'archive' and status_rcv = 1 and #{arcPage} = 'rcv_arc' and bno_rcv = '0'
+         )
+      where rn > (#{pageNum} - 1) * 10 
+      ]]>
+   </select>
+   
+   <!-- 보관함(보낸 쪽지) -->
+   <select id="messagePaging4" resultMap="SendMsgVO">
+      <![CDATA[
+      select *
+      from
+         (
+         select /*+INDEX_DESC(msg_send mid_send)*/
+            rownum rn, mid_send, sender_send, targetId_send, mcontent_send, senddate_send, readstatus_send, status_send
+         from msg_send, member
+         where rownum <= #{pageNum} * 10 and sender_send = #{targetId_send} 
+            and #{tabPage} = 'archive' and status_send = 1 and #{arcPage} = 'send_arc' and bno_send = '0'
+         )
+      where rn > (#{pageNum} - 1) * 10 
+      ]]>
+   </select>
+   
+   <!-- 동행신청 -->
+   <select id="messagePaging5" resultMap="ReceiveMsgVO">
+      <![CDATA[
+      select *
+      from
+         (
+         select /*+INDEX_DESC(msg_rcv mid_rcv)*/
+            rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
+         from msg_rcv, member
+         where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv}
+            and #{tabPage} = 'accom' and bno_rcv != '0'
+         )
+      where rn > (#{pageNum} - 1) * 10 
+      ]]>
+   </select>
+   
+   <select id="Read" resultMap="ReceiveMsgVO">
+      select *
+      from msg_rcv
+      where mid_rcv = #{mid_rcv} and targetId_rcv = #{targetId_rcv}
+   </select>
+   
+   <select id="ReadSendmsg" resultMap="SendMsgVO">
+      select *
+      from msg_send
+      where mid_send = #{mid_send} and sender_send = #{sender_send}
+   </select>
+   
+   
+   <select id="countMessage" resultType="int">
+      select count(*)
+      from msg_rcv
+      where targetId_rcv = #{targetId_rcv} and bno_rcv = '0'
+   </select>
+      <select id="countMessage2" resultType="int">
+      select count(*)
+      from msg_send
+      where sender_send = #{targetId_send} and bno_send = '0'
+   </select>
+   
+   <select id="countMessage3" resultType="int">
+      select count(*)
+      from msg_rcv, member
+      where targetId_rcv = #{targetId_rcv} and status_rcv = '1' and bno_rcv = '0'
+   </select>
+   <select id="countMessage4" resultType="int">
+      select count(*)
+      from msg_send, member
+      where sender_send = #{targetId_send} and status_send = '1' and bno_send = '0'
+   </select>
+   <select id="countMessage5" resultType="int">
+      select count(*)
+      from msg_rcv, member
+      where targetId_rcv = #{targetId_rcv} and bno_rcv != '0' 
+   </select>   
 
-	<!-- delete -->
-	<delete id="messageDelete">
-		delete 
-		from msg_rcv
-		where targetId_rcv = #{targetId_rcv} and mid_rcv = #{mid_rcv}
-	</delete>
-	
-	<delete id="sendmessageDelete">
-		delete 
-		from msg_send
-		where targetId_send = #{targetId_send} and mid_send = #{mid_send}
-	</delete>
-	
-	<update id="messageUpdate">
-		update msg_rcv
-		set status_rcv = #{status_rcv}
-		where targetId_rcv = #{targetId_rcv} and mid_rcv = #{mid_rcv}
-	</update>
-	
-	<update id="sendmessageUpdate">
-		update msg_send
-		set status_send = #{status_send}
-		where targetId_send = #{targetId_send} and mid_send = #{mid_send}
-	</update>
-	
-	<update id="messageUpdate2">
-		update msg_rcv
-		set	readstatus_rcv = #{readstatus_rcv}
-		where targetId_rcv= #{targetId_rcv} and mid_rcv = #{mid_rcv}
-	</update>
-	
-	<select id="cntNoread" resultType="int">
-		select count(*) from msg_rcv
-		where targetId_rcv = #{targetId_rcv} and readstatus_rcv = '0'
-	</select>
-	
-	<select id="cntApply" resultType="int">
-		select count(*) from msg_rcv
-		where sender_rcv = #{sender_rcv} and bno_rcv = #{bno_rcv}
-	</select>
+   <!-- delete -->
+   <delete id="messageDelete">
+      delete 
+      from msg_rcv
+      where targetId_rcv = #{targetId_rcv} and mid_rcv = #{mid_rcv}
+   </delete>
+   
+   <delete id="sendmessageDelete">
+      delete 
+      from msg_send
+      where targetId_send = #{targetId_send} and mid_send = #{mid_send}
+   </delete>
+   
+   <update id="messageUpdate">
+      update msg_rcv
+      set status_rcv = #{status_rcv}
+      where targetId_rcv = #{targetId_rcv} and mid_rcv = #{mid_rcv}
+   </update>
+   
+   <update id="sendmessageUpdate">
+      update msg_send
+      set status_send = #{status_send}
+      where targetId_send = #{targetId_send} and mid_send = #{mid_send}
+   </update>
+   
+   <update id="messageUpdate2">
+      update msg_rcv
+      set   readstatus_rcv = #{readstatus_rcv}
+      where targetId_rcv= #{targetId_rcv} and mid_rcv = #{mid_rcv}
+   </update>
+   
+   <select id="cntNoread" resultType="int">
+      select count(*) from msg_rcv
+      where targetId_rcv = #{targetId_rcv} and readstatus_rcv = '0'
+   </select>
+   
+   <select id="cntApply" resultType="int">
+      select count(*) from msg_rcv
+      where sender_rcv = #{sender_rcv} and bno_rcv = #{bno_rcv}
+   </select>
 </mapper>
 
-	
+   

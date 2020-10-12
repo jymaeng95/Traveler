@@ -1,12 +1,10 @@
 package com.traveler.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -117,9 +115,12 @@ public class BudgetServiceImpl implements BudgetService{
 	}
 
 	@Override
-	public List<BudgetVO> getPlanNoEqualTotalDate(String planTotalDate) {
+	public List<BudgetVO> getPlanNoEqualTotalDate(String planTotalDate, String pageNo) {
 		// TODO Auto-generated method stub
-		return mapper.readPlanNoEqualTotalDate(planTotalDate);
+		Map<String,Object> data = new HashMap<>();
+		data.put("planTotalDate",planTotalDate);
+		data.put("pageNum",pageNo);
+		return mapper.readPlanNoEqualTotalDate(data);
 	}
 
 	@Override
@@ -152,6 +153,24 @@ public class BudgetServiceImpl implements BudgetService{
 		BudgetVO budget = new BudgetVO();
 		budget.setPlanNo(planNo);
 		return mapper.readBudgetFromPlanNo(budget);
+	}
+
+	@Override
+	public List<BudgetVO> getBudgetIndexPaging(String pageNum) {
+		// TODO Auto-generated method stub
+		return mapper.budgetIndexPaging(pageNum);
+	}
+
+	@Override
+	public int getCountBudgetIsPublic() {
+		// TODO Auto-generated method stub
+		return mapper.countBudgetIsPublic();
+	}
+
+	@Override
+	public int getCountBudgetFromTotalDate(String planTotalDate) {
+		// TODO Auto-generated method stub
+		return mapper.countBudgetFromTotalDate(planTotalDate);
 	}
 	
 }

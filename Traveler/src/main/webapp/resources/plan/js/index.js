@@ -29,6 +29,7 @@ $(document).ready(function(){
          readForm.submit();
       });
    $(".btnDelete").on("click",function(){
+	   if(confirm("삭제하시겠습니까?")){
          var planNo = $(this).val();
          $.ajax({
         	 url : "/plan/delete",
@@ -36,14 +37,14 @@ $(document).ready(function(){
         	 dataType : "text",
         	 data : {"planNo" : planNo},
         	 success : function(data){
-        		 alert(data)
+//        		 alert(data)
         		 location.href="/plan/plan";
         	 },
         	 error : function(error) {
         		 alert(error);
         	 }
          });
-      
+	   }
       });
    $("#confirm").click(function(){
       if($("#p_title").val()=="" || $("#p_date").val()=="") {
@@ -62,7 +63,7 @@ $(document).ready(function(){
             btDay = 1;
          }
 
-         alert(btDay)
+//         alert(btDay)
          document.getElementById("t_date").value= btDay; 
          $("#plan_info").submit();
       }

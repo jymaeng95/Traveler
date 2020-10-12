@@ -41,6 +41,14 @@ $(document).ready(function(){
 		console.log(planNo);
 		form.submit();
 	});
+	
+	var actionForm = $("#actionForm");
+	$(".paginate_button a").on("click",function(e){
+		e.preventDefault();
+		console.log('click');
+		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+		actionForm.submit();
+	 });
 });
 $(document).on("click","#btn-back-budget",function(){
 	$("#board-list").attr("style","display:block;");
@@ -112,7 +120,6 @@ $(document).on("click","#btn-graph",function(){
 
 				chart.draw(dataChart, google.charts.Bar.convertOptions(options));
 			}
-			alert("그래프 테스트");
 			$("#budget-stastic").fadeIn(1000);
 		},
 		error : function(error){

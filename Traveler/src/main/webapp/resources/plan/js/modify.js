@@ -153,7 +153,7 @@ $(document).ready(function() {
 		$("#ul-myPlan").hide();
 
 		ex_markers = addMarkers(map,bmk_positions); 
-		alert(ex_markers.length)
+//		alert(ex_markers.length)
 //		alert(ex_markers[0].getPosition())
 	});
 	//관광지 추천 버튼 클릭 
@@ -245,7 +245,7 @@ $(document).ready(function() {
 			input.setAttribute("value",JSON.stringify(frmData));
 			planForm.appendChild(input);
 			console.log(JSON.stringify(frmData))
-			alert(JSON.stringify(frmData))
+//			alert(JSON.stringify(frmData))
 			planForm.submit();
 		} else {
 			alert("저장된 여행지가 없습니다.")
@@ -498,7 +498,7 @@ function markerClick(map,marker,latlng,title,position){
 //						$("#"+position.contentId).remove();
 //						$('.position-data option[value="'+position.positionData+'"]').remove();
 //						alert($("#day").val())
-						alert("첫번쨰 markerClick")
+//						alert("첫번쨰 markerClick")
 					}
 
 					return false;
@@ -514,7 +514,7 @@ function addModal(position,map,marker) {
 	$("#addModal").modal("show");
 	$("#s_title").val(position.title);
 	$(".confirm").unbind("click").bind("click",function(){
-		alert("ㅁㅇㄴㄹ") // day1형식
+//		alert("ㅁㅇㄴㄹ") // day1형식
 
 		var dayNum = $("#day").val();
 		var liIndex = $( '.sub-plan'+$("#day").val() ).find( "li" ).length + 1;
@@ -533,7 +533,7 @@ function addModal(position,map,marker) {
 //		alert(liIndex)
 
 		$(".day"+dayNum+"-"+liIndex + " span").click(function(){
-			alert("기본markerClick")
+//			alert("기본markerClick")
 			marker.setMap(null);
 			$(".day"+position.planDay+"-"+position.liIndex).remove();
 			position.liIndex = "fasle";
@@ -589,17 +589,17 @@ function modifyAddPlan(position,map,marker,planDay,modify_position){
 //	alert(liIndex)
 
 	$(".day"+planDay+"-"+liIndex + " span").click(function(){
-		alert("markerClick")
+//		alert("markerClick")
 		marker.setMap(null);
 		$(".day"+position.planDay+"-"+position.liIndex).remove();
 		position.liIndex = "fasle";
 		delete position['positionData'];
-		alert(modify_position.title)
+//		alert(modify_position.title)
 //		delete modify_position['title'];
 //		delete modify_position['lonlat'];
 		modify_position.isDelete = 'Y';
 
-		alert("!삭제했습니다.")
+		alert("삭제했습니다.")
 	});
 
 	$("#addModal").modal("hide");
@@ -703,7 +703,7 @@ function modifyMarkerClick(map,marker,latlng,title,position,modify_position){
 //						$("#"+position.contentId).remove();
 //						$('.position-data option[value="'+position.positionData+'"]').remove();
 //						alert($("#day").val())
-						alert("첫번쨰 markerClick")
+//						alert("첫번쨰 markerClick")
 					}
 
 					return false;

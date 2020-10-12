@@ -21,8 +21,7 @@
 		<section class="notice">
 			<div class="page-title">
 				<div class="container">
-					<h3 id="index-title" style="margin-top: 5%;">
-						Traveler가 추천하는 예산
+					<h3 id="index-title" style="margin-top: 5%;">Traveler가 추천하는 예산
 					</h3>
 				</div>
 			</div>
@@ -95,13 +94,13 @@
 			</div>
 
 			<!-- board list area -->
-			<div class="container">
-				<h3 id="index-title" style="margin-top: 5%;">
-					<c:out value="${planTotalDate }일간의 여행 예산"></c:out>
-				</h3>
-			</div>
 
 			<div id="board-list">
+				<div class="container">
+					<h3 id="index-title" style="margin-top: 5%; text-align:center;">
+						<c:out value="${planTotalDate }일간의 여행 예산"></c:out>
+					</h3>
+				</div>
 				<div class="container">
 					<table class="board-table">
 						<thead>
@@ -131,13 +130,43 @@
 							</tbody>
 						</c:if>
 					</table>
-					<button type="button" class="btn btn-dark" id="btn-mybudget"
-						style="float: right; margin-top: 2%;" onclick="history.go(-1)">돌아가기</button>
-					<button type="button" class="btn btn-dark" id="btn-graph"
-						style="float: right; margin-top: 2%; margin-right: 2%;"
-						value="${ planTotalDate}">
-						<c:out value="${planTotalDate }일간 예산 그래프"></c:out>
-					</button>
+					<div class="row">
+						<div class="col-sm-7">
+							<ul class="pagination" id="pagination-demo"
+								style="margin-top: 10px; justify-content: center;">
+								<c:if test="${pageMaker.prev }">
+									<li class="paginate_button previous"
+										style="padding-right: 5px;"><a
+										href="${pageMaker.startPage -1 }">&laquo;</a></li>
+								</c:if>
+								<c:forEach var="num" begin="${pageMaker.startPage }"
+									end="${pageMaker.endPage }">
+									<li class="paginate_button ${pageMaker.pageNum == num ? "
+										active":"" }"
+								style="padding-right: 5px;"><a
+										href="${num }">${num} </a></li>
+								</c:forEach>
+								<c:if test="${pageMaker.next }">
+									<li class="paginate_button next"><a
+										href="${pageMaker.endPage +1 }">&raquo;</a></li>
+								</c:if>
+							</ul>
+						</div>
+						<form id='actionForm' action="/budget/recommend" method='get'>
+							<input type='hidden' name='pageNum' value='${pageMaker.pageNum }'>
+							<input type="hidden" name="planTotalDate"
+								value="${planTotalDate }">
+						</form>
+						<div class="col-sm-5">
+							<button type="button" class="btn btn-dark" id="btn-mybudget"
+								style="float: right; margin-top: 2%;" onclick="history.go(-1)">돌아가기</button>
+							<button type="button" class="btn btn-dark" id="btn-graph"
+								style="float: right; margin-top: 2%; margin-right: 2%;"
+								value="${ planTotalDate}">
+								<c:out value="${planTotalDate }일간 예산 그래프"></c:out>
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="budget-stastic" style="display: none;">
@@ -150,7 +179,6 @@
 					</div>
 					<button type="button" id="btn-back-budget" class="btn btn-dark"
 						style="float: right;">돌아가기</button>
-
 				</div>
 			</div>
 		</section>

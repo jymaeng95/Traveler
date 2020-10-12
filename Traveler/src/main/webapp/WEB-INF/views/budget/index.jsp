@@ -80,30 +80,58 @@
 							</tr>
 						</c:if>
 						<c:if test="${allPlan ne null }">
-						<tbody>
-							<c:forEach items="${allPlan}" var="list" varStatus="status">
-								<tr class="plan-each">
-									<td class="planNo"><c:out value="${list.planNo }"></c:out></td>
-									<td class="userId"><c:out value="${list.userId }"></c:out></td>
-									<td class="plan-title"><c:out
-												value="${list.planTitle }"></c:out></th>
-									<td id="planTotalDay"><c:out
-											value="${allSchedule[status.index].planTotalDate}일간 여행"></c:out></td>
-									<td id="planDate"><c:out
-											value="${allSchedule[status.index].planDate}"></c:out></td>
-								</tr>
-							</c:forEach>
-						</tbody>
+							<tbody>
+								<c:forEach items="${allPlan}" var="list" varStatus="status">
+									<tr class="plan-each">
+										<td class="planNo"><c:out value="${list.planNo }"></c:out></td>
+										<td class="userId"><c:out value="${list.userId }"></c:out></td>
+										<td class="plan-title"><c:out value="${list.planTitle }"></c:out>
+										</th>
+										<td id="planTotalDay"><c:out
+												value="${allSchedule[status.index].planTotalDate}일간 여행"></c:out></td>
+										<td id="planDate"><c:out
+												value="${allSchedule[status.index].planDate}"></c:out></td>
+									</tr>
+								</c:forEach>
+							</tbody>
 						</c:if>
 					</table>
-					<c:if test="${countUserPlan ne 0 }">
-						<button type="button" class="btn btn-dark" id="btn-mybudget"
-							style="float: right; margin-top: 2%;"
-							onclick="location.href='/budget/budget'">내 예산 생성하기</button>
-					</c:if>
-					<button type="button" class="btn btn-dark" id="btn-graph"
-						style="float: right; margin-top: 2%; margin-right: 2%;">예산
-						추이 보기</button>
+					<div class="row">
+						<div class="col-sm-7">
+							<ul class="pagination" id="pagination-demo"
+								style="margin-top: 10px; justify-content: center;">
+								<c:if test="${pageMaker.prev }">
+									<li class="paginate_button previous"
+										style="padding-right: 5px;"><a
+										href="${pageMaker.startPage -1 }">&laquo;</a></li>
+								</c:if>
+								<c:forEach var="num" begin="${pageMaker.startPage }"
+									end="${pageMaker.endPage }">
+									<li class="paginate_button ${pageMaker.pageNum == num ? "
+										active":"" }"
+								style="padding-right: 5px;"><a
+										href="${num }">${num} </a></li>
+								</c:forEach>
+								<c:if test="${pageMaker.next }">
+									<li class="paginate_button next"><a
+										href="${pageMaker.endPage +1 }">&raquo;</a></li>
+								</c:if>
+							</ul>
+						</div>
+						<form id='actionForm' action="/budget/index" method='get'>
+							<input type='hidden' name='pageNum' value='${pageMaker.pageNum }'>
+						</form>
+						<div class="col-sm-5">
+							<c:if test="${countUserPlan ne 0 }">
+								<button type="button" class="btn btn-dark" id="btn-mybudget"
+									style="float: right; margin-top: 2%;"
+									onclick="location.href='/budget/budget'">내 예산 생성하기</button>
+							</c:if>
+							<button type="button" class="btn btn-dark" id="btn-graph"
+								style="float: right; margin-top: 2%; margin-right: 2%;">예산
+								추이 보기</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="budget-stastic" style="display: none;">
@@ -124,32 +152,11 @@
 					</c:if>
 				</div>
 			</div>
+			<input type="range" id="slider" value="1" min="1" max="10" step="1">
+			<span id="slider_value">Nothing yet.</span>
+			
 		</section>
 		<!-- PAGING -->
-		<%--  <div class="text-center" style="margin:-40px 0 0 540px;">
-					<div class="col-sm-12">
-						<ul class="pagination" id="pagination-demo">
-							<c:if test="${pageMaker.prev }">
-								<li class="paginate_button previous" style="padding-right: 5px;"><a
-									href="${pageMaker.startPage -1 }">&laquo;</a></li>
-							</c:if>
-							<c:forEach var="num" begin="${pageMaker.startPage }"
-								end="${pageMaker.endPage }">
-								<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"
-								style="padding-right: 5px;">
-									<a href="${num }">${num} </a>
-								</li>
-							</c:forEach>
-							<c:if test="${pageMaker.next }">
-								<li class="paginate_button next"><a
-									href="${pageMaker.endPage +1 }">&raquo;</a></li>
-							</c:if>
-						</ul>
-					</div>
-	    	<form id='actionForm' action="/budget/index" method='get'>
-	    		<input type='hidden' name='pageNum' value= '${pageMaker.pageNum }'>
-	    	
-	    	</form> --%>
 	</main>
 </body>
 </html>

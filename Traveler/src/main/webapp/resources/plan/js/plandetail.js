@@ -22,6 +22,9 @@ $(document).ready(function(){
       var date;
       data.text = allInfo[i].title;
       data.is_insertAfter = allInfo[i].is_insertAfter;
+//      data.planDay = allInfo[i].planDay;
+//      data.planTotalDate = allInfo[i].planTotalDate;
+//      console.log("check: " + allInfo[i].planDay + " " + allInfo[i].planTotalDate);
       if(allInfo[i].startDate =="" || allInfo[i].endDate==""){
          date = allInfo[i].planDate.split('-');
          if(firstDate[0] != date[0] || firstDate[1] != date[1] || firstDate[2] != date[2]){
@@ -46,7 +49,7 @@ $(document).ready(function(){
    }
    console.log(schedule);
    $(".dx-tab").on("click",function(){
-      alert("1234");
+//      alert("1234");
       var type = $(this).find("span.dx-tab-text").text();
       console.log(type);
       if(type == "agenda"){
@@ -101,7 +104,7 @@ $(document).ready(function(){
          dataType : 'text',
          data: {planNo : $("#planNo").val(), planTitle : $("#p_title").text(), info : $("#input-info").val()},
          success : function(data) {
-            alert(data)
+//            alert(data)
             if(data === "success")   alert("성공적으로 업데이트 되었습니다.")
             else alert("업데이트에 실패하였습니다.")
          },
@@ -163,7 +166,7 @@ $(document).ready(function(){
             onAppointmentDeleting: function (e) {  
                e.cancel = new $.Deferred();  
                if(e.appointmentData.is_insertAfter == 'N') {
-                  alert("adsf")
+//                  alert("adsf")
                   e.cancel.resolve(true);
                } else {
                   e.cancel.resolve(false);
@@ -210,7 +213,7 @@ $(document).ready(function(){
             onAppointmentDeleting: function (e) {  
                e.cancel = new $.Deferred();  
                if(e.appointmentData.is_insertAfter == 'N') {
-                  alert("adsf")
+//                  alert("adsf")
                   e.cancel.resolve(true);
                } else {
                   e.cancel.resolve(false);
@@ -255,6 +258,7 @@ $(document).ready(function(){
 //      console.log(totalDate);
       for(var i=0;i<s_instance.length;i++){
          var flag = false;
+         var planDay = 1;
          buffer = {};
          for(var j=0;j<allInfo.length;j++){
             if(allInfo[j].title == s_instance[i].text){
@@ -262,9 +266,9 @@ $(document).ready(function(){
                buffer.planNo = planNo;
                buffer.title = allInfo[j].title;          //(date.getDate()<10?'0':'')+date.getDate()
                var date = s_instance[i].startDate;
-               buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+               buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+(date.getHours()<10?'0':'')+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
                date = s_instance[i].endDate;
-               buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+               buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+(date.getHours()<10?'0':'')+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
                if(s_instance[i].description != "") buffer.descript = s_instance[i].description;
                else buffer.descript = "";
                buffer.planTitle = planTitle;
@@ -274,20 +278,22 @@ $(document).ready(function(){
                buffer.is_insertAfter = allInfo[j].is_insertAfter;
                finalData.push(buffer);
                flag = true;
+               
             }
          }
          if(!flag){
+        	console.log("s_instance[i].startDate " + s_instance[i].startDate + " allInfo[0].planDate " + allInfo[0].planDate);
             buffer.userId = userId;
             buffer.planNo = planNo;
             buffer.title =   s_instance[i].text;
             var date = s_instance[i].startDate;
-            buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+            buffer.startDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+(date.getHours()<10?'0':'')+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
             date = s_instance[i].endDate;
-            buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
+            buffer.endDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate()+"-"+(date.getHours()<10?'0':'')+date.getHours()+"-"+(date.getMinutes()<10?'0':'')+date.getMinutes();
             buffer.descript = s_instance[i].description;
             buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate();
-            buffer.planDay = s_instance[i].planDay;
-            buffer.planTotalDate = s_instance[i].planTotalDate;
+            buffer.planDay = calcPlanDay(allInfo[0].planDate, buffer.planDate, allInfo[0].planDay);
+            buffer.planTotalDate = allInfo[0].planTotalDate;
             buffer.planTitle = planTitle;
             buffer.is_insertAfter = 'Y';
             finalData.push(buffer);
@@ -474,4 +480,21 @@ function getRealTime(){
    var min = (today.getMinutes()<10?'0':'')+today.getMinutes();
    var realTime = year+month+date+hour+min;
    return realTime;
+}
+
+function calcPlanDay(allInfoStartDay, instanceStartDay, allInfoPlanDay){
+	var stDate = new Date(parseInt(allInfoStartDay.substr(0,4)), parseInt(allInfoStartDay.substr(5,2))-1, parseInt(allInfoStartDay.substr(8,2)));
+    var endDate = new Date(parseInt(instanceStartDay.substr(0,4)), parseInt(instanceStartDay.substr(5,2))-1, parseInt(instanceStartDay.substr(8,2)));
+    var flag = stDate <= endDate;
+    var result = 0;
+    if(flag) {
+    	var btMs = endDate.getTime() - stDate.getTime();
+    	btDay = btMs / (1000*60*60*24); // 두 날짜 차이 계산
+    	result = btDay + parseInt(allInfoPlanDay);
+    } else {
+    	var btMs = stDate.getTime() - endDate.getTime();
+    	btDay = btMs / (1000*60*60*24); // 두 날짜 차이 계산
+    	result = parseInt(allInfoPlanDay) - btDay;
+    }
+	return result;
 }

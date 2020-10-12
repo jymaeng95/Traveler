@@ -190,12 +190,12 @@ $(document).ready(function() {
 				.parent()
 				.hasClass("active")
 		) {
-//			$(".sidebar-dropdown").removeClass("active");
+			$(".sidebar-dropdown").removeClass("active");
 			$(this)
 			.parent()
 			.removeClass("active");
 		} else {
-//			$(".sidebar-dropdown").removeClass("active");
+			$(".sidebar-dropdown").removeClass("active");
 			$(this)
 			.next(".sidebar-submenu")
 			.slideDown(200);
@@ -470,7 +470,7 @@ function addModal(position,map,marker) {
 	$("#addModal").modal("show");
 	$("#s_title").val(position.title);
 	$(".confirm").unbind("click").bind("click",function(){
-		alert(position.img) // day1형식
+//		alert(position.img) // day1형식
 
 		var dayNum = $("#day").val();
 		var liIndex = $( '.sub-plan'+$("#day").val() ).find( "li" ).length + 1;

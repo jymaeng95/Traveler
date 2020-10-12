@@ -44,14 +44,12 @@ public class BudgetController {
 		MemberVO member = (MemberVO) session.getAttribute("userInfo");
 		List<PlannerVO> planner = new ArrayList<>();
 		List<UserPlanVO> schedule = new ArrayList<>();
-		List<BudgetVO> allBudget = budgetService.getAllMemberPlanNoIsPublicYes();
-
-		log.info("budget/index budget: "+allBudget);
-		for(BudgetVO bg : allBudget) {
+		List<BudgetVO> pagingBudget = budgetService.getBudgetIndexPaging(pageNo);
+		for(BudgetVO bg : pagingBudget) {
 			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
 			schedule.add(planService.getPlanDate(bg.getPlanNo()));
 		}
-		model.addAttribute("pageMaker",new PageVO(pageNo,planner.size(),7));
+		model.addAttribute("pageMaker",new PageVO(pageNo,budgetService.getCountBudgetIsPublic(),5));
 		model.addAttribute("allSchedule",schedule);
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("countUserPlan",plannerService.isExist(member.getUserId()));
@@ -71,8 +69,8 @@ public class BudgetController {
 	}
 
 	@RequestMapping(value="/budget/recommend", method=RequestMethod.GET)
-	public String recommendBudget(Model model, @RequestParam(value="planTotalDate") String planTotalDate,HttpSession session) {
-		List<BudgetVO> budget = budgetService.getPlanNoEqualTotalDate(planTotalDate);
+	public String recommendBudget(Model model,@RequestParam(value="pageNum",defaultValue="1")String pageNo, @RequestParam(value="planTotalDate") String planTotalDate,HttpSession session) {
+		List<BudgetVO> budget = budgetService.getPlanNoEqualTotalDate(planTotalDate,pageNo);
 		List<PlannerVO> planner = new ArrayList<>();
 		for(BudgetVO bg : budget) 
 			planner.add(plannerService.getAllPlannerFromPlanNo(bg.getPlanNo()));
@@ -99,6 +97,7 @@ public class BudgetController {
 				model.addAttribute("maxPlan",maxPlan);
 			}
 		}
+		model.addAttribute("pageMaker",new PageVO(pageNo,budgetService.getCountBudgetFromTotalDate(planTotalDate),5));
 		model.addAttribute("rcmPlanSize",planner.size());
 		model.addAttribute("allPlan", planner);
 		model.addAttribute("planTotalDate",planTotalDate);

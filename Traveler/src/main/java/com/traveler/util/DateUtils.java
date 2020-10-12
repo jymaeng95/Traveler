@@ -21,7 +21,7 @@ public class DateUtils {
 		System.out.println("EndplanDate : " + df.format(cal.getTime()));
 
 		if(Integer.parseInt(planTotalDate) != 1) {
-			cal.add(Calendar.DATE, Integer.parseInt(planTotalDate));
+			cal.add(Calendar.DATE, (Integer.parseInt(planTotalDate)-1));
 		}
 		System.out.println("Endafter: " + df.format(cal.getTime()));
 
