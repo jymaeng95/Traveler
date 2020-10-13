@@ -188,4 +188,17 @@ public class UserPlanServiceImpl implements UserPlanService{
 		plan.setPlanNo(planNo);
 		return mapper.readStartDate(plan);
 	}
+
+	@Override
+	public List<Integer> getPlanNoAfterToday(String userId) {
+		// TODO Auto-generated method stub
+		
+		return mapper.readPlanNoAfterToday(userId);
+	}
+
+	@Override
+	public List<UserPlanVO> getPlanForAccompany(int planNo) {
+		// TODO Auto-generated method stub
+		return mapper.readPlanForAccompany(planNo);
+	}
 }

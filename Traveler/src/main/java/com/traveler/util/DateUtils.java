@@ -46,4 +46,30 @@ public class DateUtils {
 
 		return df.format(cal.getTime());
 	}
+	
+	public static String splitTime(String startDate) {
+		
+		String[] date = startDate.split("-");
+		String hour = date[3];
+		String minute = date[4];
+		String time = "";
+		if(Integer.parseInt(hour) > 11) {
+			if(hour.equals("12"))
+				time = "PM 12:"+minute; 
+			else 
+				time = "PM "+hour+":"+minute;
+		} else {
+			if(hour.equals("0"))
+				time = "AM 12:"+minute;
+			else 
+				time = "AM "+hour+":"+minute;
+		}
+		return time;
+	}
+	
+	public static String splitDate(String planDate) {
+		String[] date = planDate.split("-");
+		
+		return date[0]+"년 "+date[1]+"월 "+date[2]+"일";
+	}
 }

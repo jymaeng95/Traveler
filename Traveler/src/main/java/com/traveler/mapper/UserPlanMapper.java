@@ -32,5 +32,7 @@ public interface UserPlanMapper {
 	
 	public UserPlanVO readStartDate(UserPlanVO plan);
 	
+	public List<Integer> readPlanNoAfterToday(String userId);
 	
+	public List<UserPlanVO> readPlanForAccompany(int planNo);
 }

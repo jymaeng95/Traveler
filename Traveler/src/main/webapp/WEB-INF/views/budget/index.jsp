@@ -152,8 +152,6 @@
 					</c:if>
 				</div>
 			</div>
-			<input type="range" id="slider" value="1" min="1" max="10" step="1">
-			<span id="slider_value">Nothing yet.</span>
 			
 		</section>
 		<!-- PAGING -->

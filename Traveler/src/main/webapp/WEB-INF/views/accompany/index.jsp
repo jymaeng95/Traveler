@@ -1,165 +1,228 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%@ include file="../includes/sidebar_setting.jsp" %>
-<style>
-h2{
-  font-size: 3rem;
-  margin: 0 0 2rem;
-  line-height: 1;
-}
-.container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10rem auto;
-}
-.fb-style-btn{
-  border-radius: 2px;
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 1em 2em;
-  margin: 0 3em;
-  outline: none;
-}
-.fb-style-dark{
-  box-shadow: inset 0 1px 0 0 #4d73bf;
-  background-color: #4267b2;
-  border: solid 1px #4267b2;
-  color: white;
-  text-shadow: 0 1px 0 #3359a5;
-}
-.fb-style-dark:hover{
-  background-color: #2b54a7;
-  cursor: pointer;
-}
-.fb-style-dark:active{
-  background-color: #1d4698;
-  border-color: #1d4698;
-}
-.fb-style-light{
-  background-color: #f6f7f9;
-  border: solid 1px #3ced0d4;
-  color: #4b4f56;
-}
-.fb-style-light:hover{
-  background-color: #e9ebee;
-  cursor: pointer;
-}
-.fb-style-light:active{
-  background-color: #d8dade;
-  border-color: #d8dade;
-}
-</style>
+<link href="/resources/accompany/css/index.css" rel="stylesheet">
+<%@ include file="../includes/sidebar_setting.jsp"%>
+<script src="/resources/accompany/js/index.js"></script>
 </head>
-<script>
-$(document).ready(function(){
-	$("#btn1").click(function(){
-		if($("#userId").val() == "") {
-			alert("로그인하세요")
-			location.href = "/";
-		}else {
-			check2();
-		}
-	});
-	$("#confirm").click(function(){
-		//var selected = $("#selectplan option:selected").val();
-		//location.href = "/accompany/write?planNo=" + selected;
-		check();
-	});
-});
-
-function check(){
-	var selected = $("#selectplan option:selected").val();
-	$.ajax({
-		url : "/accompany/check",
-		type : "post",
-	 	dataType : "text",
-	 	data : {
-	 		"planNo" : selected
- 		},
- 		success : function(data) {
- 			if(data == "이미 모집중인 플랜입니다.") alert(data);
- 			else location.href = "/accompany/write?planNo=" + selected;
- 		},
- 		error : function(error) {
-	 		alert("error.");
- 		}
-	});
-}
-
-function check2(){
-	$.ajax({
-		url : "/accompany/check2",
-		type : "post",
-	 	dataType : "text",
-	 	data : {
-	 		"userId" : $('#userId').val()
- 		},
- 		success : function(data) {
- 			if(data == "먼저 여행 플랜을 만드세요.") {
- 	 			alert(data);
- 	 			location.href="/plan/plan";
- 			}
- 			else $("#myModal").modal("show");
- 		},
- 		error : function(error) {
-	 		alert("error.");
- 		}
-	});
-}
-</script>
 <body>
 	<%@include file="../includes/sidebar.jsp"%>
 	<main class="page-content">
-		<article class="container">
-		  <h2>동행</h2>
-		  <h4>같이 여행하고 싶은 동행자를 찾아보세요.</h4><br/>
-		  <section>
-		    <button type="button" name="button" id="btn1" class="fb-style-btn fb-style-dark" data-toggle="modal" data-target="#myModal">
-		         직접 모집</button>
-		    <button type="button" name="button" id="btn2" class="fb-style-btn fb-style-light" onclick="location.href='/accompany/board'">
-		         동행 검색</button>
-		  </section>
-		</article>
+		<div class="container">
+			<section class="bg-light" style="margin-top: 15px;">
+				<div class="container"
+					style="overflow-x: scroll; padding-top: 0px; margin-top: 0px; margin-bottom: 10px;">
+					<h2 class="pt-3 pb-3"
+						style="padding-left: 20px; font-size: 18pt; font-weight: 300; color: #696969">
+					</h2>
+					<!-- c태그로 if문으로 제어  -->
+					<c:if test="${userInfo.userId == null }">
+						<div
+							style="text-align: center; padding-top: 40px; padding-bottom: 40px; color: #c0c0c0; font-size: 12pt">
+							새로운 여행을 만들어 보세요!</div>
+					</c:if>
+					<c:if test="${userInfo.userId != null }">
+						<c:if test="${resultData.size() == 0 }">
+							<div
+								style="text-align: center; padding-top: 40px; padding-bottom: 40px; color: #c0c0c0; font-size: 12pt">
+								새로운 여행을 만들어 보세요!</div>
+						</c:if>
+						<c:if test="${resultData.size() != 0 }">
+
+
+							<div class="scrolling-wrapper-flexbox">
+								<c:forEach items="${resultData }" var="list">
+									<div class="accompany accompany--big"
+										style="margin: 10px 30px 20px 30px;">
+										<div class="accompany__image">
+											<img class="accompany_image" src="${list.planInfo.planImg}"
+												style="width: 100%; height: 100%"></img>
+										</div>
+										<h2 class="accompany__title">
+											<c:out
+												value="${list.planInfo.planTitle }(${list.planTotalDate }일간의 여행)"></c:out>
+										</h2>
+										<p class="accompany__info">
+											<c:out value="${list.planInfo.info }"></c:out>
+											<br>
+											<c:out value="${list.planStartDate } ~ ${list.planEndDate }"></c:out>
+											<br>
+										</p>
+										<div class="accompany__action-bar">
+											<button class="accompany__button btnModify"
+												value="${list.planInfo.planNo }" style="float: left;">Modify</button>
+											<button class="accompany__button btnRead"
+												value="${list.planInfo.planNo }"
+												style="position: absolute; left: 40%;">Read</button>
+											<button class="accompany__button btnDelete"
+												value="${list.planInfo.planNo }" style="float: right;">Delete</button>
+										</div>
+									</div>
+
+									<%--    <div style="text-align: center; font-size: 12pt;">
+                              <a class="planLoad" id="${list.planNo }"
+                                 href="javascript:void(0);"> <span class="plan_title"><c:out
+                                       value="${list.planTitle }"></c:out></span></a>
+                           </div> --%>
+
+								</c:forEach>
+							</div>
+							<!-- 읽기 / 수정 / 삭제  구현 위한것  -->
+							<form action="#" method="GET" id="modifyForm">
+								<input type="hidden" name="when" value="modify">
+							</form>
+							<form action="#" method="GET" id="readForm"></form>
+							<form action="#" method="GET" id="deleteForm"></form>
+						</c:if>
+
+					</c:if>
+				</div>
+			</section>
+		</div>
+		<section class="notice">
+			<div class="page-title">
+				<div class="container">
+					<a href="/accompany/board"><h3>모집 게시판</h3></a>
+				</div>
+			</div>
+
+			<!-- board seach area -->
+			<div id="board-search">
+				<div class="container">
+					<div class="search-window">
+						<form id="searchForm" action="/accompany/board" method='get'>
+							<div class="search-wrap">
+								<label for="search" class="blind"></label> <select name='type'
+									style="float: left; position: absolute; margin: 10px -80px 10px;">
+									<option value="T"
+										<c:out value="${pageMaker.cri.type eq 'T'?'selected' :'' }"/>>제목</option>
+									<option value="C"
+										<c:out value="${pageMaker.cri.type eq 'C'?'selected' :'' }"/>>내용</option>
+									<option value="W"
+										<c:out value="${pageMaker.cri.type eq 'W'?'selected' :'' }"/>>작성자</option>
+								</select> <input type='search' name='keyword' id="search"
+									placeholder="검색어를 입력해주세요."
+									value='<c:out value="${pageMaker.cri.keyword }"/>' /> <input
+									type='hidden' name='pageNum'
+									value='<c:out value="${pageMaker.cri.pageNum }"/>'>
+								<button class="btn btn-dark">검색</button>
+								<!--                         <button id="searchDate">날짜로 검색</button> -->
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- board list area -->
+			<div id="board-list">
+				<div class="container">
+					<table class="board-table">
+						<thead>
+							<tr>
+								<th scope="col" class="th-num">번호</th>
+								<th scope="col" class="th-title">제목</th>
+								<th scope="col" class="th-date">등록일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${board}" var="list" varStatus="status">
+								<tr>
+									<td style="display: none;">${list.userId }</td>
+									<td style="display: none;">${list.planNo }</td>
+									<td>${list.bno }</td>
+									<th id="trlink"><a href="#!">${list.title }</a></th>
+									<td id="date${status.index }">${list.writeDate }</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<c:if test="${count eq 0 }">
+						<p style="text-align: center; margin-top: 30px;">검색 결과가 없습니다.</p>
+					</c:if>
+					<div class="row">
+						<div class="col-sm-7">
+							<ul class="pagination" id="pagination-demo">
+								<c:if test="${pageMaker.prev }">
+									<li class="paginate_button previous"
+										style="padding-right: 5px;"><a
+										href="${pageMaker.startPage -1 }">&laquo;</a></li>
+								</c:if>
+								<c:forEach var="num" begin="${pageMaker.startPage }"
+									end="${pageMaker.endPage }">
+									<li class="paginate_button ${pageMaker.cri.pageNum == num ? "
+										active":"" }"
+								style="padding-right: 5px;"><a
+										href="${num }">${num} </a></li>
+								</c:forEach>
+								<c:if test="${pageMaker.next }">
+									<li class="paginate_button next"><a
+										href="${pageMaker.endPage +1 }">&raquo;</a></li>
+								</c:if>
+							</ul>
+						</div>
+						<form id='actionForm' action="/accompany/index" method='get'>
+							<input type='hidden' name='pageNum'
+								value='${pageMaker.cri.pageNum }'> <input type='hidden'
+								name='type' value='${pageMaker.cri.type }'> <input
+								type='hidden' name='keyword' value='${pageMaker.cri.keyword }'>
+						</form>
+
+						<div class="col-sm-5">
+							<!-- 자신의 계획 없는 경우 계획 만들러가는 버튼 생성  -->
+							<c:if test="${accPlanner eq null }">
+								<button type="button" class="btn btn-dark" id="btn-mybudget"
+									style="float: right; margin-top: 2%;"
+									onclick="location.href='/plan/plan'">새로운 계획 만들기</button>
+							</c:if>
+							<!-- 자신의 계획 있는 경우 동행 구하는 버튼 생성  -->
+							<c:if test="${accPlanner ne null}">
+							<button type="button" class="btn btn-dark" id="btn-register"
+								style="float: right; margin-top: 2%; margin-right: 2%;">동행
+								구하기</button>
+							</c:if>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+		<!-- end pagination -->
 	</main>
-	
-	<!-- 모달 -->
 	<div class="modal fade" tabindex="-1" role="dialog"
-		aria-labelledby="mySmallModalLabel" id="myModal" aria-hidden="true">
+		aria-labelledby="mySmallModalLabel" id="modal" aria-hidden="true">
 		<div class="modal-dialog"
 			style="max-width: 100%; width: auto; display: table;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">동행할 여행 선택</h4>
+					<h5 class="modal-title" id="myModalLabel">새로운 동행 구하기</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
+
 				</div>
-				<form id="plan_info" method="get" action="/plan/create">
-					<div class="modal-body">
-						<select id="selectplan" style="width:350px">
-						<c:forEach items="${p_list}" var="list" varStatus="status">
-							<option value="${list.planNo }">${list.planTitle }</option>
+				<div class="modal-body">
+					<select id="planTitle" name="planTitle" style="width:100%;" required autofocus>
+						<c:forEach items="${accPlanner }" var="list" varStatus="status">
+							<option value="${list.planNo }"><c:out
+									value="${list.planTitle }"></c:out></option>
 						</c:forEach>
-						</select>
-					</div>
-				</form>
+					</select>
+				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary" type="button" id="confirm">예</button>
+					<button class="btn btn-primary confirm" type="button" id="confirm">예</button>
 					<button class="btn btn-primary" type="button" data-dismiss="modal">아니요</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="userId" value="${userInfo.userId }"/>
-<script src="/resources/index/js/holder.js"></script>
+	<script src="/resources/index/js/holder.js"></script>
 </body>
 </html>

@@ -35,5 +35,7 @@ public interface UserPlanService {
 
 	public UserPlanVO getPlanDate(int planNo) throws Exception; 
 	
-
+	public List<Integer> getPlanNoAfterToday(String userId);
+	
+	public List<UserPlanVO> getPlanForAccompany(int planNo);
 }
