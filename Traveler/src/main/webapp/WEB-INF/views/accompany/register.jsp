@@ -40,18 +40,34 @@
 					</ul>
 				</div>
 				<div class="description">
-					<h1><c:out value="${list.title }"></c:out></h1>
-					<h2><c:out value="${time[status.index] }"></c:out></h2>
+					<h1 class="title"><c:out value="${list.title }"></c:out></h1>
+					<h2 class="acc-time"><c:out value="${time[status.index] }"></c:out></h2>
 					<p><c:out value="${list.overview }"></c:out></p>
-					<button type="button" class="btn btn-link" id="delete-bookmark" onclick="""
-								style="color: #5ad67d; margin-top:20px; float:right;">삭제</button>
-					<button type="button" class="btn btn-link" id="btn-detail" onclick=""
-								style="color: #5ad67d; margin-top:20px; float:right;">Read More</button>
+					<button type="button" class="btn btn-link btn-acc"  onclick=""
+								style="color: #5ad67d; margin-top:20px; float:right;" value="${list.planNo }">동행 구하기</button>
+					
 				</div>
 			</div>
 			</c:forEach>
 		</div>
 	</main>
+	</div>
+	<div id="modal-register" style="height: 100%; display: none;"
+		class="modal fade bs-example-modal-lg in" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-dialog modal-lg" style="height: 98%">
+			<div class="modal-content" style="height: 95%; border-radius: 0px;">
+				<div class="modal-header">
+					<h4 class="modal-title" id="title-Guide"></h4>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body" style="height: 94%; padding: 0px;">
+					<iframe id="if_guidebook" frameborder="0" width="100%" name="detail"
+						height="100%" src="/accompany/register/detail"></iframe>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

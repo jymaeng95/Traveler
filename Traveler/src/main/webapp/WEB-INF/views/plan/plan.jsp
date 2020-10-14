@@ -97,7 +97,7 @@
                   <!-- left content -->
                   <div class="col-lg-6">
                      <img class="plan_img"
-                        src="/resources/assets/img/plan_images/plan.png">
+                        src="/resources/plan/img/planMain.png">
                   </div>
                   <!-- right content -->
                   <div class="jumbotron bg-light text-center col-lg-5 ml-auto">

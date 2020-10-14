@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.traveler.domain.AccompanyVO;
 import com.traveler.domain.Criteria;
 import com.traveler.domain.GroupAccVO;
+import com.traveler.domain.HostVO;
 import com.traveler.domain.MemberVO;
 import com.traveler.domain.PageVO;
 import com.traveler.domain.PlannerVO;
@@ -73,6 +74,14 @@ public class AccompanyController {
 		return "/accompany/register";
 	}
 
+	@RequestMapping(value="/accompany/register/detail", method=RequestMethod.GET)
+	public String guideSpot(HostVO hostVO, Model model) throws Exception {
+		log.info("guide");
+		model.addAttribute("planNo", hostVO.getPlanNo());
+		model.addAttribute("title", hostVO.getTitle());
+		return "/accompany/register-modal";
+	}
+		
 	@RequestMapping(value="/accompany/board", method=RequestMethod.GET)
 	public String Accompany(@RequestParam(value="pageNum", defaultValue="1") String pageNo,
 			Model model,HttpSession session, AccompanyVO accompany, Criteria cri) throws Exception {	

@@ -209,6 +209,7 @@
 
 				</div>
 				<div class="modal-body">
+					<h5>동행 구할 여행 제목 선택</h5>
 					<select id="planTitle" name="planTitle" style="width:100%;" required autofocus>
 						<c:forEach items="${accPlanner }" var="list" varStatus="status">
 							<option value="${list.planNo }"><c:out
