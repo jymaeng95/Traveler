@@ -13,4 +13,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id column="title" property="title" />
 		<result column="board_title" property="boardTitle" />
 	</resultMap>
+	
+		<!-- 글 불러오기 -->
+	<select id="readBoard" resultMap="AccompanyBoardVO">
+		select * from accompany_board
+		where acc_bno = #{acc_bno}
+	</select>
 </mapper>

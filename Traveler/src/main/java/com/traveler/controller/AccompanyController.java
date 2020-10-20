@@ -16,13 +16,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.traveler.domain.AccompanyVO;
 import com.traveler.domain.Criteria;
 import com.traveler.domain.GroupAccVO;
+import com.traveler.domain.GuestVO;
 import com.traveler.domain.HostVO;
 import com.traveler.domain.MemberVO;
 import com.traveler.domain.PageVO;
 import com.traveler.domain.PlannerVO;
 import com.traveler.domain.UserPlanVO;
+import com.traveler.service.AccompanyBoardService;
 import com.traveler.service.AccompanyService;
 import com.traveler.service.GroupAccService;
+import com.traveler.service.GuestService;
+import com.traveler.service.HostService;
 import com.traveler.service.PlannerService;
 import com.traveler.service.UserPlanService;
 import com.traveler.util.DateUtils;
@@ -38,6 +42,9 @@ public class AccompanyController {
 	private PlannerService p_service;
 	private UserPlanService u_service;
 	private GroupAccService g_service;
+	private AccompanyBoardService a_service;
+	private GuestService gu_service;
+	private HostService h_service;
 
 	@RequestMapping(value="/accompany/index", method=RequestMethod.GET)
 	public String AccompanyIndex(Model model,HttpSession session, AccompanyVO accompany) throws Exception {	
@@ -73,7 +80,7 @@ public class AccompanyController {
 		model.addAttribute("date",date);
 		return "/accompany/register";
 	}
-
+	
 	@RequestMapping(value="/accompany/register/detail", method=RequestMethod.GET)
 	public String guideSpot(HostVO hostVO, Model model) throws Exception {
 		log.info("guide");
@@ -81,7 +88,7 @@ public class AccompanyController {
 		model.addAttribute("title", hostVO.getTitle());
 		return "/accompany/register-modal";
 	}
-		
+	
 	@RequestMapping(value="/accompany/board", method=RequestMethod.GET)
 	public String Accompany(@RequestParam(value="pageNum", defaultValue="1") String pageNo,
 			Model model,HttpSession session, AccompanyVO accompany, Criteria cri) throws Exception {	
@@ -150,36 +157,35 @@ public class AccompanyController {
 		return service.updateAcc(accompany);
 	}
 
+	///accompany/board_deatail?planNo=3&title=휴애리&hostId=11
 	@RequestMapping(value="/accompany/board_detail", method=RequestMethod.GET)
-	public String boardDetail(@RequestParam(value="planNo") int planNo, @RequestParam(value="writer") String writer, @RequestParam(value="contentId") int contentId,
-			Model model,HttpSession session, AccompanyVO accompany, MemberVO member, PlannerVO planner, UserPlanVO userplan) throws Exception {	
-		planner.setUserId(writer);
-		model.addAttribute("contentId", contentId);model.addAttribute("planNo", planNo);
-		model.addAttribute("writer", writer);
-		model.addAttribute("cnt", g_service.countnum(contentId));
-		model.addAttribute("detail", service.readAcc(contentId));
-		model.addAttribute("planner", p_service.getPlanner(planner));
-		model.addAttribute("userplan", u_service.getUserPlanFromPlanNo(planNo, writer));
-		model.addAttribute("idlist", g_service.readId(contentId));
+	public String boardDetail(@RequestParam(value="planNo") int planNo, @RequestParam(value="title") String title, @RequestParam(value="acc_bno") int acc_bno,
+			@RequestParam(value="hostId") String hostId, Model model, GuestVO guest, HostVO host) throws Exception {	
+
+		model.addAttribute("userplan", u_service.getPlanForAccompany(planNo));
+		model.addAttribute("title", title);
+		model.addAttribute("acc", a_service.readBoard(acc_bno));
+		model.addAttribute("guestid",gu_service.readId(guest));
+		model.addAttribute("host",h_service.readHost(host));
 
 		return "/accompany/board_detail";	
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/accompany/group/insert", method=RequestMethod.POST, produces="application/text;charset=utf8")
-	public String insertInGroup(GroupAccVO group, MemberVO member, HttpSession session) throws Exception {
-
-		int isjoin = g_service.isJoin(group);
-
-		if(isjoin > 0) {
-			log.info(isjoin + " f");
-			return "�씠誘� �닔�씫�뻽�뒿�땲�떎.";
+	@RequestMapping(value="/accompany/guest/insert", method=RequestMethod.POST, produces="application/text;charset=utf8")
+	public String insertGuest(GuestVO guest, HttpSession session) throws Exception {
+		int isJoin = gu_service.isJoin(guest);
+		if(isJoin > 0) {
+			System.out.println("이미 join");
+			return "이미 수락했습니다.";
 		}
 		else {
-			log.info(isjoin+ " t");
-			service.insertInGroup(group);
-			return "�닔�씫�뻽�뒿�땲�떎.";
+			System.out.println("join 가능");
+			gu_service.insertGuest(guest);
+			return "수락했습니다.";
 		}
+		
+		
 	}
 
 	@ResponseBody

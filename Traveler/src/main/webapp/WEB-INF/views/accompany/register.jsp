@@ -58,7 +58,7 @@
 		<div class="modal-dialog modal-lg" style="height: 98%">
 			<div class="modal-content" style="height: 95%; border-radius: 0px;">
 				<div class="modal-header">
-					<h4 class="modal-title" id="title-Guide"></h4>
+					<h4 class="modal-title" id="title-spot"></h4>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
 				</div>

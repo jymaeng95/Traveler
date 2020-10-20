@@ -15,4 +15,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="acc_descript" property="descript" />
 		<result column="reg_date" property="regDate" />
 	</resultMap>
+	
+	<select id="readHost" resultMap="HostVO">
+		select *
+		from acc_host
+		where hostId = #{hostId} and title = #{title} and planNo = #{planNo}
+	</select>
 </mapper>

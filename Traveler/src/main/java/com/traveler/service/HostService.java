@@ -1,5 +1,9 @@
 package com.traveler.service;
 
-public interface HostService {
+import com.traveler.domain.HostVO;
 
+public interface HostService {
+	
+	public HostVO readHost(HostVO host) throws Exception;
+	
 }

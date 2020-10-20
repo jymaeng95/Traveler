@@ -113,15 +113,16 @@ header{
 }
 
 .blog-title{
-   font-size: 2.5em;
+   font-size: 1.8em;
    margin-top: 5px;
+   margin-bottom: 5px;
 }
 
 .date{
    font-size: 1em;
    font-weight: 400;
    color: #9C9C9C;
-   margin-top: -10px;
+   margin-bottom: 10px;
    text-decoration: underline;
    text-decoration-color: currentColor;
 }
@@ -164,32 +165,38 @@ header{
    margin:-50px 0px -20px;
 }
 
+#main_img {
+	margin-right:10px;
+	margin-bottom:20px;
+}
+
 </style>
 </head>
 <script type="text/javascript">
 $(document).ready(function() {
-   var strDate1 = $('.date').html();
-   var date = new Date(strDate1);
-   var totaldate = $('#totaldate').val();
-   totaldate *= 1;
-   $('.date').html(strDate1 + " 에서 " +
-         date.getFullYear() + "-" + (date.getMonth()+1) + "-" + (date.getDate() + totaldate-1));
-   $("#btnmodify").click(function(){
-      var contentId = $('#contentId').html();
-      var planNo = $('#planno').html();
-      location.href = "/accompany/modify?contentId=" + contentId + "&planNo=" + planNo;
-   });
-   $("#btnlist").click(function(){
-      var pageNum = $('#pagenum').val();
-      location.href = "/accompany/board?boardtype=main";
-   });
-   $("#btnapply").click(function(){
-      checkapply('${userInfo.userId}');
-   });
-   $("#sendbtn").click(function(){
-      var id = $('#leader').html();
-      sendpop(id);
-   });
+//    var strDate1 = $('.date').html();
+//    var date = new Date(strDate1);
+//    var totaldate = $('#totaldate').val();
+//    totaldate *= 1;
+//    $('.date').html(strDate1 + " 에서 " +
+//          date.getFullYear() + "-" + (date.getMonth()+1) + "-" + (date.getDate() + totaldate-1));
+//    $("#btnmodify").click(function(){
+//       var contentId = $('#contentId').html();
+//       var planNo = $('#planno').html();
+//       location.href = "/accompany/modify?contentId=" + contentId + "&planNo=" + planNo;
+//    });
+//    $("#btnlist").click(function(){
+//       var pageNum = $('#pagenum').val();
+//       location.href = "/accompany/board?boardtype=main";
+//    });
+	$("#btnapply").click(function(){
+		checkapply('${userInfo.userId}');
+	});
+	$("#sendbtn").click(function(){
+		var id = $('#leader').html();
+		sendpop(id);
+	});
+		   
 });
 //쪽지보내기
 function sendpop(rcver){   
@@ -203,8 +210,8 @@ function checkapply(sender){
       type : "post",
        dataType : "text",
        data : {
-          "sender" : sender,
-          "bno" : $('#contentId').html()
+          "sender_rcv" : sender,
+          "bno_rcv" : $('#planno').html()
        },
        success : function(data) {
           if(data == "") apply(sender);
@@ -221,7 +228,7 @@ function apply(sender) {
       alert("자신의 글입니다.");
       }
    else{
-      if($('#cnt').html() >= $('#numperson').html()){
+      if($('#cur').html() >= $('#limit').html()){
          alert("신청 인원을 넘었습니다.");}
       else{
          $.ajax({
@@ -229,11 +236,15 @@ function apply(sender) {
             type : "post",
              dataType : "text",
              data : {
-                "sender" : sender,
-                "userId" : $('#leader').html(),
-                "mcontent" : '(' + $('#title').html() + ') 여행에 동행을 신청합니다.',
-                "isacc" : '1',
-                "bno" : $('#contentId').html()
+                "sender_rcv" : sender,
+                "targetId_rcv" : $('#leader').html(),
+                "mcontent_rcv" : '(' + $('#title').val() + ') 여행에 동행을 신청합니다.',
+                "bno_rcv" : $('#planno').html(),
+                "sender_send" : sender,
+                "targetId_send" : $('#leader').html(),
+                "mcontent_send" : '(' + $('#title').val() + ') 여행에 동행을 신청합니다.',
+                "bno_send" : $('#planno').html(),
+                "userId" : $('#leader').html()
              },
              success : function(data) {
                 if(data == "right") alert("신청했습니다");
@@ -243,7 +254,7 @@ function apply(sender) {
                 alert("error.");
              }
          });
-      }
+    //  }
    }
 }
 
@@ -272,31 +283,39 @@ function deleteacc() {
 <%@include file="../includes/sidebar.jsp"%>
 <main>
 <header>
-   <h1 class="logo">${detail.title} ✍️</h1>
+   <h1 class="logo">board_title ✍️</h1>
 </header>
    
    <div class="container">
         <div class="section">
              <div class="col span_2_of_3">
          <div class="blog-post">
-        <h1 class="blog-title" id="title">${planner.planTitle }</h1>
-        <h2 class="date">여행 날짜 : ${detail.planDate }</h2><br/>
-        <p class="blog-content">${detail.content }</p>
-        <a href="#" class="button" id="btnapply">모집 신청하기</a>
+   
+        <c:forEach items="${userplan}" var="list" varStatus="status">
+        	<c:if test="${list.title eq title }">
+	        	<div style="float:left; width:65%;"><h1 class="blog-title">${list.title }</h1>
+				<h2 class="date">여행 날짜 : ${list.startDate } ~ ${list.endDate }</h2>
+				<div class="blog-content">descript11</div></div>		
+				<div style="float:left; width:35%;"><img src="${list.img_src}" alt="img" width="250" height="150" id="main_img"></div>
+        		<div style="clear:both;"><a href="#" class="button" id="btnapply">모집 신청하기</a> 
+        		<input type="hidden" id="title" value="${list.title }"/></div>
+        	</c:if>
+        </c:forEach>
+
                   </div>
                   <div class="blog-post" style="height:400px;">
         
-        <h5>여행지</h5><br/>
+        <h5>같은 여행, 다른 여행지</h5><br/>
         <div style="overflow:auto;height:250px;">
         
-        <c:forEach var="i" begin="1" end="${detail.planTotalDate }">
-        <div><p>Day${i }</p><c:forEach items="${userplan}" var="list" varStatus="status">
-        <c:if test="${list.planDay eq i}">
-        <p class="blog-content"><img src="${list.img_src}" alt="img" width="100" height="50">  ${list.title }</p>
-        <input type="hidden" id="totaldate" value="${list.planTotalDate }"/>
+        <div><c:forEach items="${userplan}" var="list" varStatus="status">
+        <c:if test="${list.title ne title }">
+        <div class="blog-content"><img src="${list.img_src}" alt="img" width="100" height="50" style="float:left; margin-right:5px;">
+        <div style="float:left;"><p style="margin-top:5px;">${list.title }</p>
+        <h2 class="date">여행 날짜 : ${list.startDate } ~ ${list.endDate }</h2></div></div>
         </c:if></c:forEach></div>
         
-        </c:forEach></div>
+    	</div>
       </div>
              </div>
             
@@ -312,26 +331,25 @@ function deleteacc() {
                   </div>
                   <div class="side-post">
                        <img src="http://placehold.it/800x400&text=img" alt="img">      
-            <p class="side-content">리더와 쪽지로 대화해보세요.</p><p id="leader">${planner.userId }</p>
+            <p class="side-content">리더와 쪽지로 대화해보세요.</p><p id="leader">${host.hostId }</p>
             <a href="#" class="post-link" id="sendbtn">쪽지 보내기</a>
                   </div>
             
                   <div class="side-post">
-                        <p>여행 동반자들  (${cnt} / ${detail.numperson})</p><hr/>
+                        <p>여행 동반자들  (${host.curPerson} / ${host.limitPerson})</p><hr/>
                         <div style="overflow:auto;height:100px;">
-                       <c:forEach items="${idlist }" var="list" varStatus="status">
-                          <a href="#" onclick="sendpop('${list}')">${list }</a>
+                       <c:forEach items="${guestid }" var="id" varStatus="status">
+                          <a href="#" onclick="sendpop('${id}')">${id }</a>
                        </c:forEach>
                         </div>
                   </div>
               </aside>
-        </div>
-   </div>
-   <p id="contentId" style="display:none;">${contentId }</p>
-   <p id="planno" style="display:none;">${planNo }</p>
-   <p id="cnt" style="display:none;">${cnt }</p>
-   <p id="numperson" style="display:none;">${detail.numperson}</p>
+         </div>
+    </div>
+    <p id="contentId" style="display:none;">${acc.accBno }</p>
+    <p id="planno" style="display:none;">${acc.planNo }</p>
+    <p id="cur" style="display:none;">${host.curPerson }</p>
+    <p id="limit" style="display:none;">${host.limitPerson}</p>
 </main>
-<script src="/resources/index/js/holder.js"></script>
 </body>
 </html>

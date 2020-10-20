@@ -1,6 +1,8 @@
 $(document).ready(function(){
 	$(".btn-acc").on("click",function(){
 		var title = $(this).siblings("h1.title").text();
+		$("#title-spot").text(title);
+
 		console.log(title);
 		var planNo = $(this).val();
 		console.log(planNo);
@@ -24,6 +26,6 @@ $(document).ready(function(){
 		
 		document.body.appendChild(form);
 		form.submit();
-		$("#modal-register").modal();
+				$("#modal-register").modal();
 	});
 });
