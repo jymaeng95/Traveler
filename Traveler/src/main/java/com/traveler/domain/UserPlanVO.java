@@ -23,5 +23,6 @@ public class UserPlanVO {
    private String descript;
    private String overview;
    private String is_insertAfter;
+   private String isacc;
    private PlannerVO plannerVO;
 }

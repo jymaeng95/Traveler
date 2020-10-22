@@ -3,20 +3,78 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.AccompanyBoardMapper">
-	<!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
-	<!-- result : 기본키 이외 멤버변수 지정 -->
-	<resultMap id="AccompanyBoardVO"
-		type="com.traveler.domain.AccompanyBoardVO">
-		<id column="acc_bno" property="accBno" />
-		<id column="planNo" property="planNo" />
-		<id column="hostId" property="hostId" />
-		<id column="title" property="title" />
-		<result column="board_title" property="boardTitle" />
-	</resultMap>
-	
-		<!-- 글 불러오기 -->
-	<select id="readBoard" resultMap="AccompanyBoardVO">
-		select * from accompany_board
-		where acc_bno = #{acc_bno}
-	</select>
+   <!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
+   <!-- result : 기본키 이외 멤버변수 지정 -->
+   <resultMap id="AccompanyBoardVO"
+      type="com.traveler.domain.AccompanyBoardVO">
+      <id column="acc_bno" property="accBno" />
+      <id column="planNo" property="planNo" />
+      <id column="hostId" property="hostId" />
+      <id column="title" property="title" />
+      <result column="board_title" property="boardTitle" />
+      <result column="reg_date" property="regDate" />
+   </resultMap>
+   
+   <!-- 게시판 불러오기 -->
+   <select id="readBoard" resultMap="AccompanyBoardVO">
+      <![CDATA[
+         select *
+         from
+            (
+            select /*+INDEX_DESC(accompany_board acc_bno)*/
+               rownum rn, acc_bno, planNo, hostId, title, board_title, reg_date
+            from accompany_board
+            where
+         ]]>
+
+        <include refid="criteria"></include>
+      
+       <![CDATA[
+            rownum <= #{pageNum} * 10
+            )
+         where rn > (#{pageNum} - 1) * 10
+         order by acc_bno desc
+         ]]>
+   </select>   
+   
+   <!-- 페이징 count -->
+   <select id="cntforpaging" resultType="int">
+      select count(acc_bno) from accompany_board
+      where
+        <include refid="criteria"></include>
+      acc_bno > 0
+   </select>
+   
+   <!-- 글 불러오기 -->
+   <select id="readAcc" resultMap="AccompanyBoardVO">
+      select * from accompany_board
+      where acc_bno = #{acc_bno}
+   </select>
+   
+   <insert id="insertAcc">
+      insert into accompany_board (acc_bno,planNo,hostId,title,board_title)
+      values (acc_bno.nextval, #{planNo}, #{hostId}, #{title}, #{boardTitle})
+   </insert>
+   
+   <update id="updateAcc">
+      update accompany_board
+      set   board_title = #{boardTitle}
+      where planNo = #{planNo} and title = #{title}
+   </update>
+   
+   <sql id="criteria">
+      <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+         <choose>
+            <when test="type == 'T'.toString()">
+               title like '%'||#{keyword}||'%'
+            </when>
+            <when test="type == 'C'.toString()">
+               board_title like '%'||#{keyword}||'%'
+            </when>
+            <when test="type == 'W'.toString()">
+               hostId like '%'||#{keyword}||'%'
+            </when>
+         </choose>
+      </trim>
+   </sql>
 </mapper>

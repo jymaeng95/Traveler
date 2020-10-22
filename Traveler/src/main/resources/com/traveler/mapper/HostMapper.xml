@@ -3,22 +3,37 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.HostMapper">
-	<!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
-	<!-- result : 기본키 이외 멤버변수 지정 -->
-	<resultMap id="HostVO"
-		type="com.traveler.domain.HostVO">
-		<id column="planNo" property="planNo" />
-		<id column="hostId" property="hostId" />
-		<id column="title" property="title" />
-		<result column="limit_person" property="limitPerson" />
-		<result column="cur_person" property="curPerson" />
-		<result column="acc_descript" property="descript" />
-		<result column="reg_date" property="regDate" />
-	</resultMap>
-	
-	<select id="readHost" resultMap="HostVO">
-		select *
-		from acc_host
-		where hostId = #{hostId} and title = #{title} and planNo = #{planNo}
-	</select>
+   <!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
+   <!-- result : 기본키 이외 멤버변수 지정 -->
+   <resultMap id="HostVO"
+      type="com.traveler.domain.HostVO">
+      <id column="planNo" property="planNo" />
+      <id column="hostId" property="hostId" />
+      <id column="title" property="title" />
+      <result column="limit_person" property="limitPerson" />
+      <result column="cur_person" property="curPerson" />
+      <result column="acc_descript" property="descript" />
+   </resultMap>
+   
+   <select id="readHost" resultMap="HostVO">
+      select * from acc_host
+      where hostId = #{hostId} and title = #{title} and planNo = #{planNo} 
+   </select>
+   
+   <insert id="insertHost">
+      insert into acc_host (planNo,hostId,title,limit_person,acc_descript)
+      values (#{planNo}, #{hostId}, #{title}, #{limitPerson}, #{descript})
+   </insert>
+   
+   <delete id="deleteHost">
+      delete from acc_host
+      where planNo = #{planNo} and title = #{title}
+   </delete>
+   
+   
+   <update id="updateHost">
+      update acc_host
+      set   limit_person = #{limitPerson}, acc_descript = #{descript}
+      where planNo = #{planNo} and title = #{title}
+   </update>
 </mapper>

@@ -3,32 +3,30 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.GuestMapper">
-	<!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
-	<!-- result : 기본키 이외 멤버변수 지정 -->
-	<resultMap id="GuestVO"
-		type="com.traveler.domain.GuestVO">
-		<id column="planNo" property="planNo" />
-		<id column="hostId" property="hostId" />
-		<id column="guestId" property="gusetId" />
-		<id column="title" property="title" />
-	</resultMap>
-	
-	
-	<!-- guest 추가 -->
-	<insert id="insertGuest">
-		insert into acc_guest (planNo, hostId, guestId, title)
-		values (#{planNo}, #{hostId}, #{guestId}, #{title})
-	</insert>
-	
-	<select id="isJoin" resultType="int">
-		select count(*)
-		from acc_guest
-		where planNo = #{planNo} and guestId = #{guestId} and title = #{title}
-	</select>
-	
-	<select id="readId" resultType="String">
-		select guestId
-		from acc_guest
-		where planNo = #{planNo} and hostId = #{hostId} and title = #{title}
-	</select>
+   <!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
+   <!-- result : 기본키 이외 멤버변수 지정 -->
+   <resultMap id="GuestVO"
+      type="com.traveler.domain.GuestVO">
+      <id column="planNo" property="planNo" />
+      <id column="hostId" property="hostId" />
+      <id column="guestId" property="guestId" />
+      <id column="title" property="title" />
+   </resultMap>
+   <!-- guest 추가 -->
+
+
+   <insert id="insertGuest">
+      insert into acc_guest (planNo, hostId, guestId, title)
+      values (#{planNo}, #{hostId}, #{guestId}, #{title})
+   </insert>
+   
+   <select id="isJoin" resultType="int">
+      select count(*) from acc_guest
+      where planNo = #{planNo} and guestId = #{guestId} and title = #{title} 
+   </select>
+   
+   <select id="readId" resultType="String">
+      select guestId from acc_guest
+      where planNo = #{planNo} and hostId = #{hostId} and title = #{title}
+   </select>
 </mapper>

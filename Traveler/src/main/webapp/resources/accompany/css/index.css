@@ -70,8 +70,18 @@ section.notice {
   text-align: center;
 }
 
-.board-table .th-num {
+.board-table .th-id {
   width: 100px;
+  text-align: center;
+}
+
+.board-table .th-num {
+  width: 400px;
+  text-align: center;
+}
+
+.board-table .th-title {
+
   text-align: center;
 }
 
@@ -92,7 +102,6 @@ section.notice {
   padding-left: 28px;
   padding-right: 14px;
   border-top: 1px solid #e7e7e7;
-  text-align: left;
 }
 
 .btn {
@@ -181,11 +190,11 @@ section.notice {
 }
 
 .scrolling-wrapper-flexbox::-webkit-scrollbar{ 
-	height:5px;
+   height:5px;
 }
 
 .scrolling-wrapper-flexbox .accompany {
-	flex :0 0 auto;
+   flex :0 0 auto;
 }
 
 .accompany {

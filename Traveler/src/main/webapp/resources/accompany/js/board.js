@@ -1,0 +1,1 @@
+$('.chatter_convo').scrollTop($('.chatter_convo')[0].scrollHeight);
