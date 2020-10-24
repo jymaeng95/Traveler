@@ -3,6 +3,7 @@ body {
 }
 
 .chatter {
+	height : 100%;
   right: 40px;
   bottom: 0px;
   z-index: 1000;
@@ -24,6 +25,7 @@ body {
 
 .chatter .chatter_post_signup {
   display: block;
+  height:100%;
 }
 
 .chatter.chatter_signed_up .chatter_post_signup {

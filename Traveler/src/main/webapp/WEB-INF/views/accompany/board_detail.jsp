@@ -8,8 +8,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="/resources/accompany/css/chat.css" rel="stylesheet">
+<link href="/resources/accompany/css/board.css" rel="stylesheet">
 <%@ include file="../includes/sidebar_setting.jsp"%>
 <script src="/resources/accompany/js/board.js"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+
+<!-- include firebase database -->
+<script
+	src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script
+	src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
 <style>
 /* Base Styles */
 body {
@@ -97,7 +110,9 @@ header {
 	width: 21.3em;
 	padding: 20px;
 }
-
+.side-post.chat {
+	height : 600px;
+}
 .blog-content {
 	font-size: 1em;
 	border-left: 5px solid #8EE5EE;
@@ -327,7 +342,7 @@ header {
 
 		<div class="container">
 			<div class="section">
-				<div class="col span_2_of_3">
+				<div class="col span_2_of_3" style="width: 66.1%;">
 					<div class="blog-post">
 
 						<c:forEach items="${userplan}" var="list" varStatus="status">
@@ -379,7 +394,7 @@ header {
 					</div>
 				</div>
 
-				<aside class="col span_1_of_3">
+				<aside class="col span_1_of_3" style="width: 32.2%;">
 					<div class="side-post">
 						<p class="side-content">
 							<c:if test="${userInfo.userId eq acc.hostId }">
@@ -397,80 +412,43 @@ header {
 								<i class="fas fa-list"></i>
 								<p>목록</p>
 							</button>
+							
+							<!-- if sessionid 가  guest가 맞으면 해당 버튼 추가하기 C태그 if문 필수   -->
+							<button id="btnChat" class="btnmenu" value="${acc.accBno }">
+							<i class="fas fa-comments"></i>
+								<p>채팅 참가</p>
+							</button>
+							<button id="btnChat-out" class="btnmenu" value="${acc.accBno}" style="display:none;">
+									<i class="fas fa-sign-out-alt"></i>
+								<p>채팅 나가기</p>
+							</button>
 						</p>
 					</div>
-					<div class="side-post">
-							<div class="chatter">
-
-								
-								<div class="chatter_post_signup">
-									<div class="chatter_convo">
-
-										<span class="chatter_msg_item chatter_msg_item_admin">
-											<a href="" class="chatter_avatar"><img
-												src="https://lukepeters.me/static/images/avatar_color.jpg" /></a>
-											<strong class="chatter_name">Luke Peters</strong>Hello!
-										</span> <span class="chatter_msg_item chatter_msg_item_user">
-											<a href="" class="chatter_avatar"><img
-												src="http://img.lukepeters.me/jack.jpg" /></a> <strong
-											class="chatter_name">Jack Sparrow</strong>Oh hello. Who is
-											this?
-										</span> <span class="chatter_msg_item chatter_msg_item_admin">
-											<a href="" class="chatter_avatar"><img
-												src="https://lukepeters.me/static/images/avatar_color.jpg" /></a>
-											<strong class="chatter_name">Luke Peters</strong>My name is
-											Luke. How can I help you today? :)
-										</span> <span class="chatter_msg_item chatter_msg_item_user">
-											<a href="" class="chatter_avatar"><img
-												src="http://img.lukepeters.me/jack.jpg" /></a> <strong
-											class="chatter_name">Jack Sparrow</strong>Just saying hello!
-										</span> <span class="chatter_msg_item chatter_msg_item_admin">
-											<a href="" class="chatter_avatar"><img
-												src="https://lukepeters.me/static/images/avatar_color.jpg" /></a>
-											<strong class="chatter_name">Luke Peters</strong>Oh alright,
-											Hello then Jack, you pirate, you.
-										</span> <span class="chatter_msg_item chatter_msg_item_admin">
-											<a href="" class="chatter_avatar"><img
-												src="https://lukepeters.me/static/images/avatar_color.jpg" /></a>
-											<strong class="chatter_name">Luke Peters</strong>Hello!
-										</span> <span class="chatter_msg_item chatter_msg_item_user">
-											<a href="" class="chatter_avatar"><img
-												src="http://img.lukepeters.me/jack.jpg" /></a> <strong
-											class="chatter_name">Jack Sparrow</strong>Oh hello. Who is
-											this?
-										</span> <span class="chatter_msg_item chatter_msg_item_admin">
-											<a href="" class="chatter_avatar"><img
-												src="https://lukepeters.me/static/images/avatar_color.jpg" /></a>
-											<strong class="chatter_name">Luke Peters</strong>My name is
-											Luke. How can I help you today? :)
-										</span> <span class="chatter_msg_item chatter_msg_item_user">
-											<a href="" class="chatter_avatar"><img
-												src="http://img.lukepeters.me/jack.jpg" /></a> <strong
-											class="chatter_name">Jack Sparrow</strong>Just saying hello!
-										</span> <span class="chatter_msg_item chatter_msg_item_admin">
-											<a href="" class="chatter_avatar"><img
-												src="https://lukepeters.me/static/images/avatar_color.jpg" /></a>
-											<strong class="chatter_name">Luke Peters</strong>Oh alright,
-											Hello then Jack, you pirate, you.
-										</span>
-
-									</div>
+					<div class="side-post chat" style="display:none">
+						<div class="chatter">
+							<div class="chatter_post_signup">
+								<div class="chatter_convo">
+					
+								</div>
+								<form id="chat-form">
 									<textarea name="chatter_message"
 										placeholder="Type your message here..."
-										class="chatter_field chatter_message"></textarea>
-								</div>
-
+										class="chatter_field chatter_message" id="ta-message"></textarea>
+								</form>
 							</div>
 
 						</div>
 
-						<%-- <img src="http://placehold.it/800x400&text=img" alt="img">
+					</div>
+
+					<%-- <img src="http://placehold.it/800x400&text=img" alt="img">
 						<p class="side-content">리더와 쪽지로 대화해보세요.</p>
 						<p id="leader">${host.hostId }</p>
 						<a href="#" class="post-link" id="sendbtn">쪽지 보내기</a> --%>
-					</div>
+			</aside>
+			</div>
 
-					<%-- <div class="side-post">
+			<%-- <div class="side-post">
 						<p>여행 동반자들 (${host.curPerson} / ${host.limitPerson})</p>
 						<hr />
 						<div style="overflow: auto; height: 100px;">
@@ -479,8 +457,7 @@ header {
 							</c:forEach>
 						</div>
 					</div> --%>
-				</aside>
-			</div>
+		</div>
 		</div>
 
 		<!-- acc 수정 모달 -->
