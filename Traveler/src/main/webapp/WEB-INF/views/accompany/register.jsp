@@ -40,10 +40,12 @@
                   </li>
                </ul>
             </div>
+            
             <div class="description">
                <h1 class="title"><c:out value="${list.title }"></c:out></h1>
                <h2 class="acc-time"><c:out value="${time[status.index] }"></c:out></h2>
                <p><c:out value="${list.overview }"></c:out></p>
+               <input type="hidden" name = "acc-startDate" value = "${list.startDate }">
                <button type="button" class="btn btn-link btn-acc"  onclick=""
                         style="color: #5ad67d; margin-top:20px; float:right;" value="${list.planNo }">동행 구하기</button>
             </div>

@@ -1,14 +1,15 @@
 package com.traveler.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.traveler.domain.AccompanyBoardVO;
 import com.traveler.domain.Criteria;
 import com.traveler.mapper.AccompanyBoardMapper;
-import com.traveler.mapper.AccompanyMapper;
-import com.traveler.mapper.GroupAccMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -49,5 +50,17 @@ public class AccompanyBoardServiceImpl implements AccompanyBoardService{
       // TODO Auto-generated method stub
       return mapper.updateAcc(accompany)>0;
    }
-   
+   @Override
+	public List<Map<String,Object>> getRecommendAccompany(String planDate, String startDate, String title) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String,Object> acc_data = new HashMap<>();
+		acc_data.put("planDate",planDate);
+		acc_data.put("startDate",startDate);
+		acc_data.put("title",title);
+		return mapper.readRecommendAccompany(acc_data);
+	}
+
+	public int readAccBno(AccompanyBoardVO accompany) throws Exception {
+		return mapper.readAccBno(accompany);
+	}
 }

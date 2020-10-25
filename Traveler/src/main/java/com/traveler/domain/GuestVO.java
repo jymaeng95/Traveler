@@ -8,5 +8,5 @@ public class GuestVO {
 	private String hostId;
 	private int planNo;
 	private String title;
-	
+	private int accBno;
 }

@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       <id column="hostId" property="hostId" />
       <id column="guestId" property="guestId" />
       <id column="title" property="title" />
+      <id column="acc_bno" property="accBno" />
    </resultMap>
    <!-- guest 추가 -->
 

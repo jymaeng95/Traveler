@@ -2,6 +2,7 @@ package com.traveler.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.traveler.domain.AccompanyBoardVO;
 import com.traveler.domain.AccompanyVO;
 import com.traveler.domain.Criteria;
-import com.traveler.domain.GroupAccVO;
 import com.traveler.domain.GuestVO;
 import com.traveler.domain.HostVO;
 import com.traveler.domain.MemberVO;
@@ -89,13 +89,26 @@ public class AccompanyController {
    }
    
    @RequestMapping(value="/accompany/register/detail", method=RequestMethod.GET)
-   public String guideSpot(HostVO hostVO, Model model) throws Exception {
+   public String guideSpot(HostVO hostVO, String startDate, Model model) throws Exception {
       log.info("guide");
+      System.out.println();
+      if(startDate != null) {
+         String planDate = startDate.substring(0, 10);
+         System.out.println("planDate: " + planDate + "startDate: " + startDate + "title: " + hostVO.getTitle());
+         List<Map<String,Object>> acc_recommend = a_service.getRecommendAccompany(planDate, startDate, hostVO.getTitle());
+         if(acc_recommend.size() > 0) {
+            for(int i=0; i<acc_recommend.size(); i++) {
+               System.out.println(acc_recommend.get(i));
+            }
+            System.out.println(acc_recommend.get(0).get("DATE_RANK"));
+         }
+//         System.out.println(planDate);
+      }
       model.addAttribute("planNo", hostVO.getPlanNo());
       model.addAttribute("title", hostVO.getTitle());
+      model.addAttribute("startDate", startDate);
       return "/accompany/register-modal";
    }
-   
    
    ///accompany/board_deatail?planNo=3&title=휴애리&hostId=11
    @RequestMapping(value="/accompany/board_detail", method=RequestMethod.GET)
@@ -134,21 +147,26 @@ public class AccompanyController {
    //동행 모집 폼 전송
    @RequestMapping(value="/accompany/recruit", method=RequestMethod.POST)
    public String insertAcc(AccompanyBoardVO accompany, HostVO host, RedirectAttributes rttr, 
-         HttpSession session, UserPlanVO plan) throws Exception {
-      log.info("모집글 작성");
-      
+		   HttpSession session, UserPlanVO plan) throws Exception {
+      log.info("紐⑥쭛湲� �옉�꽦");
+//      System.out.println(accompany.getStartDate());
       MemberVO member = (MemberVO)session.getAttribute("userInfo");
       accompany.setHostId(member.getUserId());
       host.setHostId(member.getUserId());
       
-     plan.setIsacc("Y");
-     u_service.updateisacc(plan);
-      
+      System.out.println("check" + host.getHostId() + " " + host.getPlanNo() + ' ' + host.getTitle() + " " + accompany.getTitle()
+      + accompany.getBoardTitle());
+	  plan.setIsacc("Y");
+	  u_service.updateisacc(plan);
+	  a_service.insertAcc(accompany);
+	  
+      int acc_bno = a_service.readAccBno(accompany);
+      host.setAccBno(acc_bno);
       h_service.insertHost(host);
-      a_service.insertAcc(accompany);
 
       return "redirect:/accompany/index";
    }
+
    
    @ResponseBody
    @RequestMapping(value="/accompany/delete", method=RequestMethod.POST)
@@ -156,7 +174,7 @@ public class AccompanyController {
       log.info("delete acc");
       plan.setIsacc("N");
       u_service.updateisacc(plan);
-      
+     
       return h_service.deleteHost(host);
    }
    
