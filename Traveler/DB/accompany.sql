@@ -22,3 +22,4 @@ NOCYCLE;
 
 drop sequence bno;
 drop table accompany;
+drop table groupacc;

@@ -32,6 +32,7 @@ import com.traveler.service.HostService;
 import com.traveler.service.PlannerService;
 import com.traveler.service.UserPlanService;
 import com.traveler.util.DateUtils;
+import com.traveler.util.RandomAcc;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -92,23 +93,45 @@ public class AccompanyController {
    public String guideSpot(HostVO hostVO, String startDate, Model model) throws Exception {
       log.info("guide");
       System.out.println();
+      List<Map<String,Object>> acc_sortRecommend = new ArrayList<>();
       if(startDate != null) {
-         String planDate = startDate.substring(0, 10);
-         System.out.println("planDate: " + planDate + "startDate: " + startDate + "title: " + hostVO.getTitle());
-         List<Map<String,Object>> acc_recommend = a_service.getRecommendAccompany(planDate, startDate, hostVO.getTitle());
-         if(acc_recommend.size() > 0) {
-            for(int i=0; i<acc_recommend.size(); i++) {
-               System.out.println(acc_recommend.get(i));
-            }
-            System.out.println(acc_recommend.get(0).get("DATE_RANK"));
-         }
-//         System.out.println(planDate);
+    	  String planDate = startDate.substring(0, 10);
+    	  System.out.println("planDate: " + planDate + "startDate: " + startDate + "title: " + hostVO.getTitle());
+    	  List<Map<String,Object>> acc_recommend = a_service.getRecommendAccompany(planDate, startDate, hostVO.getTitle());
+    	  System.out.println(acc_sortRecommend);
+    	  if(acc_recommend.size() > 0) {
+    		  if(acc_recommend.size() > 3) {
+    			  RandomAcc rand_acc = new RandomAcc();
+    			  acc_sortRecommend = rand_acc.getRandomAccompany(acc_recommend);
+//    			  System.out.println(acc_sortRecommend.size());
+    	    	  for(int i=0; i<acc_sortRecommend.size(); i++) {
+    	    		  System.out.println(acc_sortRecommend.get(i));
+    	    	  }
+    		  }else {
+    			  for(int i=0; i<acc_recommend.size(); i++) {
+    				  acc_sortRecommend.add(acc_recommend.get(i));
+    			  }
+    			  for(int i=0; i<acc_sortRecommend.size(); i++) {
+    	    		  System.out.println(acc_sortRecommend.get(i));
+    	    	  }
+    		  }
+    		  
+//	    	  for(int i=0; i<acc_recommend.size(); i++) {
+//	    		  System.out.println(acc_recommend.get(i));
+//	    	  }
+//	    	  System.out.println(acc_recommend.get(0).get("DATE_RANK"));
+
+    		  
+    	  }
+//    	  System.out.println(planDate);
       }
       model.addAttribute("planNo", hostVO.getPlanNo());
       model.addAttribute("title", hostVO.getTitle());
       model.addAttribute("startDate", startDate);
+      model.addAttribute("accRandRecommend", acc_sortRecommend);
       return "/accompany/register-modal";
    }
+
    
    ///accompany/board_deatail?planNo=3&title=휴애리&hostId=11
    @RequestMapping(value="/accompany/board_detail", method=RequestMethod.GET)
@@ -159,7 +182,6 @@ public class AccompanyController {
 	  plan.setIsacc("Y");
 	  u_service.updateisacc(plan);
 	  a_service.insertAcc(accompany);
-	  
       int acc_bno = a_service.readAccBno(accompany);
       host.setAccBno(acc_bno);
       h_service.insertHost(host);

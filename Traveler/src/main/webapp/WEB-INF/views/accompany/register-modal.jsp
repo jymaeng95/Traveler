@@ -1,6 +1,8 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,46 +25,35 @@
 </head>
 <body>
 
-	<table class="table"
-		style="margin-bottom: 50px; background: gainsboro;">
-		<!-- c태그로 DB에서 추천 가져와서 하기 -->
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">First</th>
-				<th scope="col">Last</th>
-				<th scope="col">Handle</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th scope="row">1</th>
-				<td>Mark</td>
-				<td>Otto</td>
-				<td>@mdo</td>
-				<td class="row-options"><i class="fas fa-search-plus"></i> <i
-					class="fas fa-trash-alt"></i></td>
-			</tr>
-			<tr>
-				<th scope="row">2</th>
-				<td>Jacob</td>
-				<td>Thornton</td>
-				<td>@fat</td>
-				<td class="row-options"><i class="fas fa-search-plus"></i> <i
-					class="fas fa-trash-alt"></i></td>
-			</tr>
-			<tr>
-				<th scope="row">3</th>
-				<td>Larry</td>
-				<td>the Bird</td>
-				<td>@twitter</td>
-				<td class="row-options"><i class="fas fa-search-plus"></i> <i
-					class="fas fa-trash-alt"></i></td>
-			</tr>
-		</tbody>
-	</table>
-
+	<c:if test="${fn:length(accRandRecommend) != 0}">
+		<table class="table"
+			style="margin-bottom: 50px; background: gainsboro;">
+			<!-- c태그로 DB에서 추천 가져와서 하기 -->
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">HostId</th>
+					<th scope="col">Board_title</th>
+					<th scope="col">Participant</th>
+					<th scope="col">date</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${accRandRecommend }" var="accList"
+					varStatus="status">
+					<tr title="${accList.ACC_DESCRIPT }">
+						<th scope="row"><c:out value="${accList.HOSTID }"></c:out></th>
+						<td><c:out value="${accList.BOARD_TITLE }"></c:out></td>
+						<td><c:out
+								value="${accList.CUR_PERSON } / ${accList.LIMIT_PERSON }"></c:out></td>
+						<td><c:out value="${accList.STARTDATE }"></c:out></td>
+						<td class="row-options"><i class="fas fa-search-plus"></i> <i
+							class="fas fa-trash-alt"></i></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</c:if>
 
 	<!-- 신청서 작성하기  -->
 	<form id="contact" action="/accompany/recruit" method="post"
@@ -94,9 +85,6 @@
 		<input type="hidden" name="planNo" value="${planNo }"> <input
 			type="hidden" name="title" value="${title }"> <input
 			type="hidden" name="startDate" value="${startDate }">
-
 	</form>
 </body>
-
-
 </html>

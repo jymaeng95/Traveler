@@ -53,9 +53,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from accompany_board
 		where acc_bno = #{acc_bno}
 	</select>
-	
-	
-	
+
+
+
 	<insert id="insertAcc">
 		insert into accompany_board
 		(acc_bno,planNo,hostId,title,board_title, startDate)
@@ -63,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(acc_bno.nextval, #{planNo}, #{hostId}, #{title}, #{boardTitle},
 		#{startDate})
 	</insert>
+
 
 	<update id="updateAcc">
 		update accompany_board
@@ -88,17 +89,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 
-   <select id="readRecommendAccompany" parameterType="HashMap" resultType="Map">
-   <![CDATA[
-      select *
-      from (select a.acc_bno AS acc_bno, a.planno AS planNo, a.hostid AS hostId, a.board_title AS board_title, a.title AS title,
-         a.reg_date AS reg_date, a.startdate AS startDate, rank() over(order by b.min_date) AS date_rank
-         from accompany_board a, (select accompany_board.acc_bno, ABS((to_date(startDate, 'YYYY-MM-DD-HH24-MI') - to_date(#{startDate}, 'YYYY-MM-DD-HH24-MI'))*24*60) AS min_date
-            from accompany_board, acc_host where accompany_board.acc_bno = acc_host.acc_bno and acc_host.cur_person != acc_host.limit_person) b
-         where a.acc_bno = b.acc_bno and a.title = #{title} and SUBSTR(a.startDate,1,10) = #{planDate})
-      where date_rank <= 3
-   ]]>
-   </select>
+	<select id="readRecommendAccompany" parameterType="HashMap"
+		resultType="Map">
+	<![CDATA[
+		select ac.acc_bno, ac.planno, ac.hostid, ac.board_title, ac.title, ac.reg_date, ac.startdate, ac.date_rank, acc_host.cur_person, acc_host.limit_person, acc_host.acc_descript
+		from acc_host, 
+			(select a.acc_bno, a.planno, a.hostid, a.board_title, a.title, a.reg_date, a.startdate, rank() over(order by b.min_date) AS date_rank
+			from accompany_board a, 
+				(select accompany_board.acc_bno, ABS((to_date(startDate, 'YYYY-MM-DD-HH24-MI') - to_date(#{startDate}, 'YYYY-MM-DD-HH24-MI'))*24*60) AS min_date
+				from accompany_board, acc_host where accompany_board.acc_bno = acc_host.acc_bno and acc_host.cur_person != acc_host.limit_person) b
+			where a.acc_bno = b.acc_bno and a.title = #{title} and SUBSTR(a.startDate,1,10) = #{planDate}) ac
+		where ac.acc_bno = acc_host.acc_bno and date_rank <= 3
+	]]>
+	</select>
 
 	<select id="readAccBno" resultType="int">
 		select acc_bno
