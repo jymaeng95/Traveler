@@ -57,7 +57,8 @@ public class AccompanyController {
       List<PlannerVO> planner = new ArrayList<>();
       if(planNo.size() >0) {
          for(int no : planNo) {
-            planner.add(p_service.getAllPlannerFromPlanNo(no));
+        	 if(u_service.moreIsAcc(no))
+        		 planner.add(p_service.getAllPlannerFromPlanNo(no));
          }
       }
       model.addAttribute("accPlanner",planner);
@@ -192,12 +193,12 @@ public class AccompanyController {
    
    @ResponseBody
    @RequestMapping(value="/accompany/delete", method=RequestMethod.POST)
-   public boolean deleteAcc(HostVO host, UserPlanVO plan) throws Exception {
+   public boolean deleteAcc(AccompanyBoardVO accompany, UserPlanVO plan) throws Exception {
       log.info("delete acc");
       plan.setIsacc("N");
       u_service.updateisacc(plan);
      
-      return h_service.deleteHost(host);
+      return a_service.deleteAcc(accompany);
    }
    
    @RequestMapping(value="/accompany/update", method=RequestMethod.POST)

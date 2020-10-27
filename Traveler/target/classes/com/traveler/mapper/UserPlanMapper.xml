@@ -3,195 +3,206 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.UserPlanMapper">
-   <resultMap id="UserPlanVO"
-      type="com.traveler.domain.UserPlanVO">
-      <id column="planNo" property="planNo" />
-      <id column="userId" property="userId" />
-      <id column="title" property="title" />
-      <result column="contentId" property="contentId" />
-      <result column="contentTypeId" property="contentTypeId" />
-      <result column="addr" property="addr" />
-      <result column="img_src" property="img_src" />
-      <result column="mapX" property="mapX" />
-      <result column="mapY" property="mapY" />
-      <result column="planDate" property="planDate" />
-      <result column="planDay" property="planDay" />
-      <result column="planTotalDate" property="planTotalDate" />
-      <result column="overview" property="overview" />
-      <result column="startDate" property="startDate" />
-      <result column="endDate" property="endDate" />
-      <result column="descript" property="descript" />
-      <result column="is_insertAfter" property="is_insertAfter" />
-      <result column="isacc" property="isacc" />
-      <collection property="plannerVO"
-         ofType="com.traveler.domain.PlannerVO">
-         <id column="planNo" property="planNo" />
-         <id column="userId" property="userId" />
-         <result column="planTitle" property="planTitle" />
-         <result column="info" property="info" />
-      </collection>
-   </resultMap>
-   <insert id="insertPlanFirst">
-      insert into userplan (planno,
-      userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,overview)
-      values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
-      #{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
-      #{planTotalDate}, #{overview})
-   </insert>
-   <update id="finalPlan">
-      merge into userplan
-      using dual
-      on (planNo=#{planNo} and
-      userId=#{userId}
-      and title=#{title} and is_insertAfter=#{is_insertAfter})
-      when matched
-      then
-      <if test='descript!=null'>
-         update set
-         planDay = #{planDay},
-         planDate=#{planDate},planTotalDate =#{planTotalDate},
-         startDate =
-         #{startDate}, endDate=#{endDate}, descript=#{descript}
-         when not
-         matched then
-      </if>
-      <if test='descript==null'>
-         update set
-         planDay = #{planDay},
-         planDate=#{planDate},planTotalDate =#{planTotalDate},
-         startDate =
-         #{startDate}, endDate=#{endDate}
-         when not matched then
-      </if>
-      <if test='descript != null'>
-         insert
-         (planNo,userId,title,planDate,planDay,planTotalDate,startDate,endDate,descript,is_insertAfter)
-         VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay},
-         #{planTotalDate},#{startDate},
-         #{endDate},#{descript},#{is_insertAfter})
-      </if>
-      <if test='descript == null'>
-         insert
-         (planNo,userId,title,planDate,planDay,planTotalDate,startDate,endDate,is_insertAfter)
-         VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay},
-         #{planTotalDate},#{startDate},
-         #{endDate},#{is_insertAfter})
-      </if>
-   </update>
+	<resultMap id="UserPlanVO"
+		type="com.traveler.domain.UserPlanVO">
+		<id column="planNo" property="planNo" />
+		<id column="userId" property="userId" />
+		<id column="title" property="title" />
+		<result column="contentId" property="contentId" />
+		<result column="contentTypeId" property="contentTypeId" />
+		<result column="addr" property="addr" />
+		<result column="img_src" property="img_src" />
+		<result column="mapX" property="mapX" />
+		<result column="mapY" property="mapY" />
+		<result column="planDate" property="planDate" />
+		<result column="planDay" property="planDay" />
+		<result column="planTotalDate" property="planTotalDate" />
+		<result column="overview" property="overview" />
+		<result column="startDate" property="startDate" />
+		<result column="endDate" property="endDate" />
+		<result column="descript" property="descript" />
+		<result column="is_insertAfter" property="is_insertAfter" />
+		<result column="isacc" property="isacc" />
+		<collection property="plannerVO"
+			ofType="com.traveler.domain.PlannerVO">
+			<id column="planNo" property="planNo" />
+			<id column="userId" property="userId" />
+			<result column="planTitle" property="planTitle" />
+			<result column="info" property="info" />
+		</collection>
+	</resultMap>
+	<insert id="insertPlanFirst">
+		insert into userplan (planno,
+		userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,overview)
+		values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
+		#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
+		#{planTotalDate}, #{overview})
+	</insert>
+	<update id="finalPlan">
+		merge into userplan
+		using dual
+		on (planNo=#{planNo} and
+		userId=#{userId}
+		and title=#{title} and is_insertAfter=#{is_insertAfter})
+		when matched
+		then
+		<if test='descript!=null'>
+			update set
+			planDay = #{planDay},
+			planDate=#{planDate},planTotalDate =#{planTotalDate},
+			startDate =
+			#{startDate}, endDate=#{endDate}, descript=#{descript}
+			when not
+			matched then
+		</if>
+		<if test='descript==null'>
+			update set
+			planDay = #{planDay},
+			planDate=#{planDate},planTotalDate =#{planTotalDate},
+			startDate =
+			#{startDate}, endDate=#{endDate}
+			when not matched then
+		</if>
+		<if test='descript != null'>
+			insert
+			(planNo,userId,title,planDate,planDay,planTotalDate,startDate,endDate,descript,is_insertAfter)
+			VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},
+			#{endDate},#{descript},#{is_insertAfter})
+		</if>
+		<if test='descript == null'>
+			insert
+			(planNo,userId,title,planDate,planDay,planTotalDate,startDate,endDate,is_insertAfter)
+			VALUES (#{planNo},#{userId},#{title}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},
+			#{endDate},#{is_insertAfter})
+		</if>
+	</update>
 
-   <select id="readPlans" resultMap="UserPlanVO">
-      select * from userplan where
-      userId = #{userId} and planNo = #{planNo} and is_insertAfter = 'N'
-      order by planDay
-   </select>
+	<select id="readPlans" resultMap="UserPlanVO">
+		select * from userplan where
+		userId = #{userId} and planNo = #{planNo} and is_insertAfter = 'N'
+		order by planDay
+	</select>
 
-   <select id="readSchedule" resultMap="UserPlanVO">
-      select * from userplan where
-      userId = #{userId} and planNo = #{planNo}
-      order by planDay, startDate
-   </select>
+	<select id="readSchedule" resultMap="UserPlanVO">
+		select * from userplan where
+		userId = #{userId} and planNo = #{planNo}
+		order by planDay, startDate
+	</select>
 
-   <delete id="deletePlan">
-      delete from userplan
-      where userId = #{userId} and
-      planNo = #{planNo}
-   </delete>
+	<delete id="deletePlan">
+		delete from userplan
+		where userId = #{userId} and
+		planNo = #{planNo}
+	</delete>
 
-   <update id="updatePlan">
-      merge into userplan
-      using dual
-      on (planNo=#{planNo} and
-      userId=#{userId} and title=#{title})
-      when matched then
-      update set
+	<update id="updatePlan">
+		merge into userplan
+		using dual
+		on (planNo=#{planNo} and
+		userId=#{userId} and title=#{title})
+		when matched then
+		update set
 
-      planDay = #{planDay}, planDate=#{planDate}
-      when not matched then
-      insert
-      (planNo,userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate)
-      VALUES (#{planNo},#{userId},#{title} #{contentId},#{contentTypeId},
-      #{addr}, #{img_src},
-      #{mapX}, #{mapY}, #{planDate},
-      #{planDay},
-      #{planTotalDate})
-   </update>
+		planDay = #{planDay}, planDate=#{planDate}
+		when not matched then
+		insert
+		(planNo,userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate)
+		VALUES (#{planNo},#{userId},#{title} #{contentId},#{contentTypeId},
+		#{addr}, #{img_src},
+		#{mapX}, #{mapY}, #{planDate},
+		#{planDay},
+		#{planTotalDate})
+	</update>
 
-   <!-- <select id="readAllPlans" resultMap="UserPlanVO"> select planno, plantitle, 
-      userid from userplan where userid=#{userId} group by planno,plantitle,userid 
-      </select> -->
+	<!-- <select id="readAllPlans" resultMap="UserPlanVO"> select planno, plantitle, 
+		userid from userplan where userid=#{userId} group by planno,plantitle,userid 
+		</select> -->
 
-   <select id="getCountPlanNo" resultType="int">
-      select
-      nvl(max(planno),0)+1
-      from userplan
-   </select>
+	<select id="getCountPlanNo" resultType="int">
+		select
+		nvl(max(planno),0)+1
+		from userplan
+	</select>
 
-   <select id="readPlanDate" resultMap="UserPlanVO">
-      select planDate, planDay,
-      planTotalDate
-      from userplan
-      where planno=#{planNo} and userid=#{userId}
-      and rownum = 1
-      order by planDate
-   </select>
+	<select id="readPlanDate" resultMap="UserPlanVO">
+		select planDate, planDay,
+		planTotalDate
+		from userplan
+		where planno=#{planNo} and userid=#{userId}
+		and rownum = 1
+		order by planDate
+	</select>
 
 
 
-   <insert id="insertModifyPlanFirst">
-      <if test='descript!=null'>
-         insert into userplan (planno,
-         userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,startDate,endDate,descript,overview)
-         values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
-         #{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
-         #{planTotalDate},#{startDate},#{endDate},#{descript}, #{overview})
-      </if>
-      <if test='descript==null'>
-         insert into userplan (planno,
-         userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,startDate,endDate,overview)
-         values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
-         #{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
-         #{planTotalDate},#{startDate},#{endDate}, #{overview})
-      </if>
-   </insert>
+	<insert id="insertModifyPlanFirst">
+		<if test='descript!=null'>
+			insert into userplan (planno,
+			userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,startDate,endDate,descript,overview)
+			values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
+			#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},#{endDate},#{descript}, #{overview})
+		</if>
+		<if test='descript==null'>
+			insert into userplan (planno,
+			userId,title,contentId,contentTypeId,addr,img_src,mapX,mapY,planDate,planDay,planTotalDate,startDate,endDate,overview)
+			values (#{planNo}, #{userId},#{title},#{contentId},#{contentTypeId},
+			#{addr}, #{img_src}, #{mapX}, #{mapY}, #{planDate}, #{planDay},
+			#{planTotalDate},#{startDate},#{endDate}, #{overview})
+		</if>
+	</insert>
 
-   <delete id="deleteSchedule">
-      delete from userplan
-      where userId = #{userId} and
-      planNo = #{planNo} and is_insertAfter = 'Y'
-   </delete>
+	<delete id="deleteSchedule">
+		delete from userplan
+		where userId = #{userId} and
+		planNo = #{planNo} and is_insertAfter = 'Y'
+	</delete>
 
-   <select id="getStartDate" resultMap="UserPlanVO">
-      select distinct planDate,
-      planTotalDate
-      from userplan
-      where userId = #{userId} and planNo =
-      #{planNo} and planDay = '1'
-   </select>
+	<select id="getStartDate" resultMap="UserPlanVO">
+		select distinct planDate,
+		planTotalDate, planday
+		from userplan
+		where userId = #{userId} and planNo =
+		#{planNo} and planDay = '1'
+	</select>
 
-   <select id="readStartDate" resultMap="UserPlanVO">
-      select distinct planDate,
-      planTotalDate
-      from userplan
-      where planNo = #{planNo} and planDay = '1'
-   </select>
+	<select id="readStartDate" resultMap="UserPlanVO">
+		select planDate, planTotalDate, planDay
+		from (select distinct planDate as planDate, planTotalDate as
+		planTotalDate, planday as planDay
+		from userplan
+		where planno = #{planNo}
+		order by planday
+		)
+		where rownum = 1
 
-   <select id="readPlanNoAfterToday" resultType="integer">
-      select planno
-      from
-      userplan
-      where userid=#{userId} and planDate > sysDate
-      group by planno
-   </select>
+	</select>
 
-   <select id="readPlanForAccompany" resultMap="UserPlanVO">
-      select *
-      from userplan
-      where planno=#{planNo} and planDate > sysDate
-      order by planDate asc
-   </select>
-   <update id="updateisacc">
-      update userplan
-      set   isacc = #{isacc}
-      where planno = #{planNo} and title = #{title}
-   </update>
+	<select id="readPlanNoAfterToday" resultType="integer">
+		select planno
+		from
+		userplan
+		where userid=#{userId} and planDate > sysDate
+		group by planno
+	</select>
+
+	<select id="readPlanForAccompany" resultMap="UserPlanVO">
+		select *
+		from userplan
+		where planno=#{planNo} and planDate > sysDate
+		order by planDate asc
+	</select>
+	<update id="updateisacc">
+		update userplan
+		set isacc = #{isacc}
+		where planno = #{planNo} and title = #{title}
+	</update>
+	
+	<select id="countIsAcc" resultType="int">
+		select count(isacc) 
+		from userplan 
+		where planno = #{planNo} and isacc='N'
+	</select>
 </mapper>

@@ -40,4 +40,6 @@ public interface UserPlanService {
    public List<UserPlanVO> getPlanForAccompany(int planNo);
    
    public boolean updateisacc(UserPlanVO plan) throws Exception;
+   
+   public boolean moreIsAcc(int planNo);
 }

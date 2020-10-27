@@ -16,4 +16,5 @@ public interface AccompanyBoardMapper {
 	public int cntforpaging();
 	public List<Map<String,Object>> readRecommendAccompany(Map<String,Object> acc_data);
 	public int readAccBno(AccompanyBoardVO accompany);
+	public int deleteAcc(AccompanyBoardVO accompany);
 }

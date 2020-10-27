@@ -28,11 +28,6 @@ public class HostServiceImpl implements HostService{
       return mapper.insertHost(host)>0;
    }
 
-   @Override
-   public boolean deleteHost(HostVO host) throws Exception {
-      // TODO Auto-generated method stub
-      return mapper.deleteHost(host)>0;
-   }
 
    @Override
    public boolean updateHost(HostVO host) throws Exception {

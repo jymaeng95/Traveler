@@ -110,4 +110,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where hostId = #{hostId} and title = #{title} and
 		planNo = #{planNo}
 	</select>
+
+	<delete id="deleteAcc">
+		delete from accompany_board
+		where planNo = #{planNo} and title = #{title}
+	</delete>
+
 </mapper>

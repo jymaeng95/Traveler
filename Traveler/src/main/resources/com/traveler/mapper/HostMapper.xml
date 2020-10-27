@@ -27,13 +27,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 
-
-	<delete id="deleteHost">
-		delete from acc_host
-		where planNo = #{planNo} and title = #{title}
-	</delete>
-
-
 	<update id="updateHost">
 		update acc_host
 		set limit_person = #{limitPerson}, acc_descript = #{descript}

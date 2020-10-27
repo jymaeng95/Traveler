@@ -273,7 +273,7 @@ $(document).ready(function(){
                else buffer.descript = "";
                buffer.planTitle = planTitle;
                buffer.planDate = date.getFullYear()+"-"+((date.getMonth()+1)<10?'0':'')+(date.getMonth()+1)+"-"+(date.getDate()<10?'0':'')+date.getDate();
-               buffer.planDay = allInfo[j].planDay;
+               buffer.planDay = calcPlanDay(allInfo[0].planDate, buffer.planDate, allInfo[0].planDay);
                buffer.planTotalDate = allInfo[j].planTotalDate;
                buffer.is_insertAfter = allInfo[j].is_insertAfter;
                finalData.push(buffer);

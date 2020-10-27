@@ -15,10 +15,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    </resultMap>
    <!-- guest 추가 -->
 
-
    <insert id="insertGuest">
-      insert into acc_guest (planNo, hostId, guestId, title)
-      values (#{planNo}, #{hostId}, #{guestId}, #{title})
+      insert into acc_guest (planNo, hostId, guestId, title, acc_bno)
+      values (#{planNo}, #{hostId}, #{guestId}, #{title}, #{accBno})
    </insert>
    
    <select id="isJoin" resultType="int">
@@ -26,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       where planNo = #{planNo} and guestId = #{guestId} and title = #{title} 
    </select>
    
-   <select id="readId" resultType="String">
+   <select id="readId" resultMap="GuestVO">
       select guestId from acc_guest
       where planNo = #{planNo} and hostId = #{hostId} and title = #{title}
    </select>

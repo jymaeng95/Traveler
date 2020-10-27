@@ -1,5 +1,7 @@
 package com.traveler.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.traveler.domain.GuestVO;
@@ -32,7 +34,7 @@ public class GuestServiceImpl implements GuestService {
    }
 
    @Override
-   public String readId(GuestVO guest) throws Exception {
+   public List<GuestVO> readId(GuestVO guest) throws Exception {
       // TODO Auto-generated method stub
       return mapper.readId(guest);
    }

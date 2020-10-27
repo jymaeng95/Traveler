@@ -16,4 +16,5 @@ public interface AccompanyBoardService {
 	public int cntforpaging() throws Exception;
 	public List<Map<String,Object>> getRecommendAccompany(String planDate, String startDate, String title) throws Exception;
 	public int readAccBno(AccompanyBoardVO accompany) throws Exception;
+	public boolean deleteAcc(AccompanyBoardVO accompany) throws Exception;
 }

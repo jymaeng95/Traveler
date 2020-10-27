@@ -12,7 +12,7 @@ public class ReceiveMsgVO {
 	private String senddate_rcv;
 	private String readstatus_rcv;	
 	private String status_rcv;
-	private int bno_rcv;
+	private String bno_rcv;
 	private MemberVO memberVO;
 	private int pageNum = 1;
 	private String tabPage = "rcv_list";
