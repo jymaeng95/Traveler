@@ -42,4 +42,6 @@ public interface UserPlanService {
    public boolean updateisacc(UserPlanVO plan) throws Exception;
    
    public boolean moreIsAcc(int planNo);
+   
+   public List<UserPlanVO> getPlanForboard(int planNo);
 }

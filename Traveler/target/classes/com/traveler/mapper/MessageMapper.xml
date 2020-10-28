@@ -65,12 +65,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (
          select /*+INDEX_DESC(msg_rcv mid_rcv)*/
             rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
-         from msg_rcv, member
+         from msg_rcv
          where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv} 
          and #{tabPage} = 'rcv_list' and bno_rcv = '0'
          )
       where rn > (#{pageNum} - 1) * 10
       ]]>
+      order by mid_rcv desc      
    </select>
    
    <!-- 보낸쪽지함 불러오기 -->
@@ -81,11 +82,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (
          select /*+INDEX_DESC(msg_send mid_send)*/
             rownum rn, mid_send, sender_send, targetId_send, mcontent_send, senddate_send, readstatus_send, status_send
-         from msg_send, member
+         from msg_send
          where rownum <= #{pageNum} * 10 and sender_send = #{targetId_send} and #{tabPage} = 'send_list'
          and bno_send = '0')
       where rn > (#{pageNum} - 1) * 10 
       ]]>
+      order by mid_send desc      
    </select>
    
    <!-- 보관함(받은 쪽지) -->
@@ -96,12 +98,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (
          select /*+INDEX_DESC(msg_rcv mid_rcv)*/
             rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
-         from msg_rcv, member
+         from msg_rcv
          where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv}
             and #{tabPage} = 'archive' and status_rcv = 1 and #{arcPage} = 'rcv_arc' and bno_rcv = '0'
          )
       where rn > (#{pageNum} - 1) * 10 
       ]]>
+      order by mid_rcv desc
    </select>
    
    <!-- 보관함(보낸 쪽지) -->
@@ -112,12 +115,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (
          select /*+INDEX_DESC(msg_send mid_send)*/
             rownum rn, mid_send, sender_send, targetId_send, mcontent_send, senddate_send, readstatus_send, status_send
-         from msg_send, member
+         from msg_send
          where rownum <= #{pageNum} * 10 and sender_send = #{targetId_send} 
             and #{tabPage} = 'archive' and status_send = 1 and #{arcPage} = 'send_arc' and bno_send = '0'
          )
       where rn > (#{pageNum} - 1) * 10 
       ]]>
+      order by mid_send desc
    </select>
    
    <!-- 동행신청 -->
@@ -128,12 +132,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          (
          select /*+INDEX_DESC(msg_rcv mid_rcv)*/
             rownum rn, mid_rcv, sender_rcv, targetId_rcv, mcontent_rcv, senddate_rcv, readstatus_rcv, status_rcv
-         from msg_rcv, member
+         from msg_rcv
          where rownum <= #{pageNum} * 10 and targetId_rcv = #{targetId_rcv}
             and #{tabPage} = 'accom' and bno_rcv != '0'
          )
       where rn > (#{pageNum} - 1) * 10 
       ]]>
+      order by mid_rcv desc
    </select>
    
    <select id="Read" resultMap="ReceiveMsgVO">
@@ -162,17 +167,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    <select id="countMessage3" resultType="int">
       select count(*)
-      from msg_rcv, member
+      from msg_rcv
       where targetId_rcv = #{targetId_rcv} and status_rcv = '1' and bno_rcv = '0'
    </select>
    <select id="countMessage4" resultType="int">
       select count(*)
-      from msg_send, member
+      from msg_send
       where sender_send = #{targetId_send} and status_send = '1' and bno_send = '0'
    </select>
    <select id="countMessage5" resultType="int">
       select count(*)
-      from msg_rcv, member
+      from msg_rcv
       where targetId_rcv = #{targetId_rcv} and bno_rcv != '0' 
    </select>   
 

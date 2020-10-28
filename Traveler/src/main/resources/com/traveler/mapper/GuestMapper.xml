@@ -25,8 +25,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       where planNo = #{planNo} and guestId = #{guestId} and title = #{title} 
    </select>
    
-   <select id="readId" resultMap="GuestVO">
+   <select id="readId" resultType="String">
       select guestId from acc_guest
       where planNo = #{planNo} and hostId = #{hostId} and title = #{title}
+   </select>
+   
+   <delete id="deleteGuest">
+     delete from acc_guest
+     where planNo = #{planNo} and guestId = #{guestId} and title = #{title} 
+   </delete>
+   <select id="readguestAcc" resultMap="GuestVO">
+      select acc_bno from acc_guest
+      where guestId = #{guestId}
    </select>
 </mapper>

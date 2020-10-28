@@ -8,7 +8,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="/resources/accompany/css/chat.css" rel="stylesheet">
-<link href="/resources/accompany/css/board.css" rel="stylesheet">
 <%@ include file="../includes/sidebar_setting.jsp"%>
 <script src="/resources/accompany/js/board.js"></script>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -207,131 +206,144 @@ header {
    rgba($red,
    1)!important);
 }
-}
 </style>
-
 </head>
-<script type="text/javascript">
-   $(document).ready(function() {
-      //    var strDate1 = $('.date').html();
-      //    var date = new Date(strDate1);
-      //    var totaldate = $('#totaldate').val();
-      //    totaldate *= 1;
-      //    $('.date').html(strDate1 + " 에서 " +
-      //          date.getFullYear() + "-" + (date.getMonth()+1) + "-" + (date.getDate() + totaldate-1));
+<script>
+$(document).ready(function() {
 
-      $("#btnlist").click(function() {
-         location.href = "/accompany/index";
-      });
+    $("#btnlist").click(function() {
+       location.href = "/accompany/index";
+    });
 
-      $("#sendbtn").click(function() {
-         var id = $('#leader').html();
-         sendpop(id);
-      });
+    $("#sendbtn").click(function() {
+       var id = $('#leader').html();
+       sendpop(id);
+    });
 
-   });
+ });
 
-   var flag = true;
+ var flag = true;
 
-   function btnclick() {
+ function btnclick() {
 
-      if (flag) {
-         console.log("첫번째클릭");
-         $('.blog-post textarea').css("display", "block");
-         flag = false;
-      } else {
-         console.log("두번째클릭");
-         checkapply('${userInfo.userId}');
-         $('.blog-post textarea').css("display", "none");
-         flag = true;
-      }
-   }
-   //쪽지보내기
-   function sendpop(rcver) {
-      var url = "/mypage/popup_send?rcver=" + rcver;
-      var name = "popup";
-      window.open(url, name, "width=500, height=500, resizable=yes");
-   }
-   function checkapply(sender) {
-      $.ajax({
-         url : "/mypage/message/cntapply",
-         type : "post",
-         dataType : "text",
-         data : {
-            "sender_rcv" : sender,
-            "bno_rcv" : $('#planno').html()
-         },
-         success : function(data) {
-            if (data == "")
-               apply(sender);
-            else
-               alert(data);
-         },
-         error : function(error) {
-            alert("error.");
-         }
-      });
-   }
-   //신청하기
-   function apply(sender) {
-      if (sender == $('#leader').html()) {
-         alert("자신의 글입니다.");
-      } else {
-         if ($('#cur').html() >= $('#limit').html()) {
-            alert("신청 인원을 넘었습니다.");
-         } else {
-            $.ajax({
-               url : "/mypage/message/send",
-               type : "post",
-               dataType : "text",
-               data : {
-                  "sender_rcv" : sender,
-                  "targetId_rcv" : $('#leader').html(),
-                  "mcontent_rcv" : '<' + $('#title').val()
-                        + '> 신청&#10;&#10;'
-                        + $('.blog-post textarea').val(),
-                  "bno_rcv" : $('#planno').html()+","+$('#contentId').html(),
-                  "sender_send" : sender,
-                  "targetId_send" : $('#leader').html(),
-                  "mcontent_send" : '<' + $('#title').val()
-                        + '> 신청&#10;&#10;'
-                        + $('.blog-post textarea').val(),
-                  "bno_send" : $('#planno').html()+","+$('#contentId').html(),
-                  "userId" : $('#leader').html()
-               },
-               success : function(data) {
-                  if (data == "right")
-                     alert("신청했습니다");
-                  else
-                     alert(data);
-               },
-               error : function(error) {
-                  alert("error.");
-               }
-            });
-         }
-      }
-   }
+    if (flag) {
+       console.log("첫번째클릭");
+       $('.blog-post textarea').css("display", "block");
+       flag = false;
+    } else {
+       console.log("두번째클릭");
+       checkapply('${userInfo.userId}');
+       $('.blog-post textarea').css("display", "none");
+       flag = true;
+    }
+ }
+ //쪽지보내기
+ function sendpop(rcver) {
+    var url = "/mypage/popup_send?rcver=" + rcver;
+    var name = "popup";
+    window.open(url, name, "width=500, height=500, resizable=yes");
+ }
+ function checkapply(sender) {
+    $.ajax({
+       url : "/mypage/message/cntapply",
+       type : "post",
+       dataType : "text",
+       data : {
+          "sender_rcv" : sender,
+          "bno_rcv" : $('#planno').html()
+       },
+       success : function(data) {
+          if (data == "")
+             apply(sender);
+          else
+             alert(data);
+       },
+       error : function(error) {
+          alert("error.");
+       }
+    });
+ }
+ //신청하기
+ function apply(sender) {
+    if (sender == $('#leader').html()) {
+       alert("자신의 글입니다.");
+    } else {
+       if ($('#cur').html() >= $('#limit').html()) {
+          alert("신청 인원을 넘었습니다.");
+       } else {
+          $.ajax({
+             url : "/mypage/message/send",
+             type : "post",
+             dataType : "text",
+             data : {
+                "sender_rcv" : sender,
+                "targetId_rcv" : $('#leader').html(),
+                "mcontent_rcv" : '<' + $('#title').val()
+                      + '> 신청&#10;&#10;'
+                      + $('.blog-post textarea').val(),
+                "bno_rcv" : $('#planno').html()+","+$('#contentId').html(),
+                "sender_send" : sender,
+                "targetId_send" : $('#leader').html(),
+                "mcontent_send" : '<' + $('#title').val()
+                      + '> 신청&#10;&#10;'
+                      + $('.blog-post textarea').val(),
+                "bno_send" : $('#planno').html()+","+$('#contentId').html(),
+                "userId" : $('#leader').html()
+             },
+             success : function(data) {
+                if (data == "right")
+                   alert("신청했습니다");
+                else
+                   alert(data);
+             },
+             error : function(error) {
+                alert("error.");
+             }
+          });
+       }
+    }
+ }
 
-   //글 삭제
-   function deleteacc() {
-      $.ajax({
-         url : "/accompany/delete",
-         type : "post",
-         dataType : "json",
-         data : {
-            "planNo" : '${planNo}',
-            "title" : '${title}'
-         },
-         success : function(data) {
-            alert("삭제했습니다.");
-            location.href = "/accompany/index";
-         },
-         error : function(error) {
-            alert("error.");
-         }
-      });
-   }
+ //글 삭제
+ function deleteacc() {
+    $.ajax({
+       url : "/accompany/delete",
+       type : "post",
+       dataType : "json",
+       data : {
+          "planNo" : '${planNo}',
+          "title" : '${title}'
+       },
+       success : function(data) {
+          alert("삭제했습니다.");
+          location.href = "/accompany/index";
+       },
+       error : function(error) {
+          alert("error.");
+       }
+    });
+ }
+
+//모집 탈퇴
+ function deleteguest() {
+    $.ajax({
+          url : "/accompany/guest/delete",
+          type : "post",
+           dataType : "json",
+           data : {
+              "planNo" : '${planNo}',
+              "title" : '${title}',
+              "guestId" : '${userInfo.userId}'
+           },
+           success : function(data) {
+              alert("탈퇴했습니다.");
+              location.reload();
+           },
+           error : function(error) {
+              alert("error.");
+           }
+       });
+ }
 </script>
 <body>
    <%@include file="../includes/sidebar.jsp"%>
@@ -358,8 +370,10 @@ header {
                               id="main_img">
                         </div>
                         <div style="clear: both;">
-                           <a href="#" class="button" id="btnapply" onclick="btnclick();">모집
-                              신청하기</a>
+                           <c:choose>
+                          <c:when test="${isguest eq 'y' }"><a href="#" class="button" id="btnapply" onclick="deleteguest();">모집 탈퇴하기</a> </c:when>
+                       <c:when test="${userInfo.userId ne acc.hostId }"><a href="#" class="button" id="btnapply" onclick="btnclick();">모집 신청하기</a> </c:when>
+                       </c:choose>
                            <textarea placeholder="신청 내용을 적고 모집 신청을 다시 누르세요." tabindex="3"
                               id="applycontent" style="display: none;"></textarea>
                            <input type="hidden" id="title" value="${list.title }" />
@@ -414,10 +428,13 @@ header {
                      </button>
                      
                      <!-- if sessionid 가  guest가 맞으면 해당 버튼 추가하기 C태그 if문 필수  생각해봐야할듯 --> 
+                     <c:if test="${isguest eq 'y' || userInfo.userId eq host.hostId}">
                      <button id="btnChat" class="btnmenu" value="${acc.accBno }">
                      <i class="fas fa-comments"></i>
                         <p>채팅 참가</p>
                      </button>
+                     </c:if>
+                     
                      <button id="btnChat-out" class="btnmenu" value="${acc.accBno}" style="display:none;">
                            <i class="fas fa-sign-out-alt"></i>
                         <p>채팅 나가기</p>
@@ -484,9 +501,11 @@ header {
                         <select id="limitPerson" name="limitPerson" tabindex="2"
                            required autofocus>
                            <option value="" disabled selected>동행 신청 인원을 선택해주세요.</option>
-                           <c:forEach var="i" begin="${host.curPerson }" end="10">
-                              <option value="${i }"><c:out value="${i}"></c:out></option>
-                           </c:forEach>
+                                 <c:forEach  var="i" begin="${host.curPerson }" end="10">
+                                    <c:if test="${i ne 0 }">
+                                    <option value="${i }">${i}</option>
+                                    </c:if>
+                                 </c:forEach>
                         </select>
                      </fieldset>
                      <br />
@@ -508,7 +527,7 @@ header {
             </div>
          </div>
       </div>
-      <p id="contentId" style="display:	 none;">${acc.accBno }</p>
+      <p id="contentId" style="display:    none;">${acc.accBno }</p>
       <p id="planno" style="display: none;">${acc.planNo }</p>
       <p id="cur" style="display: none;">${host.curPerson }</p>
       <p id="limit" style="display: none;">${host.limitPerson}</p>

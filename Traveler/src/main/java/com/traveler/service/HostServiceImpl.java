@@ -34,5 +34,27 @@ public class HostServiceImpl implements HostService{
       // TODO Auto-generated method stub
       return mapper.updateHost(host)>0;
    }
+   
+   @Override
+   public boolean addcurperson(HostVO host) throws Exception {
+      // TODO Auto-generated method stub
+      String str = host.getTitle().toString();
+      String title = str.substring(str.indexOf("<")+1,str.indexOf(">"));
+      host.setTitle(title);
+      
+      return mapper.addcurperson(host)>0;
+   }
+
+   @Override
+   public boolean mincurperson(HostVO host) throws Exception {
+      // TODO Auto-generated method stub      
+      return mapper.mincurperson(host)>0;
+   }
+
+   @Override
+   public HostVO readnum(int accbno) throws Exception {
+      // TODO Auto-generated method stub
+      return mapper.readnum(accbno);
+   }
 
 }

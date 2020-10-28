@@ -9,7 +9,7 @@ $(document).ready(function(){
       var hostId = td.eq(2).text();
       var planNo = td.eq(1).text();
       var acc_bno = td.eq(0).text();
-      var title = td.eq(3).text();
+      var title = td.eq(4).text();
       
       //폼 생성 후 전송 
       var form = document.createElement("form");
@@ -44,6 +44,45 @@ $(document).ready(function(){
       console.log(planNo +" "+ hostId +" "+ title +" "+ acc_bno);
       form.submit();
    });
+   
+   $(".btnRead").on("click",function(){
+           var acc_bno = $(this).val();
+           var planNo = $(this).siblings('#planNo').val();
+         var hostId = $(this).siblings('#hostId').val();
+           var title = $(this).siblings('#title').val();
+         //폼 생성 후 전송 
+         var form = document.createElement("form");
+         form.setAttribute("method", "GET");  //Post 방식
+         form.setAttribute("action", "/accompany/board_detail"); //요청 보낼 주소
+
+         var hiddenField = document.createElement("input");
+         hiddenField.setAttribute("type", "hidden");
+         hiddenField.setAttribute("name", "planNo");
+         hiddenField.setAttribute("value", planNo);
+         form.appendChild(hiddenField);
+         
+           var titleField = document.createElement("input");
+           titleField.setAttribute("type", "hidden");
+           titleField.setAttribute("name", "title");
+           titleField.setAttribute("value", title);
+           form.appendChild(titleField);
+           
+           var acc_bnoField = document.createElement("input");
+           acc_bnoField.setAttribute("type", "hidden");
+           acc_bnoField.setAttribute("name", "acc_bno");
+           acc_bnoField.setAttribute("value", acc_bno);
+           form.appendChild(acc_bnoField);
+           
+           var hostIdField = document.createElement("input");
+           hostIdField.setAttribute("type", "hidden");
+           hostIdField.setAttribute("name", "hostId");
+           hostIdField.setAttribute("value", hostId);
+           form.appendChild(hostIdField);
+
+         document.body.appendChild(form);
+         console.log(planNo +" "+ hostId +" "+ title +" "+ acc_bno);
+         form.submit();
+ });
 
    //paging
    

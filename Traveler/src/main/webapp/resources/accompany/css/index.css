@@ -70,13 +70,13 @@ section.notice {
   text-align: center;
 }
 
-.board-table .th-id {
-  width: 100px;
+.board-table .th-boardtitle, .th-title {
+  width: 300px;
   text-align: center;
 }
 
 .board-table .th-num {
-  width: 400px;
+  width: 100px;
   text-align: center;
 }
 
@@ -85,7 +85,7 @@ section.notice {
   text-align: center;
 }
 
-.board-table .th-date {
+.board-table .th-date, .th-startdate {
   width: 200px;
 }
 
@@ -96,12 +96,23 @@ section.notice {
 .board-table tbody td {
   border-top: 1px solid #e7e7e7;
   text-align: center;
+  
 }
+
 
 .board-table tbody th {
   padding-left: 28px;
   padding-right: 14px;
   border-top: 1px solid #e7e7e7;
+display: inline-block;
+
+text-overflow: ellipsis;
+
+white-space: nowrap;
+
+overflow: hidden;
+
+width: 300px;
 }
 
 .btn {

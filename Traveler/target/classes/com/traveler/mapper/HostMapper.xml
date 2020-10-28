@@ -3,33 +3,50 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.traveler.mapper.HostMapper">
-	<!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
-	<!-- result : 기본키 이외 멤버변수 지정 -->
-	<resultMap id="HostVO"
-		type="com.traveler.domain.HostVO">
-		<id column="acc_bno" property="accBno" />
-		<id column="planNo" property="planNo" />
-		<id column="hostId" property="hostId" />
-		<id column="title" property="title" />
-		<result column="limit_person" property="limitPerson" />
-		<result column="cur_person" property="curPerson" />
-		<result column="acc_descript" property="descript" />
-	</resultMap>
+   <!-- id-column : DB컬럼명 property : 객체멤버변수 명 -->
+   <!-- result : 기본키 이외 멤버변수 지정 -->
+   <resultMap id="HostVO"
+      type="com.traveler.domain.HostVO">
+      <id column="acc_bno" property="accBno" />
+      <id column="planNo" property="planNo" />
+      <id column="hostId" property="hostId" />
+      <id column="title" property="title" />
+      <result column="limit_person" property="limitPerson" />
+      <result column="cur_person" property="curPerson" />
+      <result column="acc_descript" property="descript" />
+   </resultMap>
 
-	<select id="readHost" resultMap="HostVO">
-		select * from acc_host
-		where hostId = #{hostId} and title = #{title} and planNo = #{planNo}
-	</select>
+   <select id="readHost" resultMap="HostVO">
+      select * from acc_host
+      where hostId = #{hostId} and title = #{title} and planNo = #{planNo}
+   </select>
 
-	<insert id="insertHost">
-		insert into acc_host (acc_bno,planNo,hostId,title,limit_person,acc_descript)
-		values (#{accBno}, #{planNo}, #{hostId}, #{title}, #{limitPerson}, #{descript})
-	</insert>
+   <insert id="insertHost">
+      insert into acc_host (acc_bno,planNo,hostId,title,limit_person,acc_descript)
+      values (#{accBno}, #{planNo}, #{hostId}, #{title}, #{limitPerson}, #{descript})
+   </insert>
 
 
-	<update id="updateHost">
-		update acc_host
-		set limit_person = #{limitPerson}, acc_descript = #{descript}
-		where planNo = #{planNo} and title = #{title}
-	</update>
+   <update id="updateHost">
+      update acc_host
+      set limit_person = #{limitPerson}, acc_descript = #{descript}
+      where planNo = #{planNo} and title = #{title}
+   </update>
+   
+   <update id="addcurperson">
+      update acc_host
+      set cur_person = cur_person + 1
+      where planNo = #{planNo} and title = #{title} 
+   </update>
+
+   <update id="mincurperson">
+      update acc_host
+      set cur_person = cur_person - 1
+      where planNo = #{planNo} and title = #{title} 
+   </update>
+   
+   <select id="readnum" resultMap="HostVO">
+      select cur_person,limit_person from acc_host
+      where acc_bno = #{accBno}
+   </select>
 </mapper>

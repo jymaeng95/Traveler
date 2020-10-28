@@ -39,4 +39,6 @@ public interface UserPlanMapper {
    public int updateisacc(UserPlanVO plan);
    
    public int countIsAcc(int planNo);
+   
+   public List<UserPlanVO> readPlanForboard(int planNo);
 }

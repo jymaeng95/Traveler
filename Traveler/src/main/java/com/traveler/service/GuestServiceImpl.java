@@ -1,5 +1,6 @@
 package com.traveler.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -33,10 +34,17 @@ public class GuestServiceImpl implements GuestService {
       return mapper.isJoin(guest);
    }
 
+   
    @Override
-   public List<GuestVO> readId(GuestVO guest) throws Exception {
+   public boolean deleteGuest(GuestVO guest) throws Exception {
       // TODO Auto-generated method stub
-      return mapper.readId(guest);
+      return mapper.deleteGuest(guest)>0;
+   }
+
+   @Override
+   public ArrayList<GuestVO> readguestAcc(String guestId) throws Exception {
+      // TODO Auto-generated method stub
+      return mapper.readguestAcc(guestId);
    }
 
 }
