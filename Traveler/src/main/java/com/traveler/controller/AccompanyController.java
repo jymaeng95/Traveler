@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.traveler.domain.AccompanyBoardVO;
-import com.traveler.domain.AccompanyVO;
 import com.traveler.domain.Criteria;
 import com.traveler.domain.GuestVO;
 import com.traveler.domain.HostVO;
@@ -25,8 +24,6 @@ import com.traveler.domain.PageVO;
 import com.traveler.domain.PlannerVO;
 import com.traveler.domain.UserPlanVO;
 import com.traveler.service.AccompanyBoardService;
-import com.traveler.service.AccompanyService;
-import com.traveler.service.GroupAccService;
 import com.traveler.service.GuestService;
 import com.traveler.service.HostService;
 import com.traveler.service.PlannerService;
@@ -41,10 +38,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class AccompanyController {
-   private AccompanyService service;
    private PlannerService p_service;
    private UserPlanService u_service;
-   private GroupAccService g_service;
    private AccompanyBoardService a_service;
    private GuestService gu_service;
    private HostService h_service;
