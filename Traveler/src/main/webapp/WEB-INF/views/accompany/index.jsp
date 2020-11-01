@@ -41,7 +41,7 @@
                            <div class="accompany accompany--big"
                               style="margin: 10px 30px 20px 30px;">
                               <div class="accompany__image">
-                                 <img class="accompany_image" src=""
+                                 <img class="accompany_image" src="/resources/accompany/img/host.png"
                                     style="width: 100%; height: 100%"></img>
                               </div>
                               <h2 class="accompany__title">
@@ -70,7 +70,7 @@
                            <div class="accompany accompany--big"
                               style="margin: 10px 30px 20px 30px;">
                               <div class="accompany__image">
-                                 <img class="accompany_image" src=""
+                                 <img class="accompany_image" src="/resources/accompany/img/guest.png"
                                     style="width: 100%; height: 100%"></img>
                               </div>
                               <h2 class="accompany__title">
