@@ -336,7 +336,8 @@ $(document).on("click","#add-expend",function(){
 			<h5 class="trans-planDate">'+planDate+
 			'</h5></div>\
 			</div>\
-			<div class="trans-price expend" style="color:#ff3232;">'+price+"\\"+'\
+			<div class="trans-price">\
+			<h4 class="trans-price expend" style="color:#ff3232"">'+price+"\\"+'\
 			</h4>\
 			</div>\
 			</div><hr>'
