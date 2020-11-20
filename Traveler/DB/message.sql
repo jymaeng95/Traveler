@@ -2,7 +2,7 @@ drop table message;
 drop SEQUENCE tmp_seq;
 
 
----------------------ë³´ë‚¸ë©”ì„¸ì§€
+---------------------º¸³½¸Ş¼¼Áö
 drop table msg_send;
 create table msg_send (
     mid_send int,
@@ -12,7 +12,7 @@ create table msg_send (
     senddate_send varchar2(50) default to_char(sysdate,'yyyy.mm.dd hh24:mi'),
     readstatus_send varchar2(50) default '0',
     status_send varchar2(50) default '0',
-    bno_send number default '0',
+    bno_send varchar2(50) default '0',
     primary key(mid_send),
     CONSTRAINT msg_fk1 foreign key(targetId_send)
     REFERENCES MEMBER(USERID) ON DELETE CASCADE
@@ -27,13 +27,12 @@ create table msg_rcv (
     senddate_rcv varchar2(50) default to_char(sysdate,'yyyy.mm.dd hh24:mi'),
     readstatus_rcv varchar2(50) default '0',
     status_rcv varchar2(50) default '0',
-    bno_rcv number default '0', -- 0ì¼ì‹œ ë™í–‰ì‹ ì²­ì´ ì•„ë‹˜--
+    bno_rcv varchar2(50) default '0', -- 0?¼?‹œ ?™?–‰?‹ Òú??´ ?•„?‹˜--
     primary key(mid_rcv),
     CONSTRAINT msg_fk2 foreign key(targetId_rcv)
     REFERENCES MEMBER(USERID) ON DELETE CASCADE
     );
-
----------------------ë°›ì€ ë©”ì„¸ì§€
+---------------------¹ŞÀº ¸Ş¼¼Áö
  
 CREATE SEQUENCE mid_send START WITH 1 INCREMENT BY 1 NOCYCLE NOCACHE;
 CREATE SEQUENCE mid_rcv START WITH 1 INCREMENT BY 1 NOCYCLE NOCACHE;

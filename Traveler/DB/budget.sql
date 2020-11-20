@@ -26,11 +26,11 @@ create table budget (
     REFERENCES PLANNER(PLANNO,USERID) ON DELETE CASCADE
     );
     
- INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (BNO.NEXTVAL, 1,'1358223290','íœ´ì• ë¦¬ìì—°ìƒí™œê³µì›','ê´€ê´‘',1000,0,5000);    
- INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (bno.NEXTVAL, 1,'1358223290','í…ŒìŠ¤íŠ¸','í…ŒìŠ¤íŠ¸',2000,0,5000);    
- INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (bno.NEXTVAL, 1,'1358223290','BUDGET ONLY','ê´€ê´‘',2000,0,5000);    
+ INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (BNO.NEXTVAL, 1,'1358223290','ÈŞ¾Ö¸®ÀÚ¿¬»ıÈ°°ø¿ø','°ü±¤',1000,0,5000);    
+ INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (bno.NEXTVAL, 1,'1358223290','Å×½ºÆ®','Å×½ºÆ®',2000,0,5000);    
+ INSERT INTO BUDGET(bno,planno,userid,title,cat,income,expend,total) values (bno.NEXTVAL, 1,'1358223290','BUDGET ONLY','°ü±¤',2000,0,5000);    
  
- --------ì¿¼ë¦¬ í…ŒìŠ¤íŠ¸ --------------
+ --------Äõ¸® Å×½ºÆ® --------------
  
  select *
  from budget;
@@ -66,6 +66,13 @@ from (
     order by planno, total asc
     );
 
+select count(x) 
+from (
+select planno as x
+from budget 
+where is_public='Y' and planTotaldate='1'
+group by planno
+);
 
 select distinct(is_public)
 from budget
@@ -92,3 +99,17 @@ where total = (
 		where plantotaldate = '1' and is_public='Y'
 		group by planno
 		order by planno;
+
+	SELECT * 
+		FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT planno, reg_date
+						FROM  BUDGET
+                        WHERE BUDGET.IS_PUBLIC='Y' and planTotalDate ='3'
+						GROUP BY PLANNO, reg_date
+                        ORDER BY planno ASC 
+						) A
+				)
+	WHERE RN BETWEEN 1 AND 10;   
+        

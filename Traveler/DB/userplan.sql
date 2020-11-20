@@ -18,6 +18,7 @@ CREATE TABLE USERPLAN (
     DESCRIPT VARCHAR2(1000),
     OVERVIEW VARCHAR2(4000),
     IS_INSERTAFTER VARCHAR(1) DEFAULT 'N',
+    ISACC VARCHAR(1) DEFAULT 'N',
     PRIMARY KEY(PLANNO,USERID, TITLE),
     CONSTRAINT USERPLAN_FK_USERID FOREIGN KEY(PLANNO,USERID)
     REFERENCES PLANNER(PLANNO,USERID) ON DELETE CASCADE
@@ -87,5 +88,38 @@ from userplan;
 
 select title, planDate, planTotalDate
 from userplan   
-where planno=41 and userid='jymaeng95' and rownum = 1
+where planno=1 and userid='1358223290' and rownum = 1
 order by planDate;
+
+select  distinct planDate, planTotalDate, planday, rownum
+from userplan 
+where planno = 161 
+order by planday;
+
+select planDate, planTotalDate, planDay 
+from (select distinct planDate as planDate, planTotalDate as planTotalDate, planday as planDay
+        from userplan 
+        where planno = 161
+        order by planday
+        )
+        where rownum = 1;
+
+select planno
+from userplan 
+where userid='1358223290' and planDate > sysDate
+group by planno;
+
+select *
+from userplan 
+where planno=83  and planDate > sysDate
+order by planDate asc;
+
+select planno 
+from userplan 
+where planTotalDate = '3' 
+group by planno;
+
+select count(isacc) 
+from userplan 
+where planNo = 163 and isacc='N';
+

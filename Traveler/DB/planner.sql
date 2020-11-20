@@ -32,3 +32,55 @@ select planno from planner;
 select planner.planno, planner.userid, userplan.plandate, userplan.planday
 from planner, userplan 
 where planner.planno = userplan.planno and planner.userid = userplan.userid and planner.planno = 1;
+
+	SELECT * 
+		FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT PLANNER.PLANNO, PLANNER.PLANTITLE, PLANNER.PLANIMG, PLANNER.INFO, PLANNER.USERID
+						FROM planner, BUDGET
+                        WHERE BUDGET.PLANNO = PLANNER.PLANNO AND BUDGET.IS_PUBLIC='Y'
+						GROUP BY PLANNER.PLANNO
+                        ORDER BY PLANNER.planno DESC 
+						) A
+				)
+	WHERE RN BETWEEN 5 and 12;
+    
+    
+    
+	SELECT * 
+		FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT planno, reg_date
+						FROM  BUDGET
+                        WHERE BUDGET.IS_PUBLIC='Y'
+						GROUP BY PLANNO, reg_date
+                        ORDER BY planno ASC 
+						) A
+				)
+	WHERE RN BETWEEN 1 AND 10;
+    
+	select *
+   		from
+   			(
+   			select rownum rn, planno
+   			from budget 
+   			where is_public='Y' and
+            rownum <= 1 * 10
+        
+   			)
+   		where rn > 0 * 10
+      group by planno 
+   			
+   		order by planno desc;
+        
+select *
+from planner 
+where userid='aa';
+
+select *
+from planner 
+where planno=82;
+
+
