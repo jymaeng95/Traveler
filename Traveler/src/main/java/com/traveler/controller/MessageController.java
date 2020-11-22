@@ -60,6 +60,8 @@ public class MessageController {
 	public String sendMessage(SendMsgVO sendmsg, ReceiveMsgVO rcvmsg, MemberVO member) throws Exception {
 		log.info("send message");
 		log.info(m_service.idCheck(member));
+		log.info(sendmsg);
+		log.info(rcvmsg);
 		boolean idCheck = m_service.idCheck(member);
 		
 		if(!idCheck) return "존재하지 않는 아이디입니다.";

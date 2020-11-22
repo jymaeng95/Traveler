@@ -11,6 +11,42 @@
 	rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 <script src="/resources/spot/js/spot.js"></script>
+<style>
+.pagination {
+  display: inline-block;
+}
+
+.pagination li {
+  color: black;
+  float: left;
+  padding: 6px 12px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+}
+
+.pagination a {
+  color: black;
+  font-size: 12px;
+}
+
+.pagination li.active {
+  background-color: #c8c8c8;
+  color: white;
+  border: 1px solid #c8c8c8;
+}
+
+.pagination li:hover:not(.active) {background-color: #ddd;}
+
+.pagination li:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.pagination li:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+</style>
 <title>Insert title here</title>
 </head>
 <body>

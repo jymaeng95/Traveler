@@ -82,8 +82,7 @@
 						<div class="profile-bio">
 
 							<p>
-								<span class="profile-real-name">Jane Doe</span> Lorem ipsum
-								dolor sit, amet consectetur adipisicing elit 📷✈️🏕️
+								<span class="profile-real-name">Maeng Joon Young</span> 제주도 북마크 많이 모으기!📷✈️🏕️
 							</p>
 						</div>
 

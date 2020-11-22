@@ -28,6 +28,9 @@ public class MessageServiceImpl implements MessageService {
 	public boolean addMessage(SendMsgVO sendmsg) throws Exception {
 		// TODO Auto-generated method stub
 		log.info("insert sendmsg");
+	    System.out.println(sendmsg);
+	    if(sendmsg.getBno_send() == null)
+	    	sendmsg.setBno_send("0");
 		int resultCount = mapper.messageInsert(sendmsg);
 		return resultCount > 0;
 	}
@@ -36,6 +39,8 @@ public class MessageServiceImpl implements MessageService {
 	public boolean addMessage2(ReceiveMsgVO rcvmsg) throws Exception {
 		// TODO Auto-generated method stub
 		log.info("insert rcvmsg");
+		if(rcvmsg.getBno_rcv()==null)
+			rcvmsg.setBno_rcv("0");
 		int resultCount = mapper.messageInsert2(rcvmsg);
 		return resultCount > 0;
 	}

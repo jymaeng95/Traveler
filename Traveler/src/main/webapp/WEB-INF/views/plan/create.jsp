@@ -117,7 +117,7 @@
 				</c:if>
 				<i class="fa fa-power-off"></i> </a>
 				<form action="/plan/plandetail" method="GET">
-					<button id="btn-save" type="button" class="btn btn-primary" type="reset">버튼</button>
+					<button id="btn-save" type="button" class="btn btn-primary">저장</button>
 				</form>
 			</div>
 		</nav>
