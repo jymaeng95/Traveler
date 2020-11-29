@@ -9,11 +9,18 @@
 - 2020년 3월 24일 - 2020년 11월 24일 (9개월)
 - 맹준영(팀장), 김현홍(팀원), 권형준(팀원), 김호겸(팀원)
 
-## ⚙️ 프로젝트 기술 스택
+## ⚙️ Traveler 기술 스택
 
 ![logo](https://img.shields.io/badge/API-T_Map-red?style=flat) ![logo](https://img.shields.io/badge/API-Kakao_Login-FFCD00?logo=kakao&style=flat&logoColor=white) ![logo](https://img.shields.io/badge/API-국문_관광_정보-skyblue?style=flat) ![logo](https://img.shields.io/badge/Library-Google_Chart-4285F4?style=flat&logo=google&logoColor=white) ![logo](https://img.shields.io/badge/Library-Bootstrap-563D7C?style=flat&logo=bootstrap) ![logo](https://img.shields.io/badge/Language-Java_8-007396?style=flat&logo=java&logoColor=white) ![logo](https://img.shields.io/badge/Language-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=white) ![logo](https://img.shields.io/badge/Language-JSP-orange?style=flat) ![logo](https://img.shields.io/badge/Language-JSTL-green?style=flat) ![logo](https://img.shields.io/badge/Language-jquery-0769AD?style=flat&logo=jquery&logoColor=white) ![logo](https://img.shields.io/badge/Database-Oracle-F80000?style=flat&logo=oracle&logoColor=white) ![logo](https://img.shields.io/badge/Database-Firebase-FFCA28?style=flat&logo=firebase&logoColor=white) ![logo](https://img.shields.io/badge/Server-ApacheTomcat_8.5v-D22128?style=flat&logo=apahce&logoColor=white) ![logo](https://img.shields.io/badge/Framework-SpringFramework_5.0.7-6DB33F?style=flat&logo=spring&logoColor=white) 
 
-## ✈️기능 소개
+## 📷 Traveler ERD 
+![Traveler ERD](https://user-images.githubusercontent.com/52314663/100532928-0b13a800-3242-11eb-8b28-ec19d45620be.png)
+
+## 📷 Traveler 기능 구조
+![Traveler 기능 구조](https://user-images.githubusercontent.com/52314663/100532936-1535a680-3242-11eb-8bb3-a94f3453f8f7.png)
+
+
+## ✈️ 기능 소개
 
 <img src="https://user-images.githubusercontent.com/52314663/100517892-7c674280-31d1-11eb-8d8b-41105b8b2915.png" width="45%" alt="Pic 1"> <img src="https://user-images.githubusercontent.com/52314663/100517900-82f5ba00-31d1-11eb-8bc6-64f30cf3871c.png" width="45%">
   
@@ -41,15 +48,15 @@
 
 **Pic 11 & 12** 📷 : 동행 호스트 혹은 게스트로 참가했을 때 호스트와 게스트간의 여행 일정 및 여행 정보 공유를 위해 **Firebase의 Realtime Database를 이용한 실시간 채팅과 DB를 이용한 쪽지를 구현**하여 연락 수단 제공
 
-## 🔗 프로젝트 깃허브 주소
+## 🔗 Traveler 깃허브 주소
 
 👉🏻 [Traveler github](https://github.com/jymaeng95/Traveler)
 
-## 🔗 Traveler 시연 영상
+## 📽️ Traveler 시연 영상
 
 👉🏻 [Traveler 시연 영상](https://youtu.be/B48eBHVYirU)
 
-## 💡Reference
+## 💡 Reference
 
 - UI(HTML, CSS, Javascript)
     1. [https://codepen.io/ChynoDeluxe/pen/bdXeqQ](https://codepen.io/ChynoDeluxe/pen/bdXeqQ)
