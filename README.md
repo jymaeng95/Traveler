@@ -56,6 +56,10 @@
 
 👉🏻 [Traveler 시연 영상](https://youtu.be/B48eBHVYirU)
 
+## 🏅 Traveler 수상 내역
+
+**👉🏻 제 12회 창의적 종합설계 경진대회 대상 (Hanshin Univ. 12th Capston Design Competition 1st Prize, 2020.11.30) - 한신대학교 SW역량 강화 센터 주관**
+
 ## 💡 Reference
 
 - UI(HTML, CSS, Javascript)
