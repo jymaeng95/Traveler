@@ -10,8 +10,23 @@
 - 맹준영(팀장), 김현홍(팀원), 권형준(팀원), 김호겸(팀원)
 
 ## ⚙️ Traveler 기술 스택
+<p align="center">
+  <img src="https://img.shields.io/badge/API-T_Map-red?style=flat">&nbsp 
+  <img src="https://img.shields.io/badge/API-Kakao_Login-FFCD00?logo=kakao&style=flat&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/API-국문_관광_정보-skyblue?style=flat">&nbsp 
+  <img src="https://img.shields.io/badge/Library-Google_Chart-4285F4?style=flat&logo=google&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Library-Bootstrap-563D7C?style=flat&logo=bootstrap">&nbsp 
+  <img src="https://img.shields.io/badge/Language-Java_8-007396?style=flat&logo=java&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Language-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Language-JSP-orange?style=flat">&nbsp 
+  <img src="https://img.shields.io/badge/Language-JSTL-green?style=flat">&nbsp 
+  <img src="https://img.shields.io/badge/Language-jquery-0769AD?style=flat&logo=jquery&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Database-Oracle-F80000?style=flat&logo=oracle&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Database-Firebase-FFCA28?style=flat&logo=firebase&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Server-ApacheTomcat_8.5v-D22128?style=flat&logo=apahce&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Framework-SpringFramework_5.0.7-6DB33F?style=flat&logo=spring&logoColor=white">&nbsp 
 
-![logo](https://img.shields.io/badge/API-T_Map-red?style=flat) ![logo](https://img.shields.io/badge/API-Kakao_Login-FFCD00?logo=kakao&style=flat&logoColor=white) ![logo](https://img.shields.io/badge/API-국문_관광_정보-skyblue?style=flat) ![logo](https://img.shields.io/badge/Library-Google_Chart-4285F4?style=flat&logo=google&logoColor=white) ![logo](https://img.shields.io/badge/Library-Bootstrap-563D7C?style=flat&logo=bootstrap) ![logo](https://img.shields.io/badge/Language-Java_8-007396?style=flat&logo=java&logoColor=white) ![logo](https://img.shields.io/badge/Language-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=white) ![logo](https://img.shields.io/badge/Language-JSP-orange?style=flat) ![logo](https://img.shields.io/badge/Language-JSTL-green?style=flat) ![logo](https://img.shields.io/badge/Language-jquery-0769AD?style=flat&logo=jquery&logoColor=white) ![logo](https://img.shields.io/badge/Database-Oracle-F80000?style=flat&logo=oracle&logoColor=white) ![logo](https://img.shields.io/badge/Database-Firebase-FFCA28?style=flat&logo=firebase&logoColor=white) ![logo](https://img.shields.io/badge/Server-ApacheTomcat_8.5v-D22128?style=flat&logo=apahce&logoColor=white) ![logo](https://img.shields.io/badge/Framework-SpringFramework_5.0.7-6DB33F?style=flat&logo=spring&logoColor=white) 
+</p>
 
 ## 📷 Traveler ERD 
 ![Traveler ERD](https://user-images.githubusercontent.com/52314663/100532928-0b13a800-3242-11eb-8b28-ec19d45620be.png)
